@@ -1,0 +1,28 @@
+package condor.altar.multiblock.structures;
+
+import java.util.TreeMap;
+import java.lang.Integer;
+
+import org.bukkit.Material;
+
+import condor.altar.multiblock.AltarStructure;
+import condor.altar.AltarType;
+
+public class NetherAltarStructure extends AltarStructure {
+  private static TreeMap<Material, Integer> materialMap = new TreeMap<>();
+  private static final int size = 5;
+  private static final Material interfaceBlockType = Material.SOUL_CAMPFIRE;
+
+  static {
+    materialMap.put(Material.WARPED_PLANKS, 25);
+    materialMap.put(Material.RED_NETHER_BRICK_STAIRS, 3);
+    materialMap.put(Material.RED_NETHER_BRICK_WALL, 27);
+    materialMap.put(Material.NETHER_BRICKS, 9);
+    materialMap.put(Material.GLOWSTONE, 1);
+    materialMap.put(Material.CYAN_CANDLE, 4);
+  }
+
+  public NetherAltarStructure() {
+    super(AltarType.NETHER_ALTAR, materialMap, size, interfaceBlockType);
+  }
+}

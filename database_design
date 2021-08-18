@@ -1,0 +1,15 @@
+Type:                     Varchar(16)
+Town UUID:                Varchar(32)
+World:                    Varchar(32)
+X:                        INT
+Y:                        INT
+Z:                        INT
+BOON 1:                   Varchar(16)
+BOON 2:                   Varchar(16)
+BOON 3:                   Varchar(16)
+BOON 4:                   Varchar(16)
+SACRIFICE 1:              BLOB
+SACRIFICE 2:              BLOB
+SACRIFICE 3:              BLOB
+SACRIFICE 4:              BLOB
+Total_Recent_Sacrifices:  INT

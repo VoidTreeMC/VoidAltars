@@ -1,0 +1,1 @@
+# VoidAltars plugin
