@@ -7,4 +7,4 @@ authors: [Iron-Condor]
 description: Void Altar plugin
 load: POSTWORLD
 prefix: ALTAR
-depend: [Vault]
+depend: [Vault, Towny]

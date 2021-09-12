@@ -6,9 +6,14 @@ Sacrifice algorithm plans
   y = the number of people in the player's town (potential altar contributors)
   z = the number of sacrifices made recently for that item
 
+^ We're actually going to use the algorithm below instead, for right now
+
+  0.7w + 0.3y
+
+  w = a value that reflects the rarity of the item
+  y = the number of people in the altar's town (potential altar contributors)
+
+Duck wants people to only be able to change the boon type after every couple sacrifices
 
 DID
 ===
-Added Altar
-Added Sacrifice
-Added SacrificeManager

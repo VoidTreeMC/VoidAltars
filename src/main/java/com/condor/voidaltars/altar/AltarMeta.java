@@ -57,11 +57,47 @@ public abstract class AltarMeta {
     this.level = 1;
     this.weightMap = weightMap;
     this.sacrificesWanted = AltarManager.getSacrificesNeededByLevel(this.level);
+
+    for (int i = 0; i < this.getNumSacrificeSlots(); i++) {
+      sacrifices.add(SacrificeManager.getNewSacrifice(this));
+    }
+  }
+
+  public AltarType getType() {
+    return this.type;
   }
 
   public Material getSacrificeType() {
     List<Material> sacrificeTypes = this.getSacrificeTypes();
     return sacrificeTypes.get(rng.nextInt(sacrificeTypes.size()));
+  }
+
+  public Sacrifice getSacrifice(int index) {
+    if (index < sacrifices.size()) {
+      return sacrifices.get(index);
+    } else {
+      return null;
+    }
+  }
+
+  public Boon getBoon(int index) {
+    if (index < boons.size()) {
+      return boons.get(index);
+    } else {
+      return null;
+    }
+  }
+
+  public int getLevel() {
+    return this.level;
+  }
+
+  public int getNumSacrificeSlots() {
+    return this.getLevel();
+  }
+
+  public int getNumBoonSlots() {
+    return this.getLevel();
   }
 
   public double getSacrificeWeight(Material type) {

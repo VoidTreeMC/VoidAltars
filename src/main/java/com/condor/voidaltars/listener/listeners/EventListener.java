@@ -53,6 +53,8 @@ import com.condor.voidaltars.main.AltarMain;
 import com.condor.voidaltars.altar.multiblock.structures.FarmAltarStructure;
 import com.condor.voidaltars.altar.AltarManager;
 import com.condor.voidaltars.altar.multiblock.AltarStructure;
+import com.condor.voidaltars.altar.AltarMeta;
+import com.condor.voidaltars.gui.MainAltarGUI;
 
 /**
  *
@@ -70,11 +72,12 @@ public class EventListener  extends AltarListener {
     }
     if (AltarStructure.isPossibleInterfaceBlock(event.getClickedBlock().getType())) {
       Location loc = event.getClickedBlock().getLocation();
-      AltarStructure altarStruc = AltarManager.getAltarFromLoc(loc);
-      if (altarStruc != null) {
-        event.getPlayer().sendMessage("This is a " + altarStruc.getType() + ".");
+      AltarMeta altarMeta = AltarManager.getAltarFromLoc(loc, event);
+      if (altarMeta != null) {
+        // TODO: Check access here
+        MainAltarGUI.displayAltarGUI(event.getPlayer(), altarMeta);
       } else {
-        event.getPlayer().sendMessage("This altar is not valid.");
+        event.getPlayer().sendMessage("This is not an altar.");
       }
     }
   }
