@@ -92,6 +92,10 @@ public abstract class AltarMeta {
     return this.level;
   }
 
+  public int getMaxLevel() {
+    return 4;
+  }
+
   public int getNumSacrificeSlots() {
     return this.getLevel();
   }

@@ -11,10 +11,16 @@ public class Sacrifice {
   int total;
   AltarMeta owner;
 
+  public Sacrifice(Material type, int total, AltarMeta owner) {
+    this.type = type;
+    this.total = total;
+    this.owner = owner;
+  }
+
   /**
    * Handles a sacrifice
    * @param  sacrifice An ItemStack representing the items being sacrificed
-   * @return           The number of sacrifices remaining in the quota. If negative, the quota has been met.
+   * @return The number of sacrifices remaining in the quota. If negative, the quota has been met.
    */
   public int handleSacrifice(ItemStack sacrifice) {
     int count = sacrifice.getAmount();
@@ -22,11 +28,18 @@ public class Sacrifice {
     return this.total - this.sacrificed;
   }
 
-  public Sacrifice(Material type, int total, AltarMeta owner) {
-    this.type = type;
-    this.total = total;
-    this.owner = owner;
+  public int getNumRemaining() {
+    return total - sacrificed;
   }
+
+  public int getTotal() {
+    return total;
+  }
+
+  public int getNumSacrificed() {
+    return sacrificed;
+  }
+
 
   public Material getType() {
     return this.type;

@@ -12,6 +12,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.condor.voidaltars.altar.AltarMeta;
+import com.condor.voidaltars.altar.Sacrifice;
 
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -51,51 +52,31 @@ public class MainAltarGUI {
 
     GuiItem slotLocked = new GuiItem(SLOT_LOCKED);
 
-    ItemStack sacrificeOneItem = null;
-    ItemStack sacrificeTwoItem = null;
-    ItemStack sacrificeThreeItem = null;
-    ItemStack sacrificeFourItem = null;
-
-    switch (altarMeta.getNumSacrificeSlots()) {
-      case 4:
-        sacrificeFourItem = new ItemStack(altarMeta.getSacrifice(3).getType());
-      case 3:
-        sacrificeThreeItem = new ItemStack(altarMeta.getSacrifice(2).getType());
-      case 2:
-        sacrificeTwoItem = new ItemStack(altarMeta.getSacrifice(1).getType());
-      case 1:
-        sacrificeOneItem = new ItemStack(altarMeta.getSacrifice(0).getType());
+    for (int i = 0; i < altarMeta.getNumSacrificeSlots(); i++) {
+      Sacrifice sacrifice = altarMeta.getSacrifice(i);
+      ItemStack sacrificeItem = new ItemStack(sacrifice.getType());
+      GuiItem sacrificeGuiItem = new GuiItem((sacrificeItem != null) ? sacrificeItem : SLOT_LOCKED);
+      gui.setItem(2, 2 + (2 * i), sacrificeGuiItem);
     }
 
-    GuiItem sacrificeOne = new GuiItem((sacrificeOneItem != null) ? sacrificeOneItem : SLOT_LOCKED);
-    GuiItem sacrificeTwo = new GuiItem((sacrificeTwoItem != null) ? sacrificeTwoItem : SLOT_LOCKED);
-    GuiItem sacrificeThree = new GuiItem((sacrificeThreeItem != null) ? sacrificeThreeItem : SLOT_LOCKED);
-    GuiItem sacrificeFour = new GuiItem((sacrificeFourItem != null) ? sacrificeFourItem : SLOT_LOCKED);
+    for (int i = altarMeta.getNumSacrificeSlots(); i < altarMeta.getMaxLevel(); i++) {
+      gui.setItem(2, 2 + (2 * i), slotLocked);
+    }
 
-    ItemStack boonOneItem = (altarMeta.getNumBoonSlots() >= 1) ? (new ItemStack(Material.BEACON)) : SLOT_LOCKED;
-    ItemStack boonTwoItem = (altarMeta.getNumBoonSlots() >= 2) ? (new ItemStack(Material.BEACON)) : SLOT_LOCKED;
-    ItemStack boonThreeItem = (altarMeta.getNumBoonSlots() >= 3) ? (new ItemStack(Material.BEACON)) : SLOT_LOCKED;
-    ItemStack boonFourItem = (altarMeta.getNumBoonSlots() >= 4) ? (new ItemStack(Material.BEACON)) : SLOT_LOCKED;
+    for (int i = 0; i < altarMeta.getNumBoonSlots(); i++) {
+      ItemStack boonItem = new ItemStack(Material.BEACON);
+      GuiItem boonGuiItem = new GuiItem(boonItem);
+      gui.setItem(5, 2 + (2 * i), boonGuiItem);
+    }
 
-    GuiItem boonOne = new GuiItem(boonOneItem);
-    GuiItem boonTwo = new GuiItem((boonTwoItem != null) ? boonTwoItem : SLOT_LOCKED);
-    GuiItem boonThree = new GuiItem((boonThreeItem != null) ? boonThreeItem : SLOT_LOCKED);
-    GuiItem boonFour = new GuiItem((boonFourItem != null) ? boonFourItem : SLOT_LOCKED);
+    for (int i = altarMeta.getNumBoonSlots(); i < altarMeta.getMaxLevel(); i++) {
+      gui.setItem(5, 2 + (2 * i), slotLocked);
+    }
 
     GuiItem bookItem = new GuiItem(INSTRUCTION_BOOK);
 
     gui.setItem(6, 5, bookItem);
-    
-    gui.setItem(2, 2, sacrificeOne);
-    gui.setItem(2, 4, sacrificeTwo);
-    gui.setItem(2, 6, sacrificeThree);
-    gui.setItem(2, 8, sacrificeFour);
 
-    gui.setItem(5, 2, boonOne);
-    gui.setItem(5, 4, boonTwo);
-    gui.setItem(5, 6, boonThree);
-    gui.setItem(5, 8, boonFour);
-
-  	gui.open(player);
+    gui.open(player);
   }
 }
