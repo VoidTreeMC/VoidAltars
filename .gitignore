@@ -25,3 +25,17 @@ build.xml
 uploadToTestServer.sh
 mysql-connector-java-8.0.20
 mysql-connector-java-8.0.20/*
+target/classes
+target/generated-sources
+target/generated-test-sources
+target/maven-archiver
+target/maven-status
+target/surefire-reports
+target/test-classes
+target/site
+target/javadoc-bundle-options
+target/maven-javadoc-plugin-stale-data.txt
+database.properties
+target/*
+VoidAltars
+VoidAltars/*
