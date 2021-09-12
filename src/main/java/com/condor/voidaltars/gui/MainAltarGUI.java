@@ -55,6 +55,13 @@ public class MainAltarGUI {
     for (int i = 0; i < altarMeta.getNumSacrificeSlots(); i++) {
       Sacrifice sacrifice = altarMeta.getSacrifice(i);
       ItemStack sacrificeItem = new ItemStack(sacrifice.getType());
+      ItemMeta sacrificeItemMeta = sacrificeItem.getItemMeta();
+      ArrayList<String> lore = new ArrayList<>();
+      lore.add("Click to sacrifice");
+      lore.add("up to " + sacrifice.getNumRemaining());
+      lore.add("of this item");
+      sacrificeItemMeta.setLore(lore);
+      sacrificeItem.setItemMeta(sacrificeItemMeta);
       GuiItem sacrificeGuiItem = new GuiItem((sacrificeItem != null) ? sacrificeItem : SLOT_LOCKED);
       gui.setItem(2, 2 + (2 * i), sacrificeGuiItem);
     }

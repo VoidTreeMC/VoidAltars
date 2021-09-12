@@ -30,7 +30,15 @@ public class SacrificeManager {
   public static int calculateSacrificeAmount(double weight, Town town) {
     int amt = 0;
 
-    amt = (int) ((0.7 * weight) + (0.3 * town.getNumResidents()));
+    if (weight == 0) {
+      weight = 1;
+    }
+
+    amt = (int) (500 * ((0.5 * (1 / weight)) + (0.5 * town.getNumResidents())));
+
+    if (amt <= 0) {
+      amt = 1;
+    }
 
     return amt;
   }

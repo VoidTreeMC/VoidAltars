@@ -62,7 +62,7 @@ public class FarmAltar extends AltarMeta {
     weightMap.put(Material.MUSHROOM_STEW, 5.12);
     weightMap.put(Material.HONEYCOMB, 3.15);
     weightMap.put(Material.MILK_BUCKET, 69.67);
-    weightMap.put(Material.POISONOUS_POTATO, -1.00);
+    weightMap.put(Material.POISONOUS_POTATO, 30.00);
     weightMap.put(Material.SWEET_BERRIES, 5.00);
   }
 
