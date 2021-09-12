@@ -36,6 +36,5 @@ target/site
 target/javadoc-bundle-options
 target/maven-javadoc-plugin-stale-data.txt
 database.properties
-target/*
 VoidAltars
 VoidAltars/*

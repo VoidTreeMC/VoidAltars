@@ -13,8 +13,8 @@ import com.condor.voidaltars.command.CommandControl;
 import com.condor.voidaltars.listener.AltarListener;
 import com.condor.voidaltars.altar.AltarManager;
 
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.economy.EconomyResponse;
+// import net.milkbowl.vault.economy.Economy;
+// import net.milkbowl.vault.economy.EconomyResponse;
 
 public class AltarMain extends JavaPlugin {
 
@@ -28,7 +28,7 @@ public class AltarMain extends JavaPlugin {
 		System.out.println("AltarMain: [" + TIMEID + "]");
 	}
 
-  public Economy econ = null;
+  // public Economy econ = null;
 
   private AltarManager altarManager;
 
@@ -70,10 +70,10 @@ public class AltarMain extends JavaPlugin {
 		CommandControl.loadExecutors(this);
 		System.out.println("<><><><><><><><><>");
 
-    System.out.println("Loading vault-economy hook...");
-    if (!setupEconomy()) {
-      System.out.println("Economy has failed to load.");
-    }
+    // System.out.println("Loading vault-economy hook...");
+    // if (!setupEconomy()) {
+    //   System.out.println("Economy has failed to load.");
+    // }
 
 		//This registers the listener
 		System.out.println("Loading listeners...");
@@ -94,21 +94,21 @@ public class AltarMain extends JavaPlugin {
 
 	}
 
-  private boolean setupEconomy() {
-    if (getServer().getPluginManager().getPlugin("Vault") == null) {
-      return false;
-    }
-    RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-    if (rsp == null) {
-        return false;
-    }
-    econ = rsp.getProvider();
-    return econ != null;
-  }
-
-  public Economy getEconomy() {
-    return econ;
-  }
+  // private boolean setupEconomy() {
+  //   if (getServer().getPluginManager().getPlugin("Vault") == null) {
+  //     return false;
+  //   }
+  //   RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+  //   if (rsp == null) {
+  //       return false;
+  //   }
+  //   econ = rsp.getProvider();
+  //   return econ != null;
+  // }
+  //
+  // public Economy getEconomy() {
+  //   return econ;
+  // }
 
 	/**
 	 * Called on server shutdown <p>

@@ -3,11 +3,13 @@ package com.condor.voidaltars.altar;
 import java.util.ArrayList;
 
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 public class Sacrifice {
   Material type;
   int sacrificed;
   int total;
+  AltarMeta owner;
 
   /**
    * Handles a sacrifice
@@ -20,12 +22,17 @@ public class Sacrifice {
     return this.total - this.sacrificed;
   }
 
-  public Sacrifice(Material type, int total) {
+  public Sacrifice(Material type, int total, AltarMeta owner) {
     this.type = type;
     this.total = total;
+    this.owner = owner;
   }
 
   public Material getType() {
     return this.type;
+  }
+
+  public AltarMeta getOwner() {
+    return this.owner;
   }
 }

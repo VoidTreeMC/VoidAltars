@@ -13,7 +13,7 @@ public abstract class Boon {
 
   protected Boon(String name, ArrayList<Class> triggers, BoonType type) {
     this.name = name;
-    this.lore = lore;
+    // this.lore = lore;
     this.triggers = triggers;
     this.type = type;
   }
