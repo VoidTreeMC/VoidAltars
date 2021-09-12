@@ -38,4 +38,26 @@ public class AltarManager {
 
     return struc;
   }
+
+  /**
+   * Gets the number of sacrifices needed in order to keep an altar
+   * at its current level, based on the level that the altar is
+   * currently at.
+   * @param  level The current level of the altar
+   * @return       The number of sacrifices demanded, or -1 if there was an error
+   */
+  public static int getSacrificesNeededByLevel(int level) {
+    switch (level) {
+      case 1:
+        return 10;
+      case 2:
+        return 20;
+      case 3:
+        return 40;
+      case 4:
+        return 80;
+      default:
+        return -1;
+    }
+  }
 }

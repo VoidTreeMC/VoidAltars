@@ -1,4 +1,14 @@
-Stuff here.
+Sacrifice algorithm plans
+  0.2w + 0.2x + 0.3y + 0.3z
+
+  w = a value that reflects the rarity of the item
+  x = a value that reflects the number of sacrifices made at this altar
+  y = the number of people in the player's town (potential altar contributors)
+  z = the number of sacrifices made recently for that item
+
 
 DID
 ===
+Added Altar
+Added Sacrifice
+Added SacrificeManager

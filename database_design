@@ -1,15 +1,32 @@
-Type:                     Varchar(16)
-Town UUID:                Varchar(32)
-World:                    Varchar(32)
-X:                        INT
-Y:                        INT
-Z:                        INT
-BOON 1:                   Varchar(16)
-BOON 2:                   Varchar(16)
-BOON 3:                   Varchar(16)
-BOON 4:                   Varchar(16)
-SACRIFICE 1:              BLOB
-SACRIFICE 2:              BLOB
-SACRIFICE 3:              BLOB
-SACRIFICE 4:              BLOB
-Total_Recent_Sacrifices:  INT
+AltarTable
+==========
+  ID:                       INT
+  TYPE:                     Varchar(16)
+  TOWN_UUID:                Varchar(32)
+  WORLD:                    Varchar(32)
+  LEVEL:                    TINYINT
+  X:                        INT
+  Y:                        INT
+  Z:                        INT
+  BOON_1:                   Varchar(16)
+  BOON_2:                   Varchar(16)
+  BOON_3:                   Varchar(16)
+  BOON_4:                   Varchar(16)
+  SACRIFICE_1:              BLOB
+  SACRIFICE_2:              BLOB
+  SACRIFICE_3:              BLOB
+  SACRIFICE_4:              BLOB
+  TOTAL_RECENT_SACRIFICES:  INT
+  TOTAL_SACRIFICES_MADE:    INT
+
+SacrificeTable
+==============
+  TIME:                     BIGINT
+  TOWN_UUID:                Varchar(32)
+  PLAYER_UUID:              Varchar(32)
+  ALTAR_ID:                 INT
+  ALTAR_TYPE:               VarChar(16)
+  ALTAR_LEVEL:              TINYINT
+  ITEM_TYPE:                Varchar(40)
+  AMOUNT:                   INT
+  AMOUNT_REMAINING:         INT
