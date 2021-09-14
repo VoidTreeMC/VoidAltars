@@ -12,6 +12,8 @@ import com.condor.voidaltars.altar.altars.*;
 import com.condor.voidaltars.altar.multiblock.structures.*;
 import com.condor.voidaltars.altar.exception.NotInATownException;
 
+import com.palmergames.bukkit.towny.object.Town;
+
 public class AltarManager {
   private static TreeMap<AltarType, AltarStructure> altarTypeMap = new TreeMap<>();
   // TODO: Find a better data structure for this. Maybe a wrapper for Location that extends Comparable
@@ -31,6 +33,15 @@ public class AltarManager {
 
   public static AltarStructure getAltarByType(AltarType type) {
     return altarTypeMap.get(type);
+  }
+
+  public static AltarMeta getAltarFromTown(Town town) {
+    for (AltarMeta altar : altarMap.values()) {
+      if (altar.getTown().equals(town)) {
+        return altar;
+      }
+    }
+    return null;
   }
 
   public static AltarMeta getAltarFromLoc(Location loc, PlayerInteractEvent event) {
@@ -91,7 +102,7 @@ public class AltarManager {
   public static int getSacrificesNeededByLevel(int level) {
     switch (level) {
       case 1:
-        return 10;
+        return 2;
       case 2:
         return 20;
       case 3:

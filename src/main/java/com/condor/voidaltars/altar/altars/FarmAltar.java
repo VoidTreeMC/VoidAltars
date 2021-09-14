@@ -29,14 +29,11 @@ public class FarmAltar extends AltarMeta {
     weightMap.put(Material.SPRUCE_LOG, 3.00);
     weightMap.put(Material.HONEYCOMB_BLOCK, 13.23);
     weightMap.put(Material.ACACIA_LEAVES, 3.00);
-    weightMap.put(Material.AZALEA_LEAVES, 3.15);
     weightMap.put(Material.BIRCH_LEAVES, 3.00);
     weightMap.put(Material.DARK_OAK_LEAVES, 3.00);
-    weightMap.put(Material.FLOWERING_AZALEA_LEAVES, 3.15);
     weightMap.put(Material.OAK_LEAVES, 3.00);
     weightMap.put(Material.SPRUCE_LEAVES, 3.00);
     weightMap.put(Material.ACACIA_SAPLING, 3.00);
-    weightMap.put(Material.AZALEA, 3.00);
     weightMap.put(Material.BEE_NEST, -1.00);
     weightMap.put(Material.BEEHIVE, 16.87);
     weightMap.put(Material.BEETROOT_SEEDS, 3.00);
@@ -53,7 +50,7 @@ public class FarmAltar extends AltarMeta {
     weightMap.put(Material.BEETROOT, 5.00);
     weightMap.put(Material.APPLE, 10.00);
     weightMap.put(Material.BREAD, 15.75);
-    weightMap.put(Material.CAKE, 240.68);
+    weightMap.put(Material.CAKE, 500.0);
     weightMap.put(Material.COOKIE, 2.10);
     weightMap.put(Material.GLOW_BERRIES, 1.00);
     weightMap.put(Material.HONEY_BOTTLE, 7.94);

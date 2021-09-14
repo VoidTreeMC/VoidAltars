@@ -80,7 +80,7 @@ public class MainAltarGUI {
     hopperMeta.setDisplayName("Sacrifice Progress");
     ArrayList<String> hopperLore = new ArrayList<>();
     hopperLore.add("Altar level: " + altarMeta.getLevel());
-    hopperLore.add("Sacrifices remaining: " + altarMeta.getSacrificesRemaining());
+    hopperLore.add("Sacrifices remaining to please the gods: " + altarMeta.getSacrificesRemaining());
     hopperMeta.setLore(hopperLore);
     sacrificeProgressItem.setItemMeta(hopperMeta);
 

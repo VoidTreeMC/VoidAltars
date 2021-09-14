@@ -3,23 +3,34 @@ package com.condor.voidaltars.altar;
 import java.util.ArrayList;
 
 import org.bukkit.event.Event;
-
 import org.bukkit.inventory.ItemStack;
+
+import com.palmergames.bukkit.towny.object.Town;
 
 public abstract class Boon {
   private String name;
   private ArrayList<Class> triggers;
   private BoonType type;
+  protected ArrayList<Town> registeredTowns;
 
   protected Boon(String name, ArrayList<Class> triggers, BoonType type) {
     this.name = name;
     // this.lore = lore;
     this.triggers = triggers;
     this.type = type;
+    this.registeredTowns = new ArrayList<>();
   }
 
   public String getName() {
     return this.name;
+  }
+
+  public void addTown(Town town) {
+    registeredTowns.add(town);
+  }
+
+  public void removeTown(Town town) {
+    registeredTowns.remove(town);
   }
 
   /**

@@ -91,6 +91,8 @@ public abstract class AltarMeta {
   public void levelUp() {
     // TODO: Method stub
     this.level++;
+    Sacrifice newSacrifice = SacrificeManager.getNewSacrifice(this);
+    sacrifices.add(newSacrifice);
   }
 
   public AltarType getType() {

@@ -76,6 +76,7 @@ public class EventListener  extends AltarListener {
       if (altarMeta != null) {
         // TODO: Check access here
         MainAltarGUI.displayAltarGUI(event.getPlayer(), altarMeta);
+        event.setCancelled(true);
       } else {
         event.getPlayer().sendMessage("This is not an altar.");
       }

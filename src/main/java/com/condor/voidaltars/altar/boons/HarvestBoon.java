@@ -8,6 +8,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.Material;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerHarvestBlockEvent;
+import org.bukkit.Location;
+
+import com.palmergames.bukkit.towny.object.TownBlock;
+import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.TownyAPI;
+import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 
 import com.condor.voidaltars.altar.Boon;
 import com.condor.voidaltars.altar.BoonType;
@@ -23,7 +30,7 @@ public class HarvestBoon extends Boon {
   static {
     loreList.add("Additional crops from farming");
 
-    triggerList.add(BlockBreakEvent.class);
+    triggerList.add(PlayerHarvestBlockEvent.class);
   }
 
   public HarvestBoon() {
@@ -42,12 +49,34 @@ public class HarvestBoon extends Boon {
   public boolean isNecessary(Event event) {
     boolean ret = false;
 
-    // TODO: Method stub
+    if (event instanceof PlayerHarvestBlockEvent) {
+      PlayerHarvestBlockEvent phbe = (PlayerHarvestBlockEvent) event;
+      Location loc = phbe.getHarvestedBlock().getLocation();
+      TownBlock tb = TownyAPI.getInstance().getTownBlock(loc);
+      if (tb != null) {
+        try {
+          Town town = tb.getTown();
+          if (this.registeredTowns.contains(town)) {
+            ret = true;
+          }
+        } catch (NotRegisteredException e) {
+          ret = false;
+        }
+      } else {
+        ret = false;
+      }
+    }
 
     return ret;
   }
 
   public void execute(Event event) {
-    // TODO: Method stub
+    PlayerHarvestBlockEvent phbe = (PlayerHarvestBlockEvent) event;
+    for (ItemStack is : phbe.getItemsHarvested()) {
+      // 20% chance to drop extra crops
+      if (rng.nextInt(5) == 0) {
+        is.setAmount(is.getAmount() + 1);
+      }
+    }
   }
 }
