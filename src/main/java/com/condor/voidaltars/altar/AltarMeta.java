@@ -24,9 +24,13 @@ public abstract class AltarMeta {
   AltarStructure structure;
   ArrayList<Boon> boons = new ArrayList<>();
   ArrayList<Sacrifice> sacrifices = new ArrayList<>();
+  // The number of sacrifices made in this interval
   int totalRecentSacrifices;
+  // The number of sacrifices wanted in this interval
   int sacrificesWanted;
+  // The level of the altar
   int level;
+  // The total number of sacrifices made to this altar, ever
   int totalSacrificesMade;
   TreeMap<Material, Double> weightMap;
   // Might end up being unused. To be used later, when statistics are
@@ -61,6 +65,32 @@ public abstract class AltarMeta {
     for (int i = 0; i < this.getNumSacrificeSlots(); i++) {
       sacrifices.add(SacrificeManager.getNewSacrifice(this));
     }
+  }
+
+  public Sacrifice finishSacrifice(Sacrifice finished) {
+    sacrifices.remove(finished);
+    totalRecentSacrifices++;
+    totalSacrificesMade++;
+    if (shouldLevelUp()) {
+      levelUp();
+    }
+    Sacrifice newSacrifice = SacrificeManager.getNewSacrifice(this);
+    sacrifices.add(newSacrifice);
+    return newSacrifice;
+  }
+
+  public boolean isSatisfied() {
+    return this.totalRecentSacrifices >= this.sacrificesWanted;
+  }
+
+  public boolean shouldLevelUp() {
+    return this.totalRecentSacrifices >= (this.sacrificesWanted * 1.5);
+  }
+
+  // Process the level up event
+  public void levelUp() {
+    // TODO: Method stub
+    this.level++;
   }
 
   public AltarType getType() {
@@ -110,6 +140,14 @@ public abstract class AltarMeta {
 
   public Town getTown() {
     return this.town;
+  }
+
+  public int getSacrificesWanted() {
+    return this.sacrificesWanted;
+  }
+
+  public int getSacrificesRemaining() {
+    return this.sacrificesWanted - this.totalRecentSacrifices;
   }
 
   public abstract List<Material> getSacrificeTypes();

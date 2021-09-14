@@ -48,4 +48,12 @@ public class Sacrifice {
   public AltarMeta getOwner() {
     return this.owner;
   }
+
+  public boolean isFinished() {
+    return getNumRemaining() <= 0;
+  }
+
+  public void addToSacrificed(int num) {
+    this.sacrificed += num;
+  }
 }
