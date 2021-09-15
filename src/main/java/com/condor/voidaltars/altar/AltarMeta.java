@@ -95,6 +95,16 @@ public abstract class AltarMeta {
     sacrifices.add(newSacrifice);
   }
 
+  public void setBoon(Boon boon, int index) {
+    if (boons.size() > index) {
+      boons.get(index).removeTown(this.town);
+      boons.set(index, boon);
+    } else {
+      boons.add(boon);
+    }
+    boon.addTown(this.town);
+  }
+
   public AltarType getType() {
     return this.type;
   }
@@ -146,6 +156,10 @@ public abstract class AltarMeta {
 
   public int getSacrificesWanted() {
     return this.sacrificesWanted;
+  }
+
+  public int getSacrificesNeededForLevelUp() {
+    return ((int) (this.sacrificesWanted * 1.5)) - this.totalRecentSacrifices;
   }
 
   public int getSacrificesRemaining() {

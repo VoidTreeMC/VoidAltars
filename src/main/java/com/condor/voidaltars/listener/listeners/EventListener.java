@@ -2,6 +2,7 @@ package com.condor.voidaltars.listener.listeners;
 
 import java.util.Random;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -47,6 +48,9 @@ import org.bukkit.event.entity.FireworkExplodeEvent;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.Location;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.event.player.PlayerHarvestBlockEvent;
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
+import org.bukkit.Bukkit;
 
 import com.condor.voidaltars.listener.AltarListener;
 import com.condor.voidaltars.main.AltarMain;
@@ -55,6 +59,7 @@ import com.condor.voidaltars.altar.AltarManager;
 import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.altar.AltarMeta;
 import com.condor.voidaltars.gui.MainAltarGUI;
+import com.condor.voidaltars.altar.BoonManager;
 
 /**
  *
@@ -81,5 +86,25 @@ public class EventListener  extends AltarListener {
         event.getPlayer().sendMessage("This is not an altar.");
       }
     }
+  }
+
+  @EventHandler
+  public void onPlayerHarvestBlockEvent(PlayerHarvestBlockEvent event) {
+    BoonManager.parseEvent(event);
+  }
+
+  @EventHandler
+  public void onEntityDeathEvent(EntityDeathEvent event) {
+    BoonManager.parseEvent(event);
+  }
+
+  @EventHandler
+  public void onEntityTargetLivingEntityEvent(EntityTargetLivingEntityEvent event) {
+    BoonManager.parseEvent(event);
+  }
+
+  @EventHandler
+  public void onEntityDamageEvent(EntityDamageEvent event) {
+    BoonManager.parseEvent(event);
   }
 }

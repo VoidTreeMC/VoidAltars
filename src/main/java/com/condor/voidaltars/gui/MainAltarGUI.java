@@ -12,6 +12,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.PlayerInventory;
+import com.condor.voidaltars.altar.BoonManager;
+import com.condor.voidaltars.altar.BoonType;
 
 import com.condor.voidaltars.altar.AltarMeta;
 import com.condor.voidaltars.altar.Sacrifice;
@@ -24,7 +26,8 @@ public class MainAltarGUI {
   private static Random rng = new Random();
 
   private static ItemStack INSTRUCTION_BOOK = new ItemStack(Material.BOOK);
-  private static ItemStack SLOT_LOCKED = new ItemStack(Material.BARRIER);
+  private static ItemStack SACRIFICE_SLOT_LOCKED = new ItemStack(Material.BARRIER);
+  private static ItemStack BOON_SLOT_LOCKED = new ItemStack(Material.BARRIER);
 
   static {
     ItemMeta bookMeta = INSTRUCTION_BOOK.getItemMeta();
@@ -37,6 +40,20 @@ public class MainAltarGUI {
     bookLore.add("Blah blah");
     bookMeta.setLore(bookLore);
     INSTRUCTION_BOOK.setItemMeta(bookMeta);
+
+    ItemMeta sacrificeLockedMeta = SACRIFICE_SLOT_LOCKED.getItemMeta();
+    sacrificeLockedMeta.setDisplayName("Sacrifice Slot Locked");
+    ArrayList<String> sacrificeLockedLore = new ArrayList<>();
+    sacrificeLockedLore.add("To unlock this slot, level your altar up");
+    sacrificeLockedMeta.setLore(sacrificeLockedLore);
+    SACRIFICE_SLOT_LOCKED.setItemMeta(sacrificeLockedMeta);
+
+    ItemMeta boonLockedMeta = BOON_SLOT_LOCKED.getItemMeta();
+    boonLockedMeta.setDisplayName("Boon Slot Locked");
+    ArrayList<String> boonLockedLore = new ArrayList<>();
+    boonLockedLore.add("To unlock this slot, level your altar up");
+    boonLockedMeta.setLore(boonLockedLore);
+    BOON_SLOT_LOCKED.setItemMeta(boonLockedMeta);
   }
 
 
@@ -73,14 +90,20 @@ public class MainAltarGUI {
     //
     // });
 
-    GuiItem slotLocked = new GuiItem(SLOT_LOCKED);
+    GuiItem sacrificeSlotLocked = new GuiItem(SACRIFICE_SLOT_LOCKED);
+    GuiItem boonSlotLocked = new GuiItem(BOON_SLOT_LOCKED);
 
     ItemStack sacrificeProgressItem = new ItemStack(Material.HOPPER);
     ItemMeta hopperMeta = sacrificeProgressItem.getItemMeta();
     hopperMeta.setDisplayName("Sacrifice Progress");
     ArrayList<String> hopperLore = new ArrayList<>();
     hopperLore.add("Altar level: " + altarMeta.getLevel());
-    hopperLore.add("Sacrifices remaining to please the gods: " + altarMeta.getSacrificesRemaining());
+    int sacRemaining = altarMeta.getSacrificesRemaining();
+    if (sacRemaining > 0) {
+      hopperLore.add("Sacrifices remaining to please the gods: " + sacRemaining);
+    } else {
+      hopperLore.add("Sacrifices remaining to level up altar: " + altarMeta.getSacrificesNeededForLevelUp());
+    }
     hopperMeta.setLore(hopperLore);
     sacrificeProgressItem.setItemMeta(hopperMeta);
 
@@ -95,16 +118,13 @@ public class MainAltarGUI {
       lore.add("of this item");
       sacrificeItemMeta.setLore(lore);
       sacrificeItem.setItemMeta(sacrificeItemMeta);
-      GuiItem sacrificeGuiItem = new GuiItem(SLOT_LOCKED);
+      GuiItem sacrificeGuiItem = new GuiItem(SACRIFICE_SLOT_LOCKED);
       if (sacrificeItem != null) {
         sacrificeGuiItem = new GuiItem(sacrificeItem, event -> {
           Material type = sacrificeItem.getType();
           int amtWanted = sacrifice.getNumRemaining();
           int amtSacrificed = handleSacrificeClick(player, type, amtWanted);
           sacrifice.addToSacrificed(amtSacrificed);
-          Bukkit.getLogger().log(Level.INFO, "Amt wanted: " + amtWanted);
-          Bukkit.getLogger().log(Level.INFO, "Amt sacrificed: " + amtSacrificed);
-          Bukkit.getLogger().log(Level.INFO, "Is finished: " + sacrifice.isFinished());
           if (sacrifice.isFinished()) {
             altarMeta.finishSacrifice(sacrifice);
           }
@@ -115,17 +135,23 @@ public class MainAltarGUI {
     }
 
     for (int i = altarMeta.getNumSacrificeSlots(); i < altarMeta.getMaxLevel(); i++) {
-      gui.setItem(2, 2 + (2 * i), slotLocked);
+      gui.setItem(2, 2 + (2 * i), sacrificeSlotLocked);
     }
 
     for (int i = 0; i < altarMeta.getNumBoonSlots(); i++) {
       ItemStack boonItem = new ItemStack(Material.BEACON);
-      GuiItem boonGuiItem = new GuiItem(boonItem);
+      final int index = i;
+      if (altarMeta.getBoon(i) != null) {
+        boonItem = altarMeta.getBoon(i).getIcon();
+      }
+      GuiItem boonGuiItem = new GuiItem(boonItem, event -> {
+        SelectBoonGUI.displayBoonGUI(player, altarMeta, index);
+      });
       gui.setItem(5, 2 + (2 * i), boonGuiItem);
     }
 
     for (int i = altarMeta.getNumBoonSlots(); i < altarMeta.getMaxLevel(); i++) {
-      gui.setItem(5, 2 + (2 * i), slotLocked);
+      gui.setItem(5, 2 + (2 * i), boonSlotLocked);
     }
 
     GuiItem bookItem = new GuiItem(INSTRUCTION_BOOK);
