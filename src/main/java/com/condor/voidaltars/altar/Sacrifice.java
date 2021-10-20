@@ -20,12 +20,23 @@ public class Sacrifice {
   int total;
   AltarMeta owner;
 
+  /**
+   * Builds a new sacrifice from the data provided
+   * @param type   The type of item sacrificed
+   * @param total  The total amount of that item demanded
+   * @param owner  The altar that owns this sacrifice
+   */
   public Sacrifice(Material type, int total, AltarMeta owner) {
     this.type = type;
     this.total = total;
     this.owner = owner;
   }
 
+
+  /**
+   * Builds a new sacrifice from a serialized byte array
+   * @param bytes  The byte array containing an arraylist with the Sacrifice's fields
+   */
   public Sacrifice(byte[] bytes) {
     ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
     ObjectInput in = null;
