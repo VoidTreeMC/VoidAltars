@@ -38,3 +38,4 @@ target/maven-javadoc-plugin-stale-data.txt
 database.properties
 VoidAltars
 VoidAltars/*
+tables.sql

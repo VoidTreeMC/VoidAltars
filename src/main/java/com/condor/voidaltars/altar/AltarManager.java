@@ -1,6 +1,7 @@
 package com.condor.voidaltars.altar;
 
 import java.util.TreeMap;
+import java.util.UUID;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -18,7 +19,7 @@ public class AltarManager {
   private static TreeMap<AltarType, AltarStructure> altarTypeMap = new TreeMap<>();
   // TODO: Find a better data structure for this. Maybe a wrapper for Location that extends Comparable
   // Use location's string for this (for now).
-  private static TreeMap<String, AltarMeta> altarMap = new TreeMap<>();
+  private static TreeMap<UUID, AltarMeta> altarMap = new TreeMap<>();
 
   public AltarManager() {
     init();
@@ -44,11 +45,22 @@ public class AltarManager {
     return null;
   }
 
+  public static AltarMeta getAltar(UUID uuid) {
+    return altarMap.get(uuid);
+  }
+
   public static AltarMeta getAltarFromLoc(Location loc, PlayerInteractEvent event) {
 
     Player player = event.getPlayer();
 
-    AltarMeta altarMeta = altarMap.get(loc.toString());
+    AltarMeta altarMeta = null;
+
+    for (AltarMeta meta : altarMap.values()) {
+      if (meta.getLocation().equals(loc)) {
+        altarMeta = meta;
+        break;
+      }
+    }
 
     AltarStructure struc = getStructureFromLoc(loc);
 
@@ -64,10 +76,10 @@ public class AltarManager {
           switch (struc.getType()) {
             case FARM_ALTAR:
             default:
-              altarMeta = new FarmAltar(loc);
+              altarMeta = new FarmAltar(loc, UUID.randomUUID());
               break;
           }
-          altarMap.put(loc.toString(), altarMeta);
+          altarMap.put(altarMeta.getUniqueId(), altarMeta);
           return altarMeta;
         } catch (NotInATownException e) {
           // They're not in a town. Ignore it.

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.TreeMap;
+import java.util.UUID;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -17,13 +18,14 @@ import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 
 public abstract class AltarMeta {
-  // TODO: Figure out something with its ID here
   AltarType type;
   Town town;
   Location interfaceLoc;
   AltarStructure structure;
   ArrayList<Boon> boons = new ArrayList<>();
   ArrayList<Sacrifice> sacrifices = new ArrayList<>();
+  // The ID of the altar
+  UUID uuid;
   // The number of sacrifices made in this interval
   int totalRecentSacrifices;
   // The number of sacrifices wanted in this interval
@@ -39,12 +41,7 @@ public abstract class AltarMeta {
 
   private static Random rng = new Random();
 
-  /**
-   * Builds a new Altar
-   * @param type          The type of the altar
-   * @param interfaceLoc  The location of the interface block
-   */
-  public AltarMeta(AltarType type, Location interfaceLoc, AltarStructure structure, TreeMap<Material, Double> weightMap) throws NotInATownException {
+  public AltarMeta(AltarType type, UUID uuid, Location interfaceLoc, AltarStructure structure, TreeMap<Material, Double> weightMap) throws NotInATownException {
     this.type = type;
     this.structure = structure;
     TownBlock tb = TownyAPI.getInstance().getTownBlock(interfaceLoc);
@@ -57,6 +54,7 @@ public abstract class AltarMeta {
     } else {
       throw new NotInATownException(interfaceLoc);
     }
+    this.uuid = uuid;
     this.totalRecentSacrifices = 0;
     this.level = 1;
     this.weightMap = weightMap;
@@ -109,6 +107,10 @@ public abstract class AltarMeta {
     return this.type;
   }
 
+  public UUID getUniqueId() {
+    return this.uuid;
+  }
+
   public Material getSacrificeType() {
     List<Material> sacrificeTypes = this.getSacrificeTypes();
     return sacrificeTypes.get(rng.nextInt(sacrificeTypes.size()));
@@ -148,6 +150,10 @@ public abstract class AltarMeta {
 
   public double getSacrificeWeight(Material type) {
     return weightMap.get(type);
+  }
+
+  public Location getLocation() {
+    return this.interfaceLoc;
   }
 
   public Town getTown() {

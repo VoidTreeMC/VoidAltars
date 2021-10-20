@@ -3,6 +3,7 @@ package com.condor.voidaltars.altar.altars;
 import java.util.TreeMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import org.bukkit.Material;
 import org.bukkit.Location;
@@ -63,8 +64,8 @@ public class FarmAltar extends AltarMeta {
     weightMap.put(Material.SWEET_BERRIES, 5.00);
   }
 
-  public FarmAltar(Location interfaceLoc) throws NotInATownException {
-    super(AltarType.FARM_ALTAR, interfaceLoc, AltarManager.getStructureFromLoc(interfaceLoc), weightMap);
+  public FarmAltar(Location interfaceLoc, UUID uuid) throws NotInATownException {
+    super(AltarType.FARM_ALTAR, uuid, interfaceLoc, AltarManager.getStructureFromLoc(interfaceLoc), weightMap);
   }
 
   public List<Material> getSacrificeTypes() {

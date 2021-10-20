@@ -1,9 +1,18 @@
 package com.condor.voidaltars.altar;
 
 import java.util.ArrayList;
+import java.io.ObjectOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ByteArrayInputStream;
+import java.util.UUID;
+import java.lang.ClassNotFoundException;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.Bukkit;
 
 public class Sacrifice {
   Material type;
@@ -15,6 +24,30 @@ public class Sacrifice {
     this.type = type;
     this.total = total;
     this.owner = owner;
+  }
+
+  public Sacrifice(byte[] bytes) {
+    ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+    ObjectInput in = null;
+    try {
+      in = new ObjectInputStream(bis);
+      ArrayList<Object> arr = (ArrayList<Object>) in.readObject();
+      this.type = (Material) arr.get(0);
+      this.sacrificed = (Integer) arr.get(1);
+      this.total = (Integer) arr.get(2);
+      this.owner = AltarManager.getAltar(((UUID) arr.get(3)));
+    } catch (IOException | ClassNotFoundException e) {
+      Bukkit.getLogger().severe("Encountered error when reading Sacrifice from DB.");
+    }
+    finally {
+      try {
+        if (in != null) {
+          in.close();
+        }
+      } catch (IOException ex) {
+        // ignore close exception
+      }
+    }
   }
 
   /**
@@ -55,5 +88,32 @@ public class Sacrifice {
 
   public void addToSacrificed(int num) {
     this.sacrificed += num;
+  }
+
+  public byte[] serialize() {
+    ArrayList<Object> toWrite = new ArrayList<>();
+    toWrite.add(type);
+    toWrite.add(sacrificed);
+    toWrite.add(total);
+    toWrite.add(owner.getUniqueId());
+    byte[] bytes = null;
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutputStream out = null;
+		try {
+			out = new ObjectOutputStream(bos);
+      out.writeObject(toWrite);
+		  bytes = bos.toByteArray();
+      out.close();
+      bos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+		  try {
+		    bos.close();
+		  } catch (IOException ex) {
+		    // ignore close exception
+		  }
+		}
+		return bytes;
   }
 }
