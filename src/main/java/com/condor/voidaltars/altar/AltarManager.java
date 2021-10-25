@@ -37,12 +37,6 @@ public class AltarManager {
     altarMap.put(altar.getUniqueId(), altar);
   }
 
-  public static void print() {
-    for (Entry<UUID, AltarMeta> entry : altarMap.entrySet()) {
-      Bukkit.getLogger().info(entry.getKey() + ": " + entry.getValue().getUniqueId());
-    }
-  }
-
   public static void clearAltars() {
     altarMap.clear();
   }
@@ -69,12 +63,9 @@ public class AltarManager {
 
     AltarMeta altarMeta = null;
 
-    Bukkit.getLogger().info("Attempting to get altar from loc.");
-
     for (AltarMeta meta : altarMap.values()) {
       // if (locsAreEqual(meta.getLocation(), loc)) {
       if (meta.getLocation().equals(loc)) {
-        Bukkit.getLogger().info("Found match. Returning.");
         return meta;
         // altarMeta = meta;
         // break;

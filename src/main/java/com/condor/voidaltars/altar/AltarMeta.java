@@ -10,6 +10,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.Bukkit;
+import org.bukkit.block.data.type.Candle;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 
 import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.altar.exception.NotInATownException;
@@ -97,7 +100,6 @@ public abstract class AltarMeta {
    }
    this.totalRecentSacrifices = totalRecentSacrifices;
    this.totalSacrificesMade = totalSacrificesMade;
-   Bukkit.getLogger().info("Recreated altar. Location: " + interfaceLoc);
  }
 
  public static AltarMeta create(UUID uuid, String typeStr, UUID townUUID, String worldStr, int level, double x, double y, double z,
@@ -134,10 +136,27 @@ public abstract class AltarMeta {
 
   // Process the level up event
   public void levelUp() {
-    // TODO: Method stub
     this.level++;
+    setCandles(this.level);
     Sacrifice newSacrifice = SacrificeManager.getNewSacrifice(this);
     sacrifices.add(newSacrifice);
+  }
+
+  private void setCandles(int amt) {
+    int size = this.structure.getSize();
+    for (int i = -size; i < size * 2; i++) {
+      for (int j = -size; j < size * 2; j++) {
+        for (int k = -size; k < size * 2; k++) {
+          Location currLoc = new Location(interfaceLoc.getWorld(), interfaceLoc.getX() + i, interfaceLoc.getY() + j, interfaceLoc.getZ() + k);
+          Block block = currLoc.getBlock();
+          if (block.getBlockData() instanceof Candle) {
+            Candle candle = (Candle) block.getBlockData();
+            candle.setCandles(amt);
+            block.setBlockData(candle);
+          }
+        }
+      }
+    }
   }
 
   public void setBoon(Boon boon, int index) {
