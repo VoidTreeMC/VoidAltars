@@ -71,7 +71,7 @@ public class FarmAltar extends AltarMeta {
   public FarmAltar(UUID uuid, String typeStr, UUID townUUID, String worldStr, int level, double x, double y, double z,
                    String boonOne, String boonTwo, String boonThree, String boonFour, byte[] sacrificeOne,
                    byte[] sacrificeTwo, byte[] sacrificeThree, byte[] sacrificeFour, int totalRecentSacrifices, int totalSacrificesMade) {
-    super(uuid, typeStr, townUUID, worldStr, level, x, y, z, boonOne, boonTwo, boonThree, boonFour, sacrificeOne, sacrificeTwo, sacrificeThree, sacrificeFour, totalRecentSacrifices, totalSacrificesMade);
+    super(uuid, typeStr, townUUID, worldStr, level, x, y, z, boonOne, boonTwo, boonThree, boonFour, sacrificeOne, sacrificeTwo, sacrificeThree, sacrificeFour, totalRecentSacrifices, totalSacrificesMade, weightMap);
   }
 
   public List<Material> getSacrificeTypes() {

@@ -73,9 +73,11 @@ public abstract class AltarMeta {
   // TODO: Change this to receive a list of sacrifices and boons instead of individuals
   public AltarMeta(UUID uuid, String type, UUID townUUID, String worldStr, int level, double x, double y, double z,
                    String boonOne, String boonTwo, String boonThree, String boonFour, byte[] sacrificeOne,
-                   byte[] sacrificeTwo, byte[] sacrificeThree, byte[] sacrificeFour, int totalRecentSacrifices, int totalSacrificesMade) {
+                   byte[] sacrificeTwo, byte[] sacrificeThree, byte[] sacrificeFour, int totalRecentSacrifices, int totalSacrificesMade,
+                   TreeMap<Material, Double> weightMap) {
    this.uuid = uuid;
    this.type = AltarType.getTypeFromString(type);
+   this.weightMap = weightMap;
    try {
      this.town = TownyAPI.getInstance().getDataSource().getTown(townUUID);
    } catch (NotRegisteredException e) {
@@ -84,29 +86,30 @@ public abstract class AltarMeta {
    Location location = new Location(AltarMain.getPlugin().getServer().getWorld(worldStr), x, y, z);
    this.interfaceLoc = location;
    this.level = level;
+   this.sacrificesWanted = AltarManager.getSacrificesNeededByLevel(this.level);
    if (!boonOne.isEmpty()) {
-     boons.add(BoonManager.getBoonByType(BoonType.getTypeFromString(boonOne)));
+     setBoon(BoonManager.getBoonByType(BoonType.getTypeFromString(boonOne)), 0);
    }
    if (!boonTwo.isEmpty()) {
-     boons.add(BoonManager.getBoonByType(BoonType.getTypeFromString(boonTwo)));
+     setBoon(BoonManager.getBoonByType(BoonType.getTypeFromString(boonTwo)), 1);
    }
    if (!boonThree.isEmpty()) {
-     boons.add(BoonManager.getBoonByType(BoonType.getTypeFromString(boonThree)));
+     setBoon(BoonManager.getBoonByType(BoonType.getTypeFromString(boonThree)), 2);
    }
    if (!boonFour.isEmpty()) {
-     boons.add(BoonManager.getBoonByType(BoonType.getTypeFromString(boonFour)));
+     setBoon(BoonManager.getBoonByType(BoonType.getTypeFromString(boonFour)), 3);
    }
    if (sacrificeOne != null) {
-     sacrifices.add(new Sacrifice(sacrificeOne));
+     sacrifices.add(new Sacrifice(sacrificeOne, this));
    }
    if (sacrificeTwo != null) {
-     sacrifices.add(new Sacrifice(sacrificeTwo));
+     sacrifices.add(new Sacrifice(sacrificeTwo, this));
    }
    if (sacrificeThree != null) {
-     sacrifices.add(new Sacrifice(sacrificeThree));
+     sacrifices.add(new Sacrifice(sacrificeThree, this));
    }
    if (sacrificeFour != null) {
-     sacrifices.add(new Sacrifice(sacrificeFour));
+     sacrifices.add(new Sacrifice(sacrificeFour, this));
    }
    this.totalRecentSacrifices = totalRecentSacrifices;
    this.totalSacrificesMade = totalSacrificesMade;

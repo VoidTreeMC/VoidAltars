@@ -36,8 +36,9 @@ public class Sacrifice {
   /**
    * Builds a new sacrifice from a serialized byte array
    * @param bytes  The byte array containing an arraylist with the Sacrifice's fields
+   * @param owner  The altar that owns this sacrifice
    */
-  public Sacrifice(byte[] bytes) {
+  public Sacrifice(byte[] bytes, AltarMeta owner) {
     ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
     ObjectInput in = null;
     try {
@@ -46,7 +47,7 @@ public class Sacrifice {
       this.type = (Material) arr.get(0);
       this.sacrificed = (Integer) arr.get(1);
       this.total = (Integer) arr.get(2);
-      this.owner = AltarManager.getAltar(((UUID) arr.get(3)));
+      this.owner = owner;
     } catch (IOException | ClassNotFoundException e) {
       Bukkit.getLogger().severe("Encountered error when reading Sacrifice from DB.");
     }
@@ -106,7 +107,6 @@ public class Sacrifice {
     toWrite.add(type);
     toWrite.add(sacrificed);
     toWrite.add(total);
-    toWrite.add(owner.getUniqueId());
     byte[] bytes = null;
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		ObjectOutputStream out = null;

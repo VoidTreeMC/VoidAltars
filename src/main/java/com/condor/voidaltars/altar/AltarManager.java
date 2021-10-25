@@ -2,6 +2,7 @@ package com.condor.voidaltars.altar;
 
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.Map.Entry;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -34,6 +35,12 @@ public class AltarManager {
 
   public static void addAltar(AltarMeta altar) {
     altarMap.put(altar.getUniqueId(), altar);
+  }
+
+  public static void print() {
+    for (Entry<UUID, AltarMeta> entry : altarMap.entrySet()) {
+      Bukkit.getLogger().info(entry.getKey() + ": " + entry.getValue().getUniqueId());
+    }
   }
 
   public static void clearAltars() {
