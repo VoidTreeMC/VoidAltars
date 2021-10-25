@@ -21,6 +21,7 @@ import com.condor.voidaltars.altar.AltarMeta;
 import com.condor.voidaltars.altar.Sacrifice;
 import com.condor.voidaltars.altar.Boon;
 import com.condor.voidaltars.altar.BoonManager;
+import com.condor.voidaltars.sql.SQLLinker;
 
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -54,6 +55,7 @@ public class SelectBoonGUI {
     for (Boon boon : boonsList) {
       GuiItem boonItem = new GuiItem(boon.getIcon(), event -> {
         altarMeta.setBoon(boon, index);
+        SQLLinker.pushToDB(altarMeta);
         MainAltarGUI.displayAltarGUI(player, altarMeta);
       });
       gui.addItem(boonItem);

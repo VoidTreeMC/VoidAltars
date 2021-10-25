@@ -17,6 +17,7 @@ import com.condor.voidaltars.altar.BoonType;
 
 import com.condor.voidaltars.altar.AltarMeta;
 import com.condor.voidaltars.altar.Sacrifice;
+import com.condor.voidaltars.sql.SQLLinker;
 
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -128,6 +129,7 @@ public class MainAltarGUI {
           if (sacrifice.isFinished()) {
             altarMeta.finishSacrifice(sacrifice);
           }
+          SQLLinker.pushToDB(altarMeta);
           gui.close(player);
         });
       }

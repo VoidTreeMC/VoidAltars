@@ -6,19 +6,19 @@ import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.Bukkit;
 
 import com.condor.voidaltars.altar.AltarType;
 import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.altar.altars.*;
 import com.condor.voidaltars.altar.multiblock.structures.*;
 import com.condor.voidaltars.altar.exception.NotInATownException;
+import com.condor.voidaltars.sql.SQLLinker;
 
 import com.palmergames.bukkit.towny.object.Town;
 
 public class AltarManager {
   private static TreeMap<AltarType, AltarStructure> altarTypeMap = new TreeMap<>();
-  // TODO: Find a better data structure for this. Maybe a wrapper for Location that extends Comparable
-  // Use location's string for this (for now).
   private static TreeMap<UUID, AltarMeta> altarMap = new TreeMap<>();
 
   public AltarManager() {
@@ -62,10 +62,15 @@ public class AltarManager {
 
     AltarMeta altarMeta = null;
 
+    Bukkit.getLogger().info("Attempting to get altar from loc.");
+
     for (AltarMeta meta : altarMap.values()) {
+      // if (locsAreEqual(meta.getLocation(), loc)) {
       if (meta.getLocation().equals(loc)) {
-        altarMeta = meta;
-        break;
+        Bukkit.getLogger().info("Found match. Returning.");
+        return meta;
+        // altarMeta = meta;
+        // break;
       }
     }
 
@@ -87,6 +92,7 @@ public class AltarManager {
               break;
           }
           altarMap.put(altarMeta.getUniqueId(), altarMeta);
+          SQLLinker.pushToDB(altarMeta);
           return altarMeta;
         } catch (NotInATownException e) {
           // They're not in a town. Ignore it.

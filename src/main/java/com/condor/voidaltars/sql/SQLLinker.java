@@ -20,6 +20,7 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import com.condor.voidaltars.altar.AltarMeta;
 import com.condor.voidaltars.main.AltarMain;
 import com.condor.voidaltars.altar.AltarManager;
+import com.condor.voidaltars.sql.SQLConfig;
 
 public class SQLLinker {
 
@@ -44,8 +45,8 @@ public class SQLLinker {
       stmt.executeQuery();
     } catch (Exception e) {
       Bukkit.getLogger().log(Level.INFO, "Connection probe failed. Re-establishing connection and re-probing.");
-      initHost();
-      probeConnection();
+      // initHost();
+      // probeConnection();
     }
   }
 
@@ -93,7 +94,7 @@ public class SQLLinker {
     String type = altar.getType().toString();
     UUID townUUID = altar.getTown().getUuid();
     Location altarLoc = altar.getLocation();
-    String worldStr = altarLoc.getWorld().toString();
+    String worldStr = altarLoc.getWorld().getName();
     int level = altar.getLevel();
     double x = altarLoc.getX();
     double y = altarLoc.getY();
@@ -136,6 +137,7 @@ public class SQLLinker {
         stmt.setBytes(16, sacrificeFour);
         stmt.setInt(17, totalRecentSacrifices);
         stmt.setInt(18, totalSacrificesMade);
+        stmt.setString(19, uuid.toString());
       } else {
         stmt = conn.prepareStatement("INSERT INTO AltarTable(uuid, type, town_uuid, world, level, x, y, z, boon_1, boon_2, boon_3, boon_4, sacrifice_1, sacrifice_2, sacrifice_3, sacrifice_4, total_recent_sacrifices, total_sacrifices_made) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
         stmt.setString(1, uuid.toString());

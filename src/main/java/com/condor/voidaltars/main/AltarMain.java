@@ -13,6 +13,7 @@ import com.condor.voidaltars.command.CommandControl;
 import com.condor.voidaltars.listener.AltarListener;
 import com.condor.voidaltars.altar.AltarManager;
 import com.condor.voidaltars.sql.SQLLinker;
+import com.condor.voidaltars.sql.SQLConfig;
 
 // import net.milkbowl.vault.economy.Economy;
 // import net.milkbowl.vault.economy.EconomyResponse;
@@ -26,7 +27,7 @@ public class AltarMain extends JavaPlugin {
 	public static final String TIMEID = HEIRO + " " + VERSION;
 
 	static {
-		System.out.println("AltarMain: [" + TIMEID + "]");
+		Bukkit.getLogger().info("AltarMain: [" + TIMEID + "]");
 	}
 
   // public Economy econ = null;
@@ -49,7 +50,7 @@ public class AltarMain extends JavaPlugin {
 	 */
 
 	public AltarMain() {
-		System.out.println("Initializing");
+		Bukkit.getLogger().info("Initializing");
 	}
 
 	static final String RWLOAD =
@@ -65,19 +66,19 @@ public class AltarMain extends JavaPlugin {
 		plugin = this;
 		getLogger().info(RWLOAD + TIMEID);
 
-		System.out.println("Command Control...");
+		Bukkit.getLogger().info("Command Control...");
 
-		System.out.println("<><><><><><><><><>");
+		Bukkit.getLogger().info("<><><><><><><><><>");
 		CommandControl.loadExecutors(this);
-		System.out.println("<><><><><><><><><>");
+		Bukkit.getLogger().info("<><><><><><><><><>");
 
-    // System.out.println("Loading vault-economy hook...");
+    // Bukkit.getLogger().info("Loading vault-economy hook...");
     // if (!setupEconomy()) {
-    //   System.out.println("Economy has failed to load.");
+    //   Bukkit.getLogger().info("Economy has failed to load.");
     // }
 
 		//This registers the listener
-		System.out.println("Loading listeners...");
+		Bukkit.getLogger().info("Loading listeners...");
 		try {
 			AltarListener.loadListeners(this);
 		}
@@ -85,13 +86,19 @@ public class AltarMain extends JavaPlugin {
 
 		}
 
-    System.out.println("Loading Altar Manager...");
+    Bukkit.getLogger().info("Loading Altar Manager...");
     this.altarManager = new AltarManager();
 
-		System.out.println("Calling onStart...");
+    Bukkit.getLogger().info("Loading SQL config...");
+    SQLConfig.init();
+
+    Bukkit.getLogger().info("Initializing SQL connection...");
+    SQLLinker.init();
+
+		Bukkit.getLogger().info("Calling onStart...");
 		this.onStart();
 
-    System.out.println("Loading has been completed!");
+    Bukkit.getLogger().info("Loading has been completed!");
 
 	}
 
@@ -129,6 +136,6 @@ public class AltarMain extends JavaPlugin {
 	 * 1. Calls {@link OnPlayerJoinLeaveStartOrShutdown#startup()}
 	 */
 	public void onStart() {
-    SQLLinker.pullFromDB();
+
 	}
 }

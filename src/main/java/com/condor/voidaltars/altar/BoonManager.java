@@ -22,7 +22,11 @@ public class BoonManager {
   }
 
   public static Boon getBoonByType(BoonType type) {
-    return boonMap.get(type);
+    if (type != null) {
+      return boonMap.get(type);
+    } else {
+      return null;
+    }
   }
 
   public static Collection<Boon> getBoons() {

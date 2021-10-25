@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
+import org.bukkit.Bukkit;
 
 import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.altar.exception.NotInATownException;
@@ -62,12 +63,14 @@ public abstract class AltarMeta {
     this.level = 1;
     this.weightMap = weightMap;
     this.sacrificesWanted = AltarManager.getSacrificesNeededByLevel(this.level);
+    this.interfaceLoc = interfaceLoc;
 
     for (int i = 0; i < this.getNumSacrificeSlots(); i++) {
       sacrifices.add(SacrificeManager.getNewSacrifice(this));
     }
   }
 
+  // TODO: Change this to receive a list of sacrifices and boons instead of individuals
   public AltarMeta(UUID uuid, String type, UUID townUUID, String worldStr, int level, double x, double y, double z,
                    String boonOne, String boonTwo, String boonThree, String boonFour, byte[] sacrificeOne,
                    byte[] sacrificeTwo, byte[] sacrificeThree, byte[] sacrificeFour, int totalRecentSacrifices, int totalSacrificesMade) {
@@ -80,16 +83,34 @@ public abstract class AltarMeta {
    }
    Location location = new Location(AltarMain.getPlugin().getServer().getWorld(worldStr), x, y, z);
    this.interfaceLoc = location;
-   boons.add(BoonManager.getBoonByType(BoonType.getTypeFromString(boonOne)));
-   boons.add(BoonManager.getBoonByType(BoonType.getTypeFromString(boonTwo)));
-   boons.add(BoonManager.getBoonByType(BoonType.getTypeFromString(boonThree)));
-   boons.add(BoonManager.getBoonByType(BoonType.getTypeFromString(boonFour)));
-   sacrifices.add(new Sacrifice(sacrificeOne));
-   sacrifices.add(new Sacrifice(sacrificeTwo));
-   sacrifices.add(new Sacrifice(sacrificeThree));
-   sacrifices.add(new Sacrifice(sacrificeFour));
+   this.level = level;
+   if (!boonOne.isEmpty()) {
+     boons.add(BoonManager.getBoonByType(BoonType.getTypeFromString(boonOne)));
+   }
+   if (!boonTwo.isEmpty()) {
+     boons.add(BoonManager.getBoonByType(BoonType.getTypeFromString(boonTwo)));
+   }
+   if (!boonThree.isEmpty()) {
+     boons.add(BoonManager.getBoonByType(BoonType.getTypeFromString(boonThree)));
+   }
+   if (!boonFour.isEmpty()) {
+     boons.add(BoonManager.getBoonByType(BoonType.getTypeFromString(boonFour)));
+   }
+   if (sacrificeOne != null) {
+     sacrifices.add(new Sacrifice(sacrificeOne));
+   }
+   if (sacrificeTwo != null) {
+     sacrifices.add(new Sacrifice(sacrificeTwo));
+   }
+   if (sacrificeThree != null) {
+     sacrifices.add(new Sacrifice(sacrificeThree));
+   }
+   if (sacrificeFour != null) {
+     sacrifices.add(new Sacrifice(sacrificeFour));
+   }
    this.totalRecentSacrifices = totalRecentSacrifices;
    this.totalSacrificesMade = totalSacrificesMade;
+   Bukkit.getLogger().info("Recreated altar. Location: " + interfaceLoc);
  }
 
  public static AltarMeta create(UUID uuid, String typeStr, UUID townUUID, String worldStr, int level, double x, double y, double z,
