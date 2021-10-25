@@ -68,6 +68,12 @@ public class FarmAltar extends AltarMeta {
     super(AltarType.FARM_ALTAR, uuid, interfaceLoc, AltarManager.getStructureFromLoc(interfaceLoc), weightMap);
   }
 
+  public FarmAltar(UUID uuid, String typeStr, UUID townUUID, String worldStr, int level, double x, double y, double z,
+                   String boonOne, String boonTwo, String boonThree, String boonFour, byte[] sacrificeOne,
+                   byte[] sacrificeTwo, byte[] sacrificeThree, byte[] sacrificeFour, int totalRecentSacrifices, int totalSacrificesMade) {
+    super(uuid, typeStr, townUUID, worldStr, level, x, y, z, boonOne, boonTwo, boonThree, boonFour, sacrificeOne, sacrificeTwo, sacrificeThree, sacrificeFour, totalRecentSacrifices, totalSacrificesMade);
+  }
+
   public List<Material> getSacrificeTypes() {
     ArrayList<Material> matList = new ArrayList<>();
     for (Material m : weightMap.keySet()) {

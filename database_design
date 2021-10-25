@@ -1,32 +1,32 @@
 AltarTable
 ==========
-  ID:                       VARCHAR(36)
-  TYPE:                     Varchar(16)
-  TOWN_UUID:                Varchar(36)
-  WORLD:                    Varchar(32)
-  LEVEL:                    TINYINT
-  X:                        INT
-  Y:                        INT
-  Z:                        INT
-  BOON_1:                   Varchar(16)
-  BOON_2:                   Varchar(16)
-  BOON_3:                   Varchar(16)
-  BOON_4:                   Varchar(16)
-  SACRIFICE_1:              BLOB
-  SACRIFICE_2:              BLOB
-  SACRIFICE_3:              BLOB
-  SACRIFICE_4:              BLOB
-  TOTAL_RECENT_SACRIFICES:  INT
-  TOTAL_SACRIFICES_MADE:    INT
+  uuid:                     VARCHAR(36)
+  type:                     Varchar(16)
+  town_uuid:                Varchar(36)
+  world:                    Varchar(32)
+  level:                    TINYINT
+  x:                        INT
+  y:                        INT
+  z:                        INT
+  boon_1:                   Varchar(16)
+  boon_2:                   Varchar(16)
+  boon_3:                   Varchar(16)
+  boon_4:                   Varchar(16)
+  sacrifice_1:              BLOB
+  sacrifice_2:              BLOB
+  sacrifice_3:              BLOB
+  sacrifice_4:              BLOB
+  total_recent_sacrifices:  INT
+  total_sacrifices_made:    INT
 
 SacrificeTable
 ==============
-  TIME:                     BIGINT
-  TOWN_UUID:                Varchar(36)
-  PLAYER_UUID:              Varchar(36)
-  ALTAR_ID:                 INT
-  ALTAR_TYPE:               VarChar(16)
-  ALTAR_LEVEL:              TINYINT
-  ITEM_TYPE:                Varchar(40)
-  AMOUNT:                   INT
-  AMOUNT_REMAINING:         INT
+  time:                     BIGINT
+  town_uuid:                Varchar(36)
+  player_uuid:              Varchar(36)
+  altar_id:                 INT
+  altar_type:               VarChar(16)
+  altar_level:              TINYINT
+  item_type:                Varchar(40)
+  amount:                   INT
+  amount_remaining:         INT

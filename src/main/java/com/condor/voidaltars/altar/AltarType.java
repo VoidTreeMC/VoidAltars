@@ -15,4 +15,13 @@ public enum AltarType {
   public String getName() {
     return this.name;
   }
+
+  public static AltarType getTypeFromString(String name) {
+    for (AltarType type : AltarType.values()) {
+      if (type.toString().equals(name)) {
+        return type;
+      }
+    }
+    return null;
+  }
 }

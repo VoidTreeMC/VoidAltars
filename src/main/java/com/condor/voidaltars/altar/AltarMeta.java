@@ -8,9 +8,12 @@ import java.util.UUID;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Server;
 
 import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.altar.exception.NotInATownException;
+import com.condor.voidaltars.main.AltarMain;
+import com.condor.voidaltars.altar.altars.FarmAltar;
 
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.TownyAPI;
@@ -64,6 +67,43 @@ public abstract class AltarMeta {
       sacrifices.add(SacrificeManager.getNewSacrifice(this));
     }
   }
+
+  public AltarMeta(UUID uuid, String type, UUID townUUID, String worldStr, int level, double x, double y, double z,
+                   String boonOne, String boonTwo, String boonThree, String boonFour, byte[] sacrificeOne,
+                   byte[] sacrificeTwo, byte[] sacrificeThree, byte[] sacrificeFour, int totalRecentSacrifices, int totalSacrificesMade) {
+   this.uuid = uuid;
+   this.type = AltarType.getTypeFromString(type);
+   try {
+     this.town = TownyAPI.getInstance().getDataSource().getTown(townUUID);
+   } catch (NotRegisteredException e) {
+     e.printStackTrace();
+   }
+   Location location = new Location(AltarMain.getPlugin().getServer().getWorld(worldStr), x, y, z);
+   this.interfaceLoc = location;
+   boons.add(BoonManager.getBoonByType(BoonType.getTypeFromString(boonOne)));
+   boons.add(BoonManager.getBoonByType(BoonType.getTypeFromString(boonTwo)));
+   boons.add(BoonManager.getBoonByType(BoonType.getTypeFromString(boonThree)));
+   boons.add(BoonManager.getBoonByType(BoonType.getTypeFromString(boonFour)));
+   sacrifices.add(new Sacrifice(sacrificeOne));
+   sacrifices.add(new Sacrifice(sacrificeTwo));
+   sacrifices.add(new Sacrifice(sacrificeThree));
+   sacrifices.add(new Sacrifice(sacrificeFour));
+   this.totalRecentSacrifices = totalRecentSacrifices;
+   this.totalSacrificesMade = totalSacrificesMade;
+ }
+
+ public static AltarMeta create(UUID uuid, String typeStr, UUID townUUID, String worldStr, int level, double x, double y, double z,
+                  String boonOne, String boonTwo, String boonThree, String boonFour, byte[] sacrificeOne,
+                  byte[] sacrificeTwo, byte[] sacrificeThree, byte[] sacrificeFour, int totalRecentSacrifices, int totalSacrificesMade) {
+   AltarType type = AltarType.getTypeFromString(typeStr);
+   switch (type) {
+     case FARM_ALTAR:
+     default:
+      return new FarmAltar(uuid, typeStr, townUUID, worldStr, level, x, y, z, boonOne, boonTwo, boonThree, boonFour, sacrificeOne,
+                           sacrificeTwo, sacrificeThree, sacrificeFour, totalRecentSacrifices, totalSacrificesMade);
+   }
+   // return null;
+ }
 
   public Sacrifice finishSacrifice(Sacrifice finished) {
     sacrifices.remove(finished);
@@ -170,6 +210,14 @@ public abstract class AltarMeta {
 
   public int getSacrificesRemaining() {
     return this.sacrificesWanted - this.totalRecentSacrifices;
+  }
+
+  public int getTotalRecentSacrifices() {
+    return this.totalRecentSacrifices;
+  }
+
+  public int getTotalSacrificesMade() {
+    return this.totalSacrificesMade;
   }
 
   public abstract List<Material> getSacrificeTypes();

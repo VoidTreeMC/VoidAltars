@@ -32,6 +32,14 @@ public class AltarManager {
     altarTypeMap.put(AltarType.OCEAN_ALTAR, new OceanAltarStructure());
   }
 
+  public static void addAltar(AltarMeta altar) {
+    altarMap.put(altar.getUniqueId(), altar);
+  }
+
+  public static void clearAltars() {
+    altarMap.clear();
+  }
+
   public static AltarStructure getAltarByType(AltarType type) {
     return altarTypeMap.get(type);
   }
@@ -50,7 +58,6 @@ public class AltarManager {
   }
 
   public static AltarMeta getAltarFromLoc(Location loc, PlayerInteractEvent event) {
-
     Player player = event.getPlayer();
 
     AltarMeta altarMeta = null;

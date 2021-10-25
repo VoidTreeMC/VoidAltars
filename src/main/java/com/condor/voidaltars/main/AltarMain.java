@@ -12,6 +12,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import com.condor.voidaltars.command.CommandControl;
 import com.condor.voidaltars.listener.AltarListener;
 import com.condor.voidaltars.altar.AltarManager;
+import com.condor.voidaltars.sql.SQLLinker;
 
 // import net.milkbowl.vault.economy.Economy;
 // import net.milkbowl.vault.economy.EconomyResponse;
@@ -128,6 +129,6 @@ public class AltarMain extends JavaPlugin {
 	 * 1. Calls {@link OnPlayerJoinLeaveStartOrShutdown#startup()}
 	 */
 	public void onStart() {
-
+    SQLLinker.pullFromDB();
 	}
 }
