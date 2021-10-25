@@ -26,6 +26,8 @@ public class SQLLinker {
 
   private static Connection conn;
 
+  private static final int NUM_SACRIFICES_AND_BOONS = 4;
+
   public static void initHost() {
 		try {
 	    String url = SQLConfig.getVal("jdbc-url");
@@ -67,19 +69,18 @@ public class SQLLinker {
         double x = (double) results.getInt("x");
         double y = (double) results.getInt("y");
         double z = (double) results.getInt("z");
-        String boonOne = results.getString("boon_1");
-        String boonTwo = results.getString("boon_2");
-        String boonThree = results.getString("boon_3");
-        String boonFour = results.getString("boon_4");
-        byte[] sacrificeOne = results.getBytes("sacrifice_1");
-        byte[] sacrificeTwo = results.getBytes("sacrifice_2");
-        byte[] sacrificeThree = results.getBytes("sacrifice_3");
-        byte[] sacrificeFour = results.getBytes("sacrifice_4");
+        ArrayList<String> boonList = new ArrayList<>();
+        ArrayList<byte[]> sacrificeList = new ArrayList<>();
+        for (int i = 1; i <= NUM_SACRIFICES_AND_BOONS; i++) {
+          boonList.add(results.getString("boon_" + i));
+          sacrificeList.add(results.getBytes("sacrifice_" + i));
+        }
         int totalRecentSacrifices = results.getInt("total_recent_sacrifices");
         int totalSacrificesMade = results.getInt("total_sacrifices_made");
 
-        AltarMeta altar = AltarMeta.create(uuid, type, townUUID, worldStr, level, x, y, z, boonOne, boonTwo, boonThree, boonFour, sacrificeOne,
-                                        sacrificeTwo, sacrificeThree, sacrificeFour, totalRecentSacrifices, totalSacrificesMade);
+
+        AltarMeta altar = AltarMeta.create(uuid, type, townUUID, worldStr, level, x, y, z, boonList, sacrificeList,
+                                           totalRecentSacrifices, totalSacrificesMade);
         AltarManager.addAltar(altar);
         rsnext = results.next();
       }

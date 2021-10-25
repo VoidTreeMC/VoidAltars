@@ -70,10 +70,8 @@ public abstract class AltarMeta {
     }
   }
 
-  // TODO: Change this to receive a list of sacrifices and boons instead of individuals
   public AltarMeta(UUID uuid, String type, UUID townUUID, String worldStr, int level, double x, double y, double z,
-                   String boonOne, String boonTwo, String boonThree, String boonFour, byte[] sacrificeOne,
-                   byte[] sacrificeTwo, byte[] sacrificeThree, byte[] sacrificeFour, int totalRecentSacrifices, int totalSacrificesMade,
+                   ArrayList<String> boonList, ArrayList<byte[]> sacrificeList, int totalRecentSacrifices, int totalSacrificesMade,
                    TreeMap<Material, Double> weightMap) {
    this.uuid = uuid;
    this.type = AltarType.getTypeFromString(type);
@@ -87,29 +85,15 @@ public abstract class AltarMeta {
    this.interfaceLoc = location;
    this.level = level;
    this.sacrificesWanted = AltarManager.getSacrificesNeededByLevel(this.level);
-   if (!boonOne.isEmpty()) {
-     setBoon(BoonManager.getBoonByType(BoonType.getTypeFromString(boonOne)), 0);
+   for (int i = 0; i < boonList.size(); i++) {
+     if (!boonList.get(i).isEmpty()) {
+        setBoon(BoonManager.getBoonByType(BoonType.getTypeFromString(boonList.get(i))), i);
+     }
    }
-   if (!boonTwo.isEmpty()) {
-     setBoon(BoonManager.getBoonByType(BoonType.getTypeFromString(boonTwo)), 1);
-   }
-   if (!boonThree.isEmpty()) {
-     setBoon(BoonManager.getBoonByType(BoonType.getTypeFromString(boonThree)), 2);
-   }
-   if (!boonFour.isEmpty()) {
-     setBoon(BoonManager.getBoonByType(BoonType.getTypeFromString(boonFour)), 3);
-   }
-   if (sacrificeOne != null) {
-     sacrifices.add(new Sacrifice(sacrificeOne, this));
-   }
-   if (sacrificeTwo != null) {
-     sacrifices.add(new Sacrifice(sacrificeTwo, this));
-   }
-   if (sacrificeThree != null) {
-     sacrifices.add(new Sacrifice(sacrificeThree, this));
-   }
-   if (sacrificeFour != null) {
-     sacrifices.add(new Sacrifice(sacrificeFour, this));
+   for (int i = 0; i < sacrificeList.size(); i++) {
+     if (sacrificeList.get(i) != null) {
+       sacrifices.add(new Sacrifice(sacrificeList.get(i), this));
+     }
    }
    this.totalRecentSacrifices = totalRecentSacrifices;
    this.totalSacrificesMade = totalSacrificesMade;
@@ -117,14 +101,13 @@ public abstract class AltarMeta {
  }
 
  public static AltarMeta create(UUID uuid, String typeStr, UUID townUUID, String worldStr, int level, double x, double y, double z,
-                  String boonOne, String boonTwo, String boonThree, String boonFour, byte[] sacrificeOne,
-                  byte[] sacrificeTwo, byte[] sacrificeThree, byte[] sacrificeFour, int totalRecentSacrifices, int totalSacrificesMade) {
+                  ArrayList<String> boonList, ArrayList<byte[]> sacrificeList, int totalRecentSacrifices, int totalSacrificesMade) {
    AltarType type = AltarType.getTypeFromString(typeStr);
    switch (type) {
      case FARM_ALTAR:
      default:
-      return new FarmAltar(uuid, typeStr, townUUID, worldStr, level, x, y, z, boonOne, boonTwo, boonThree, boonFour, sacrificeOne,
-                           sacrificeTwo, sacrificeThree, sacrificeFour, totalRecentSacrifices, totalSacrificesMade);
+      return new FarmAltar(uuid, typeStr, townUUID, worldStr, level, x, y, z, boonList, sacrificeList,
+                           totalRecentSacrifices, totalSacrificesMade);
    }
    // return null;
  }
