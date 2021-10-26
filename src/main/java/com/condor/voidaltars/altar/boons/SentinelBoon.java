@@ -30,6 +30,8 @@ public class SentinelBoon extends Boon {
 
   private static Random rng = new Random();
 
+  private static final String DESCRIPTION = "The gods protect your small livestock. Foxes and cats are friendly to chickens and rabbits in your town and do not eat them.";
+
   static {
     loreList.add("When the dog is awake, the shepherd may sleep.");
 
@@ -37,7 +39,7 @@ public class SentinelBoon extends Boon {
   }
 
   public SentinelBoon() {
-    super(NAME, triggerList, BoonType.SENTINEL_BOON);
+    super(NAME, DESCRIPTION, triggerList, BoonType.SENTINEL_BOON);
   }
 
   public ItemStack getIcon() {

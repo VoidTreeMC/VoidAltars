@@ -9,13 +9,15 @@ import com.palmergames.bukkit.towny.object.Town;
 
 public abstract class Boon {
   private String name;
+  private String description;
   private ArrayList<Class> triggers;
   private BoonType type;
   protected ArrayList<Town> registeredTowns;
 
-  protected Boon(String name, ArrayList<Class> triggers, BoonType type) {
+  protected Boon(String name, String description, ArrayList<Class> triggers, BoonType type) {
     this.name = name;
     // this.lore = lore;
+    this.description = description;
     this.triggers = triggers;
     this.type = type;
     this.registeredTowns = new ArrayList<>();
@@ -23,6 +25,10 @@ public abstract class Boon {
 
   public String getName() {
     return this.name;
+  }
+
+  public String getDescription() {
+    return this.description;
   }
 
   public void addTown(Town town) {

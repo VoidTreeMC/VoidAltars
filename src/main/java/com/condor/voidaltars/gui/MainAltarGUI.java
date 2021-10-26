@@ -12,9 +12,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.PlayerInventory;
-import com.condor.voidaltars.altar.BoonManager;
-import com.condor.voidaltars.altar.BoonType;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.ChatColor;
 
+import com.condor.voidaltars.altar.Boon;
+import com.condor.voidaltars.altar.BoonType;
+import com.condor.voidaltars.altar.BoonManager;
 import com.condor.voidaltars.altar.AltarMeta;
 import com.condor.voidaltars.altar.Sacrifice;
 import com.condor.voidaltars.sql.SQLLinker;
@@ -57,6 +60,23 @@ public class MainAltarGUI {
     BOON_SLOT_LOCKED.setItemMeta(boonLockedMeta);
   }
 
+  public static boolean isBucket(Material type) {
+    switch (type) {
+      case BUCKET:
+      case WATER_BUCKET:
+      case LAVA_BUCKET:
+      case POWDER_SNOW_BUCKET:
+      case MILK_BUCKET:
+      case PUFFERFISH_BUCKET:
+      case SALMON_BUCKET:
+      case COD_BUCKET:
+      case TROPICAL_FISH_BUCKET:
+      case AXOLOTL_BUCKET:
+        return true;
+      default:
+        return false;
+    }
+  }
 
   private static int handleSacrificeClick(Player player, Material type, int amt) {
     int amtCharged = 0;
@@ -125,6 +145,18 @@ public class MainAltarGUI {
           Material type = sacrificeItem.getType();
           int amtWanted = sacrifice.getNumRemaining();
           int amtSacrificed = handleSacrificeClick(player, type, amtWanted);
+          if (isBucket(type) && amtSacrificed > 0) {
+            int num = amtSacrificed;
+            while (num > 0) {
+              if (num >= 16) {
+                player.getInventory().addItem(new ItemStack(Material.BUCKET, 16));
+                num -= 16;
+              } else {
+                player.getInventory().addItem(new ItemStack(Material.BUCKET, num));
+                break;
+              }
+            }
+          }
           sacrifice.addToSacrificed(amtSacrificed);
           if (sacrifice.isFinished()) {
             altarMeta.finishSacrifice(sacrifice);
@@ -142,12 +174,18 @@ public class MainAltarGUI {
 
     for (int i = 0; i < altarMeta.getNumBoonSlots(); i++) {
       ItemStack boonItem = new ItemStack(Material.BEACON);
+      Boon boon = altarMeta.getBoon(i);
       final int index = i;
-      if (altarMeta.getBoon(i) != null) {
-        boonItem = altarMeta.getBoon(i).getIcon();
+      if (boon != null) {
+        boonItem = boon.getIcon();
       }
       GuiItem boonGuiItem = new GuiItem(boonItem, event -> {
-        SelectBoonGUI.displayBoonGUI(player, altarMeta, index);
+        if (event.getClick() == ClickType.RIGHT && boon != null) {
+          player.sendMessage(ChatColor.GOLD + boon.getName() + ": " + ChatColor.YELLOW + boon.getDescription());
+          gui.close(player);
+        } else {
+          SelectBoonGUI.displayBoonGUI(player, altarMeta, index);
+        }
       });
       gui.setItem(5, 2 + (2 * i), boonGuiItem);
     }

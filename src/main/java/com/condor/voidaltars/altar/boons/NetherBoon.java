@@ -35,6 +35,8 @@ public class NetherBoon extends Boon {
 
   private static final int EFFECT_DURATION = 20 * 10;
 
+  private static final String DESCRIPTION = "The gods protect everyone in your town from the flame. No players or mobs in your town will take damage from fire, lava or hot floors.";
+
   private static Random rng = new Random();
 
   static {
@@ -45,7 +47,7 @@ public class NetherBoon extends Boon {
   }
 
   public NetherBoon() {
-    super(NAME, triggerList, BoonType.NETHER_BOON);
+    super(NAME, DESCRIPTION, triggerList, BoonType.NETHER_BOON);
   }
 
   public ItemStack getIcon() {

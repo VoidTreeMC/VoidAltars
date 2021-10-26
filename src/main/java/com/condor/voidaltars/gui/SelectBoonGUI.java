@@ -15,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.ChatColor;
 import net.kyori.adventure.text.Component;
+import org.bukkit.event.inventory.ClickType;
 
 import com.condor.voidaltars.altar.BoonType;
 import com.condor.voidaltars.altar.AltarMeta;
@@ -54,9 +55,14 @@ public class SelectBoonGUI {
 
     for (Boon boon : boonsList) {
       GuiItem boonItem = new GuiItem(boon.getIcon(), event -> {
-        altarMeta.setBoon(boon, index);
-        SQLLinker.pushToDB(altarMeta);
-        MainAltarGUI.displayAltarGUI(player, altarMeta);
+        if (event.getClick() == ClickType.RIGHT) {
+          player.sendMessage(ChatColor.GOLD + boon.getName() + ": " + ChatColor.YELLOW + boon.getDescription());
+          gui.close(player);
+        } else {
+          altarMeta.setBoon(boon, index);
+          SQLLinker.pushToDB(altarMeta);
+          MainAltarGUI.displayAltarGUI(player, altarMeta);
+        }
       });
       gui.addItem(boonItem);
     }

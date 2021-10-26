@@ -18,6 +18,7 @@ import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.altar.exception.NotInATownException;
 import com.condor.voidaltars.main.AltarMain;
 import com.condor.voidaltars.altar.altars.FarmAltar;
+import com.condor.voidaltars.altar.multiblock.structures.FarmAltarStructure;
 
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.TownyAPI;
@@ -75,7 +76,7 @@ public abstract class AltarMeta {
 
   public AltarMeta(UUID uuid, String type, UUID townUUID, String worldStr, int level, double x, double y, double z,
                    ArrayList<String> boonList, ArrayList<byte[]> sacrificeList, int totalRecentSacrifices, int totalSacrificesMade,
-                   TreeMap<Material, Double> weightMap) {
+                   TreeMap<Material, Double> weightMap, AltarStructure structure) {
    this.uuid = uuid;
    this.type = AltarType.getTypeFromString(type);
    this.weightMap = weightMap;
@@ -100,6 +101,7 @@ public abstract class AltarMeta {
    }
    this.totalRecentSacrifices = totalRecentSacrifices;
    this.totalSacrificesMade = totalSacrificesMade;
+   this.structure = structure;
  }
 
  public static AltarMeta create(UUID uuid, String typeStr, UUID townUUID, String worldStr, int level, double x, double y, double z,
@@ -136,6 +138,9 @@ public abstract class AltarMeta {
 
   // Process the level up event
   public void levelUp() {
+    if (this.level >= 4) {
+      return;
+    }
     this.level++;
     setCandles(this.level);
     Sacrifice newSacrifice = SacrificeManager.getNewSacrifice(this);

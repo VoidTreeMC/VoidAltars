@@ -31,6 +31,8 @@ public class RancherBoon extends Boon {
 
   private static Random rng = new Random();
 
+  private static final String DESCRIPTION = "The gods bless your herds. Whenever a livestock mob dies, you get extra drops.";
+
   static {
     loreList.add("Additional drops from livestock");
 
@@ -38,7 +40,7 @@ public class RancherBoon extends Boon {
   }
 
   public RancherBoon() {
-    super(NAME, triggerList, BoonType.RANCHER_BOON);
+    super(NAME, DESCRIPTION, triggerList, BoonType.RANCHER_BOON);
   }
 
   public ItemStack getIcon() {

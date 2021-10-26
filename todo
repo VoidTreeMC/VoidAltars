@@ -15,5 +15,11 @@ Sacrifice algorithm plans
 
 Duck wants people to only be able to change the boon type after every couple sacrifices
 
+Have it so when you right-click a boon, it tells you in chat what it does
+
+non-stackable stuff like milk should need less
+
 DID
 ===
+Changed math for sacrifice amount calculations
+Added descriptions to boons on right-click

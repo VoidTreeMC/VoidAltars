@@ -39,6 +39,8 @@ public class EndBoon extends Boon {
   private static ArrayList<String> loreList = new ArrayList<>();
   private static ArrayList<Class> triggerList = new ArrayList<>();
 
+  private static final String DESCRIPTION = "The gods protect everyone in your town from the void. If you fall into the void, you will wake up in bed.";
+
   private static Random rng = new Random();
 
   private static TreeMap<UUID, Long> cooldownMap = new TreeMap<>();
@@ -54,7 +56,7 @@ public class EndBoon extends Boon {
   }
 
   public EndBoon() {
-    super(NAME, triggerList, BoonType.END_BOON);
+    super(NAME, DESCRIPTION, triggerList, BoonType.END_BOON);
   }
 
   public ItemStack getIcon() {
