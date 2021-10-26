@@ -147,20 +147,38 @@ public abstract class AltarMeta {
     sacrifices.add(newSacrifice);
   }
 
-  private void setCandles(int amt) {
+  private ArrayList<Block> getCandles() {
     int size = this.structure.getSize();
+    ArrayList<Block> ret = new ArrayList<>();
     for (int i = -size; i < size * 2; i++) {
       for (int j = -size; j < size * 2; j++) {
         for (int k = -size; k < size * 2; k++) {
           Location currLoc = new Location(interfaceLoc.getWorld(), interfaceLoc.getX() + i, interfaceLoc.getY() + j, interfaceLoc.getZ() + k);
           Block block = currLoc.getBlock();
           if (block.getBlockData() instanceof Candle) {
-            Candle candle = (Candle) block.getBlockData();
-            candle.setCandles(amt);
-            block.setBlockData(candle);
+            ret.add(block);
           }
         }
       }
+    }
+    return ret;
+  }
+
+  private void setCandles(int amt) {
+    ArrayList<Block> candles = getCandles();
+    for (Block block : candles) {
+      Candle candle = (Candle) block.getBlockData();
+      candle.setCandles(amt);
+      block.setBlockData(candle);
+    }
+  }
+
+  public void setCandlesLit(boolean state) {
+    ArrayList<Block> candles = getCandles();
+    for (Block block : candles) {
+      Candle candle = (Candle) block.getBlockData();
+      candle.setLit(state);
+      block.setBlockData(candle);
     }
   }
 

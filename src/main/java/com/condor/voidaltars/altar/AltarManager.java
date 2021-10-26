@@ -8,6 +8,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.Effect;
+import org.bukkit.World;
+import org.bukkit.Sound;
 
 import com.condor.voidaltars.altar.AltarType;
 import com.condor.voidaltars.altar.multiblock.AltarStructure;
@@ -15,6 +18,8 @@ import com.condor.voidaltars.altar.altars.*;
 import com.condor.voidaltars.altar.multiblock.structures.*;
 import com.condor.voidaltars.altar.exception.NotInATownException;
 import com.condor.voidaltars.sql.SQLLinker;
+import com.condor.voidaltars.runnable.PlaySparkleEffect;
+import com.condor.voidaltars.main.AltarMain;
 
 import com.palmergames.bukkit.towny.object.Town;
 
@@ -90,6 +95,18 @@ public class AltarManager {
               break;
           }
           altarMap.put(altarMeta.getUniqueId(), altarMeta);
+          altarMeta.setCandlesLit(true);
+          World world = loc.getWorld();
+          world.strikeLightningEffect(loc);
+          (new PlaySparkleEffect(loc, 0)).runTask(AltarMain.getPlugin());
+          world.playSound(loc, Sound.ENTITY_ENDERMAN_DEATH, 1, 1);
+          Bukkit.getScheduler().runTaskLater(AltarMain.getPlugin(), new Runnable() {
+            @Override
+            public void run() {
+              world.playSound(loc, Sound.ENTITY_WITCH_CELEBRATE, 1, 1);
+            }
+          }, 20);
+          // TODO: Make this run on another thread
           SQLLinker.pushToDB(altarMeta);
           return altarMeta;
         } catch (NotInATownException e) {
