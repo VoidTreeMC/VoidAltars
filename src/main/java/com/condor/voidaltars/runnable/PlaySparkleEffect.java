@@ -22,7 +22,7 @@ public class PlaySparkleEffect extends BukkitRunnable {
   // The number of layers of recursion deep we are
   int depth;
 
-  private static final int TIME_TO_LAST = 10;
+  private static final int TIME_TO_LAST = 20;
 
 	public PlaySparkleEffect(Location loc, int depth) {
 		this.plugin = AltarMain.getPlugin();

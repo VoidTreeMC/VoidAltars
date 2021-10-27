@@ -13,12 +13,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.block.data.type.Candle;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.World;
+import org.bukkit.Sound;
 
 import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.altar.exception.NotInATownException;
 import com.condor.voidaltars.main.AltarMain;
 import com.condor.voidaltars.altar.altars.FarmAltar;
 import com.condor.voidaltars.altar.multiblock.structures.FarmAltarStructure;
+import com.condor.voidaltars.runnable.PlaySparkleEffect;
+import com.condor.voidaltars.runnable.LightCandles;
 
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.TownyAPI;
@@ -142,9 +146,30 @@ public abstract class AltarMeta {
       return;
     }
     this.level++;
-    setCandles(this.level);
     Sacrifice newSacrifice = SacrificeManager.getNewSacrifice(this);
     sacrifices.add(newSacrifice);
+    doEffect();
+  }
+
+  public void doEffect() {
+    World world = interfaceLoc.getWorld();
+    // The interval between lightning strikes. Measured in ticks.
+    final int STRIKE_INTERVAL = 40;
+    int timeOffset = STRIKE_INTERVAL;
+    ArrayList<Block> candles = this.getCandles();
+    for (Block block : candles) {
+      (new LightCandles(block, this.level)).runTaskLater(AltarMain.getPlugin(), timeOffset);
+      timeOffset += STRIKE_INTERVAL;
+    }
+    world.strikeLightningEffect(interfaceLoc);
+    (new PlaySparkleEffect(interfaceLoc, 0)).runTask(AltarMain.getPlugin());
+    world.playSound(interfaceLoc, Sound.ENTITY_ENDERMAN_DEATH, 1, 1);
+    Bukkit.getScheduler().runTaskLater(AltarMain.getPlugin(), new Runnable() {
+      @Override
+      public void run() {
+        world.playSound(interfaceLoc, Sound.ENTITY_WITCH_CELEBRATE, 1, 1);
+      }
+    }, 10);
   }
 
   private ArrayList<Block> getCandles() {
@@ -173,12 +198,17 @@ public abstract class AltarMeta {
     }
   }
 
+  // TODO: Maybe move to a different file?
+  public static void setCandleLit(Block block, boolean state) {
+    Candle candle = (Candle) block.getBlockData();
+    candle.setLit(state);
+    block.setBlockData(candle);
+  }
+
   public void setCandlesLit(boolean state) {
     ArrayList<Block> candles = getCandles();
     for (Block block : candles) {
-      Candle candle = (Candle) block.getBlockData();
-      candle.setLit(state);
-      block.setBlockData(candle);
+      setCandleLit(block, state);
     }
   }
 

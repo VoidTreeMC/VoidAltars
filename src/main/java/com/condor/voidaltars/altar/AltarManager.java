@@ -95,17 +95,7 @@ public class AltarManager {
               break;
           }
           altarMap.put(altarMeta.getUniqueId(), altarMeta);
-          altarMeta.setCandlesLit(true);
-          World world = loc.getWorld();
-          world.strikeLightningEffect(loc);
-          (new PlaySparkleEffect(loc, 0)).runTask(AltarMain.getPlugin());
-          world.playSound(loc, Sound.ENTITY_ENDERMAN_DEATH, 1, 1);
-          Bukkit.getScheduler().runTaskLater(AltarMain.getPlugin(), new Runnable() {
-            @Override
-            public void run() {
-              world.playSound(loc, Sound.ENTITY_WITCH_CELEBRATE, 1, 1);
-            }
-          }, 20);
+          altarMeta.doEffect();
           // TODO: Make this run on another thread
           SQLLinker.pushToDB(altarMeta);
           return altarMeta;
