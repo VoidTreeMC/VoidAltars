@@ -18,6 +18,7 @@ AltarTable
   sacrifice_4:              BLOB
   total_recent_sacrifices:  INT
   total_sacrifices_made:    INT
+  next_eval_time:           BIGINT
 
 SacrificeTable
 ==============
@@ -31,4 +32,4 @@ SacrificeTable
   amount:                   INT
   amount_remaining:         INT
 
-SELECT uuid,type,town_uuid,world,level,x,y,z,boon_1,boon_2,boon_3,boon_4,total_recent_sacrifices,total_sacrifices_made FROM AltarTable;
+SELECT uuid,type,town_uuid,world,level,x,y,z,boon_1,boon_2,boon_3,boon_4,total_recent_sacrifices,total_sacrifices_made,next_eval_time FROM AltarTable;

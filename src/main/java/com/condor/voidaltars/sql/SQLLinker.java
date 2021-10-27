@@ -77,11 +77,15 @@ public class SQLLinker {
         }
         int totalRecentSacrifices = results.getInt("total_recent_sacrifices");
         int totalSacrificesMade = results.getInt("total_sacrifices_made");
+        long nextEvalTime = results.getLong("next_eval_time");
 
 
         AltarMeta altar = AltarMeta.create(uuid, type, townUUID, worldStr, level, x, y, z, boonList, sacrificeList,
-                                           totalRecentSacrifices, totalSacrificesMade);
+                                           totalRecentSacrifices, totalSacrificesMade, nextEvalTime);
         AltarManager.addAltar(altar);
+        if (!altar.hasMetQuota()) {
+          altar.levelDown();
+        }
         rsnext = results.next();
       }
     } catch (SQLException e) {
@@ -110,6 +114,7 @@ public class SQLLinker {
     byte[] sacrificeFour = (altar.getSacrifice(3) != null) ? altar.getSacrifice(3).serialize() : null;
     int totalRecentSacrifices = altar.getTotalRecentSacrifices();
     int totalSacrificesMade = altar.getTotalSacrificesMade();
+    long nextEvalTime = altar.getNextEvalTime();
 
     try {
 
@@ -119,7 +124,7 @@ public class SQLLinker {
 
       PreparedStatement stmt;
       if (isInTable) {
-        stmt = conn.prepareStatement("UPDATE AltarTable SET uuid=?, type=?, town_uuid=?, world=?, level=?, x=?, y=?, z=?, boon_1=?, boon_2=?, boon_3=?, boon_4=?, sacrifice_1=?, sacrifice_2=?, sacrifice_3=?, sacrifice_4=?, total_recent_sacrifices=?, total_sacrifices_made=? WHERE uuid=?;");
+        stmt = conn.prepareStatement("UPDATE AltarTable SET uuid=?, type=?, town_uuid=?, world=?, level=?, x=?, y=?, z=?, boon_1=?, boon_2=?, boon_3=?, boon_4=?, sacrifice_1=?, sacrifice_2=?, sacrifice_3=?, sacrifice_4=?, total_recent_sacrifices=?, total_sacrifices_made=?, next_eval_time=? WHERE uuid=?;");
         stmt.setString(1, uuid.toString());
         stmt.setString(2, type);
         stmt.setString(3, townUUID.toString());
@@ -138,9 +143,10 @@ public class SQLLinker {
         stmt.setBytes(16, sacrificeFour);
         stmt.setInt(17, totalRecentSacrifices);
         stmt.setInt(18, totalSacrificesMade);
-        stmt.setString(19, uuid.toString());
+        stmt.setLong(19, nextEvalTime);
+        stmt.setString(20, uuid.toString());
       } else {
-        stmt = conn.prepareStatement("INSERT INTO AltarTable(uuid, type, town_uuid, world, level, x, y, z, boon_1, boon_2, boon_3, boon_4, sacrifice_1, sacrifice_2, sacrifice_3, sacrifice_4, total_recent_sacrifices, total_sacrifices_made) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+        stmt = conn.prepareStatement("INSERT INTO AltarTable(uuid, type, town_uuid, world, level, x, y, z, boon_1, boon_2, boon_3, boon_4, sacrifice_1, sacrifice_2, sacrifice_3, sacrifice_4, total_recent_sacrifices, total_sacrifices_made, next_eval_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
         stmt.setString(1, uuid.toString());
         stmt.setString(2, type);
         stmt.setString(3, townUUID.toString());
@@ -159,6 +165,7 @@ public class SQLLinker {
         stmt.setBytes(16, sacrificeFour);
         stmt.setInt(17, totalRecentSacrifices);
         stmt.setInt(18, totalSacrificesMade);
+        stmt.setLong(19, nextEvalTime);
       }
 
       stmt.executeUpdate();

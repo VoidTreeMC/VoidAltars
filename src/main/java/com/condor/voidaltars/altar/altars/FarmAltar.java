@@ -70,9 +70,9 @@ public class FarmAltar extends AltarMeta {
   }
 
   public FarmAltar(UUID uuid, String typeStr, UUID townUUID, String worldStr, int level, double x, double y, double z,
-                   ArrayList<String> boonList, ArrayList<byte[]> sacrificeList, int totalRecentSacrifices, int totalSacrificesMade) {
+                   ArrayList<String> boonList, ArrayList<byte[]> sacrificeList, int totalRecentSacrifices, int totalSacrificesMade, long nextEvalTime) {
     // TODO: Check to make sure that by not calling AltarManager.getStructureFromLoc(), we're not allowing invalid altars to persist once created in the DB
-    super(uuid, typeStr, townUUID, worldStr, level, x, y, z, boonList, sacrificeList, totalRecentSacrifices, totalSacrificesMade, weightMap, new FarmAltarStructure());
+    super(uuid, typeStr, townUUID, worldStr, level, x, y, z, boonList, sacrificeList, totalRecentSacrifices, totalSacrificesMade, weightMap, nextEvalTime, new FarmAltarStructure());
   }
 
   public List<Material> getSacrificeTypes() {

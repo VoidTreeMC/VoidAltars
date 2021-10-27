@@ -47,9 +47,15 @@ public abstract class AltarMeta {
   // The total number of sacrifices made to this altar, ever
   int totalSacrificesMade;
   TreeMap<Material, Double> weightMap;
+  long nextEvalTime;
   // Might end up being unused. To be used later, when statistics are
   // being implemented.
   // ArrayList<Sacrifice> sacrificeHistory = new ArrayList<>();
+
+  // The amount of milliseconds in a quota period
+  // Currently, 1 week
+  // private final static long QUOTA_PERIOD = 1000 * 60 * 60 * 24 * 7;
+  private final static long QUOTA_PERIOD = 1000 * 60 * 2;
 
   private static Random rng = new Random();
 
@@ -72,6 +78,7 @@ public abstract class AltarMeta {
     this.weightMap = weightMap;
     this.sacrificesWanted = AltarManager.getSacrificesNeededByLevel(this.level);
     this.interfaceLoc = interfaceLoc;
+    this.nextEvalTime = this.calcNextEvalTime();
 
     for (int i = 0; i < this.getNumSacrificeSlots(); i++) {
       sacrifices.add(SacrificeManager.getNewSacrifice(this));
@@ -80,10 +87,11 @@ public abstract class AltarMeta {
 
   public AltarMeta(UUID uuid, String type, UUID townUUID, String worldStr, int level, double x, double y, double z,
                    ArrayList<String> boonList, ArrayList<byte[]> sacrificeList, int totalRecentSacrifices, int totalSacrificesMade,
-                   TreeMap<Material, Double> weightMap, AltarStructure structure) {
+                   TreeMap<Material, Double> weightMap, long nextEvalTime, AltarStructure structure) {
    this.uuid = uuid;
    this.type = AltarType.getTypeFromString(type);
    this.weightMap = weightMap;
+   this.nextEvalTime = nextEvalTime;
    try {
      this.town = TownyAPI.getInstance().getDataSource().getTown(townUUID);
    } catch (NotRegisteredException e) {
@@ -109,13 +117,13 @@ public abstract class AltarMeta {
  }
 
  public static AltarMeta create(UUID uuid, String typeStr, UUID townUUID, String worldStr, int level, double x, double y, double z,
-                  ArrayList<String> boonList, ArrayList<byte[]> sacrificeList, int totalRecentSacrifices, int totalSacrificesMade) {
+                  ArrayList<String> boonList, ArrayList<byte[]> sacrificeList, int totalRecentSacrifices, int totalSacrificesMade, long nextEvalTime) {
    AltarType type = AltarType.getTypeFromString(typeStr);
    switch (type) {
      case FARM_ALTAR:
      default:
       return new FarmAltar(uuid, typeStr, townUUID, worldStr, level, x, y, z, boonList, sacrificeList,
-                           totalRecentSacrifices, totalSacrificesMade);
+                           totalRecentSacrifices, totalSacrificesMade, nextEvalTime);
    }
    // return null;
  }
@@ -140,6 +148,16 @@ public abstract class AltarMeta {
     return this.totalRecentSacrifices >= (this.sacrificesWanted * 1.5);
   }
 
+  public boolean hasMetQuota() {
+    if (this.getSacrificesRemaining() > 0) {
+      long now = System.currentTimeMillis();
+      if (now > this.getNextEvalTime()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   // Process the level up event
   public void levelUp() {
     if (this.level >= 4) {
@@ -149,6 +167,17 @@ public abstract class AltarMeta {
     Sacrifice newSacrifice = SacrificeManager.getNewSacrifice(this);
     sacrifices.add(newSacrifice);
     doEffect();
+  }
+
+  public void levelDown() {
+    if (this.level <= 0) {
+      return;
+    }
+    this.level--;
+    sacrifices.remove(sacrifices.size() - 1);
+    setCandles(this.level);
+    boons.get(boons.size() - 1).removeTown(this.getTown());
+    boons.remove(boons.size() - 1);
   }
 
   public void doEffect() {
@@ -249,6 +278,15 @@ public abstract class AltarMeta {
     } else {
       return null;
     }
+  }
+
+  public long getNextEvalTime() {
+    return this.nextEvalTime;
+  }
+
+  public long calcNextEvalTime() {
+    long now = System.currentTimeMillis();
+    return now + QUOTA_PERIOD;
   }
 
   public int getLevel() {
