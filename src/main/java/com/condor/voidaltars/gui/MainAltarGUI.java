@@ -107,9 +107,6 @@ public class MainAltarGUI {
     gui.getFiller().fill(new GuiItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE)));
     GuiItem air = new GuiItem(new ItemStack(Material.AIR));
 
-    // GuiItem confirmPane = new GuiItem(CONFIRM_PANE_RED, event -> {
-    //
-    // });
 
     GuiItem sacrificeSlotLocked = new GuiItem(SACRIFICE_SLOT_LOCKED);
     GuiItem boonSlotLocked = new GuiItem(BOON_SLOT_LOCKED);

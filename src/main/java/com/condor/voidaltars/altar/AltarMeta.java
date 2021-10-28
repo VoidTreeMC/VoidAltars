@@ -23,6 +23,7 @@ import com.condor.voidaltars.altar.altars.FarmAltar;
 import com.condor.voidaltars.altar.multiblock.structures.FarmAltarStructure;
 import com.condor.voidaltars.runnable.PlaySparkleEffect;
 import com.condor.voidaltars.runnable.LightCandles;
+import com.condor.voidaltars.sql.SQLLinker;
 
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.TownyAPI;
@@ -167,6 +168,7 @@ public abstract class AltarMeta {
     Sacrifice newSacrifice = SacrificeManager.getNewSacrifice(this);
     sacrifices.add(newSacrifice);
     this.sacrificesWanted = AltarManager.getSacrificesNeededByLevel(this.level);
+    this.totalRecentSacrifices = 0;
     doEffect();
   }
 
@@ -176,9 +178,17 @@ public abstract class AltarMeta {
     }
     this.level--;
     sacrifices.remove(sacrifices.size() - 1);
-    setCandles(this.level);
-    boons.get(boons.size() - 1).removeTown(this.getTown());
-    boons.remove(boons.size() - 1);
+    if (this.level == 0) {
+      setCandlesLit(false);
+    } else {
+      setCandles(this.level);
+    }
+    if (boons.size() > 0) {
+      boons.get(boons.size() - 1).removeTown(this.getTown());
+      boons.remove(boons.size() - 1);
+    }
+    this.totalRecentSacrifices = 0;
+    SQLLinker.pushToDB(this);
   }
 
   public void doEffect() {
@@ -186,9 +196,13 @@ public abstract class AltarMeta {
     // The interval between lightning strikes. Measured in ticks.
     final int STRIKE_INTERVAL = 40;
     int timeOffset = STRIKE_INTERVAL;
-    ArrayList<Block> candles = this.getCandles();
-    for (Block block : candles) {
-      (new LightCandles(block, this.level)).runTaskLater(AltarMain.getPlugin(), timeOffset);
+    if (this.level == 1) {
+      transformLightningRodsOrCandles(true);
+    }
+    ArrayList<Block> strikeables = this.getCandles();
+    strikeables.addAll(this.getLightningRods());
+    for (Block block : strikeables) {
+      (new LightCandles(block, this.level, this.structure)).runTaskLater(AltarMain.getPlugin(), timeOffset);
       timeOffset += STRIKE_INTERVAL;
     }
     world.strikeLightningEffect(interfaceLoc);
@@ -219,12 +233,50 @@ public abstract class AltarMeta {
     return ret;
   }
 
+  private ArrayList<Block> getLightningRods() {
+    int size = this.structure.getSize();
+    ArrayList<Block> ret = new ArrayList<>();
+    for (int i = -size; i < size * 2; i++) {
+      for (int j = -size; j < size * 2; j++) {
+        for (int k = -size; k < size * 2; k++) {
+          Location currLoc = new Location(interfaceLoc.getWorld(), interfaceLoc.getX() + i, interfaceLoc.getY() + j, interfaceLoc.getZ() + k);
+          Block block = currLoc.getBlock();
+          if (block.getType() == Material.LIGHTNING_ROD) {
+            ret.add(block);
+          }
+        }
+      }
+    }
+    return ret;
+  }
+
+  public void transformLightningRodsOrCandles(boolean toCandles) {
+    if (toCandles) {
+      ArrayList<Block> lightningRods = this.getLightningRods();
+      for (Block block : lightningRods) {
+        block.setType(this.structure.getCandleType());
+      }
+    } else {
+      ArrayList<Block> candles = this.getCandles();
+      for (Block block : candles) {
+        block.setType(Material.LIGHTNING_ROD);
+      }
+    }
+  }
+
   private void setCandles(int amt) {
-    ArrayList<Block> candles = getCandles();
-    for (Block block : candles) {
-      Candle candle = (Candle) block.getBlockData();
-      candle.setCandles(amt);
-      block.setBlockData(candle);
+    if (amt > 0) {
+      ArrayList<Block> candles = getCandles();
+      for (Block block : candles) {
+        Candle candle = (Candle) block.getBlockData();
+        candle.setCandles(amt);
+        block.setBlockData(candle);
+      }
+    } else {
+      ArrayList<Block> candles = getCandles();
+      for (Block block : candles) {
+        block.setType(Material.LIGHTNING_ROD);
+      }
     }
   }
 

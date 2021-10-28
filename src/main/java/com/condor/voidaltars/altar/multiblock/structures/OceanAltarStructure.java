@@ -20,7 +20,11 @@ public class OceanAltarStructure extends AltarStructure {
     materialMap.put(Material.MAGMA_BLOCK, 1);
     materialMap.put(Material.DARK_PRISMARINE_STAIRS, 3);
     materialMap.put(Material.DARK_PRISMARINE, 49);
-    materialMap.put(Material.CYAN_CANDLE, 4);
+    materialMap.put(Material.LIGHTNING_ROD, 4);
+  }
+
+  public Material getCandleType() {
+    return Material.CYAN_CANDLE;
   }
 
   public OceanAltarStructure() {

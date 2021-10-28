@@ -19,7 +19,11 @@ public class NetherAltarStructure extends AltarStructure {
     materialMap.put(Material.RED_NETHER_BRICK_WALL, 27);
     materialMap.put(Material.NETHER_BRICKS, 9);
     materialMap.put(Material.GLOWSTONE, 1);
-    materialMap.put(Material.CYAN_CANDLE, 4);
+    materialMap.put(Material.LIGHTNING_ROD, 4);
+  }
+
+  public Material getCandleType() {
+    return Material.CYAN_CANDLE;
   }
 
   public NetherAltarStructure() {

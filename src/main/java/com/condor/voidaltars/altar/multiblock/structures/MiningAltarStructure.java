@@ -17,9 +17,13 @@ public class MiningAltarStructure extends AltarStructure {
     materialMap.put(Material.DEEPSLATE_IRON_ORE, 25);
     materialMap.put(Material.DEEPSLATE_GOLD_ORE, 9);
     materialMap.put(Material.DEEPSLATE_DIAMOND_ORE, 1);
-    materialMap.put(Material.BLACK_CANDLE, 4);
+    materialMap.put(Material.LIGHTNING_ROD, 4);
     materialMap.put(Material.COBBLED_DEEPSLATE_WALL, 27);
     materialMap.put(Material.COBBLED_DEEPSLATE_STAIRS, 3);
+  }
+
+  public Material getCandleType() {
+    return Material.BLACK_CANDLE;
   }
 
   public MiningAltarStructure() {

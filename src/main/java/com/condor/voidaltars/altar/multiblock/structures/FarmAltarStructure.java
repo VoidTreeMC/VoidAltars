@@ -19,7 +19,11 @@ public class FarmAltarStructure extends AltarStructure {
     materialMap.put(Material.ACACIA_FENCE, 27);
     materialMap.put(Material.HAY_BLOCK, 9);
     materialMap.put(Material.BEE_NEST, 1);
-    materialMap.put(Material.YELLOW_CANDLE, 4);
+    materialMap.put(Material.LIGHTNING_ROD, 4);
+  }
+
+  public Material getCandleType() {
+    return Material.YELLOW_CANDLE;
   }
 
   public FarmAltarStructure() {

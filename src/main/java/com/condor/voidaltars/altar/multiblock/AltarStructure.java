@@ -120,4 +120,6 @@ public abstract class AltarStructure {
   public AltarType getType() {
     return this.type;
   }
+
+  public abstract Material getCandleType();
 }
