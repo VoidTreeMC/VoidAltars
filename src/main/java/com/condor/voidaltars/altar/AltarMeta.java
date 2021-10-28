@@ -74,7 +74,7 @@ public abstract class AltarMeta {
     }
     this.uuid = uuid;
     this.totalRecentSacrifices = 0;
-    this.level = 1;
+    this.level = 0;
     this.weightMap = weightMap;
     this.sacrificesWanted = AltarManager.getSacrificesNeededByLevel(this.level);
     this.interfaceLoc = interfaceLoc;
@@ -298,7 +298,7 @@ public abstract class AltarMeta {
   }
 
   public int getNumSacrificeSlots() {
-    return this.getLevel();
+    return Math.max(1, this.getLevel());
   }
 
   public int getNumBoonSlots() {

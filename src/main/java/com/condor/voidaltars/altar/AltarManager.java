@@ -131,6 +131,8 @@ public class AltarManager {
    */
   public static int getSacrificesNeededByLevel(int level) {
     switch (level) {
+      case 0:
+        return 1;
       case 1:
         return 2;
       case 2:

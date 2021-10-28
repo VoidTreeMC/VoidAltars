@@ -17,11 +17,8 @@ Duck wants people to only be able to change the boon type after every couple sac
 
 Make altars have to be leveled up to level 1 before you get a boon
 
-Add a level 0
-
 RNG isn't working
 
 DID
 ===
-Made altars de-level if you dont sacrifice for awhile
-Added new column to AltarTable in database_design
+Changed altars to default to level 0, which has 1 sacrifice slot and 0 boons
