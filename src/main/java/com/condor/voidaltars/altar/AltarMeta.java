@@ -166,6 +166,7 @@ public abstract class AltarMeta {
     this.level++;
     Sacrifice newSacrifice = SacrificeManager.getNewSacrifice(this);
     sacrifices.add(newSacrifice);
+    this.sacrificesWanted = AltarManager.getSacrificesNeededByLevel(this.level);
     doEffect();
   }
 

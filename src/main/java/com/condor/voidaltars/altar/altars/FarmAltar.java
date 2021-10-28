@@ -20,7 +20,6 @@ public class FarmAltar extends AltarMeta {
 
   static {
     weightMap.put(Material.HAY_BLOCK, 45.0);
-    weightMap.put(Material.HONEY_BLOCK, 33.34);
     weightMap.put(Material.GRASS_BLOCK, 3.0);
     weightMap.put(Material.MYCELIUM, 10.0);
     weightMap.put(Material.PODZOL, 8.0);
@@ -29,7 +28,6 @@ public class FarmAltar extends AltarMeta {
     weightMap.put(Material.DARK_OAK_LOG, 3.0);
     weightMap.put(Material.OAK_LOG, 3.0);
     weightMap.put(Material.SPRUCE_LOG, 3.0);
-    weightMap.put(Material.HONEYCOMB_BLOCK, 21.6);
     weightMap.put(Material.ACACIA_LEAVES, 3.0);
     weightMap.put(Material.BIRCH_LEAVES, 3.0);
     weightMap.put(Material.DARK_OAK_LEAVES, 3.0);

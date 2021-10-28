@@ -44,13 +44,11 @@ public class SacrificeManager {
       weight = 1;
     }
 
-    double randVal = rng.nextDouble() * 10;
+    double randVal = 1 + (rng.nextDouble() / 2);
 
     // amt = (int) (500 * ((0.5 * (1 / weight)) + (0.5 * town.getNumResidents())));
     // amt = (int) Math.floor(town.getNumResidents() * (SCALE * ((0.7 * (1 / weight))) * (maxStackAmount / 16)) + (randVal * maxStackAmount / 6.4));
-    amt = Math.max(1, (int) Math.floor(SCALE * town.getNumResidents() * ((0.7 * 1 / weight)) * maxStackAmount / STACK_SIZE_FACTOR));
-
-    Bukkit.getLogger().info("Amount: " + amt);
+    amt = (int) (Math.max(1, (int) Math.floor(SCALE * town.getNumResidents() * ((0.7 * 1 / weight)) * maxStackAmount / STACK_SIZE_FACTOR)) * randVal);
 
     if (amt <= 0) {
       amt = 1;
