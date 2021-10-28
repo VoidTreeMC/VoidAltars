@@ -63,9 +63,7 @@ public class AltarManager {
     return altarMap.get(uuid);
   }
 
-  public static AltarMeta getAltarFromLoc(Location loc, PlayerInteractEvent event) {
-    Player player = event.getPlayer();
-
+  public static AltarMeta getAltarFromLoc(Location loc, Player player) {
     AltarMeta altarMeta = null;
 
     for (AltarMeta meta : altarMap.values()) {

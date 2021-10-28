@@ -83,14 +83,12 @@ public abstract class AltarStructure {
     // see that all blocks are required
     for (Map.Entry<Material, Integer> entry : materialMap.entrySet()) {
       if (!localBlockMap.containsKey(entry.getKey())) {
-        System.out.println("Altar is missing " + entry.getKey());
         allRequirementsMet = false;
         break;
       }
 
       // If they don't have enough of that block
       if (localBlockMap.get(entry.getKey()) < entry.getValue()) {
-        System.out.println("Altar has " + localBlockMap.get(entry.getKey()) + " " + entry.getKey() + ", but needs " + entry.getValue());
         allRequirementsMet= false;
         break;
       }

@@ -51,6 +51,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.event.player.PlayerHarvestBlockEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
+import org.bukkit.event.block.Action;
 
 import com.condor.voidaltars.listener.AltarListener;
 import com.condor.voidaltars.main.AltarMain;
@@ -72,18 +74,28 @@ public class EventListener  extends AltarListener {
 
   @EventHandler
   public void onPlayerInteractEvent(PlayerInteractEvent event) {
-    if (event.getHand() != EquipmentSlot.HAND || event.getClickedBlock() == null) {
+    if (event.getHand() != EquipmentSlot.HAND || event.getAction() != Action.RIGHT_CLICK_BLOCK) {
       return;
     }
     if (AltarStructure.isPossibleInterfaceBlock(event.getClickedBlock().getType())) {
       Location loc = event.getClickedBlock().getLocation();
-      AltarMeta altarMeta = AltarManager.getAltarFromLoc(loc, event);
+      AltarMeta altarMeta = AltarManager.getAltarFromLoc(loc, event.getPlayer());
       if (altarMeta != null) {
         // TODO: Check access here
         MainAltarGUI.displayAltarGUI(event.getPlayer(), altarMeta);
         event.setCancelled(true);
-      } else {
-        event.getPlayer().sendMessage("This is not an altar.");
+      }
+    }
+  }
+
+  @EventHandler
+  public void onBlockBreakEvent(BlockBreakEvent event) {
+    Block block = event.getBlock();
+    if (AltarStructure.isPossibleInterfaceBlock(block.getType())) {
+      AltarMeta altarMeta = AltarManager.getAltarFromLoc(block.getLocation(), event.getPlayer());
+      if (altarMeta != null) {
+        // TODO: Check access here
+        event.getPlayer().sendMessage("If we had permissions implemented yet, you'd get a message here and the block wouldn't be broken.");
       }
     }
   }

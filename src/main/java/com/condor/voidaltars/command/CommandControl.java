@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.Bukkit;
 
 
 /**
@@ -53,10 +54,10 @@ public abstract class CommandControl implements CommandExecutor {
 	 */
 	public static final void loadExecutors(JavaPlugin j) {
 
-		System.out.println("loadExecutors -> initExecutors");
+		Bukkit.getLogger().info("loadExecutors -> initExecutors");
 
 		initExecutors();
-		System.out.println("initExecutors completed.");
+		Bukkit.getLogger().info("initExecutors completed.");
 
 		//loadall
 		for(Entry<String,CommandControl> c : executors.entrySet()) {
