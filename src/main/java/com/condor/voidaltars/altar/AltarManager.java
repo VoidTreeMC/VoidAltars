@@ -69,7 +69,8 @@ public class AltarManager {
     for (AltarMeta meta : altarMap.values()) {
       // if (locsAreEqual(meta.getLocation(), loc)) {
       if (meta.getLocation().equals(loc)) {
-        return meta;
+        // Return true if it's still a valid altar, false otherwise
+        return (getStructureFromLoc(loc) != null);
         // altarMeta = meta;
         // break;
       }

@@ -19,4 +19,4 @@ Check case where the altar is in a town, and then the chunk gets unclaimed
 
 DID
 ===
-Added precursor to permission handling when altars are broken
+Needs testing: Make it so altars are checked to be valid whenever someone tries to interact with one
