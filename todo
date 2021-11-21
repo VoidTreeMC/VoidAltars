@@ -1,22 +1,11 @@
-Sacrifice algorithm plans
-  0.2w + 0.2x + 0.3y + 0.3z
-
-  w = a value that reflects the rarity of the item
-  x = a value that reflects the number of sacrifices made at this altar
-  y = the number of people in the player's town (potential altar contributors)
-  z = the number of sacrifices made recently for that item
-
-^ We're actually going to use the algorithm below instead, for right now
-
-  0.7w + 0.3y
-
-  w = a value that reflects the rarity of the item
-  y = the number of people in the altar's town (potential altar contributors)
-
 Duck wants people to only be able to change the boon type after every couple sacrifices
 
-Check case where the altar is in a town, and then the chunk gets unclaimed
+Check case where a town tries to have multiple altars
+
+The de-leveling code may be wrong. It checks if the last sacrifice was within a week, not the oldest sacrifice or whatever
+
+Check to see if an altar still meets its structure requirements (slightly complicated because of lightning rods / candles change)
 
 DID
 ===
-Added precursor to permission handling when altars are broken
+Made it so if a town unclaims its altar, the altar's boons get cleared, and the altar cannot be accessed again until the town claims that chunk again

@@ -22,6 +22,9 @@ import com.condor.voidaltars.runnable.PlaySparkleEffect;
 import com.condor.voidaltars.main.AltarMain;
 
 import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.TownyAPI;
+import com.palmergames.bukkit.towny.object.TownBlock;
+import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 
 public class AltarManager {
   private static TreeMap<AltarType, AltarStructure> altarTypeMap = new TreeMap<>();
@@ -69,13 +72,26 @@ public class AltarManager {
     for (AltarMeta meta : altarMap.values()) {
       // if (locsAreEqual(meta.getLocation(), loc)) {
       if (meta.getLocation().equals(loc)) {
-        return meta;
+        // Check if the altar is still in the town it's supposed to be in
+        try {
+          TownBlock tb = TownyAPI.getInstance().getTownBlock(meta.getLocation());
+          // Everything is good. Return the altar
+          if (tb != null && tb.getTown().equals(meta.getTown())) {
+            return meta;
+          }
+          return null;
+        } catch (NotRegisteredException e) {
+          // It's not in a town. This altar's town unclaimed the chunk and it is thus deactivated. Return null.
+          return null;
+        }
         // altarMeta = meta;
         // break;
       }
     }
 
     AltarStructure struc = getStructureFromLoc(loc);
+
+    // TODO: Check if the player has permission in their town to create an altar
 
     // If there's no known altar at this location
     if (altarMeta == null) {

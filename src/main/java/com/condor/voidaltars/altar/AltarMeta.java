@@ -296,12 +296,23 @@ public abstract class AltarMeta {
 
   public void setBoon(Boon boon, int index) {
     if (boons.size() > index) {
-      boons.get(index).removeTown(this.town);
+      if (boons.get(index) != null) {
+        boons.get(index).removeTown(this.town);
+      }
       boons.set(index, boon);
     } else {
       boons.add(boon);
     }
     boon.addTown(this.town);
+  }
+
+  public void clearBoons() {
+    for (int i = 0; i < boons.size(); i++) {
+      if (boons.get(i) != null) {
+        boons.get(i).removeTown(this.getTown());
+        boons.set(i, null);
+      }
+    }
   }
 
   public AltarType getType() {
@@ -368,6 +379,10 @@ public abstract class AltarMeta {
 
   public Town getTown() {
     return this.town;
+  }
+
+  public AltarStructure getStructure() {
+    return this.structure;
   }
 
   public int getSacrificesWanted() {
