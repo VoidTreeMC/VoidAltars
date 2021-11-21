@@ -2,8 +2,9 @@ Duck wants people to only be able to change the boon type after every couple sac
 
 The de-leveling code may be wrong. It checks if the last sacrifice was within a week, not the oldest sacrifice or whatever
 
-Check to see if an altar still meets its structure requirements (slightly complicated because of lightning rods / candles change)
+Permission checking for altar creation
 
 DID
 ===
-Ensured that a town can only have one altar
+Added a check that ensures altars require all of their material components. This includes needing lightning rods for the initial activation and needing candles for subsequent level-ups.
+Switched all TreeMaps to HashMaps as a small optimization

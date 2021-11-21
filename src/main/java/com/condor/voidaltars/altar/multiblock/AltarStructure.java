@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.bukkit.Material;
 import org.bukkit.Location;
 import org.bukkit.Bukkit;
+import org.bukkit.block.data.type.Candle;
 
 import com.condor.voidaltars.altar.AltarType;
 
@@ -57,7 +58,7 @@ public abstract class AltarStructure {
    * @param  loc The location of the altar interface block
    * @return     True if the structure is a valid altar, False otherwise
    */
-  private boolean areBlocksCorrect(Location loc) {
+  private boolean areBlocksCorrect(Location loc, boolean expectCandles) {
     HashMap<Material, Integer> localBlockMap = new HashMap<>();
     // Iterate through the nearby blocks and count them by type
     for (int i = -size; i < size * 2; i++) {
@@ -82,13 +83,15 @@ public abstract class AltarStructure {
     // Iterate through the list of required blocks and check to
     // see that all blocks are required
     for (Map.Entry<Material, Integer> entry : materialMap.entrySet()) {
-      if (!localBlockMap.containsKey(entry.getKey())) {
+      Material key = entry.getKey();
+      if (expectCandles && key == Material.LIGHTNING_ROD) {
+        key = this.getCandleType();
+      }
+      if (!localBlockMap.containsKey(key)) {
         allRequirementsMet = false;
         break;
-      }
-
       // If they don't have enough of that block
-      if (localBlockMap.get(entry.getKey()) < entry.getValue()) {
+      } else if (localBlockMap.get(key) < entry.getValue()) {
         allRequirementsMet= false;
         break;
       }
@@ -102,12 +105,13 @@ public abstract class AltarStructure {
    * and returns a boolean that indicates whether
    * the structure at that location meets the requirements
    * to be considered an altar
-   * @param  loc The location of the altar interface block
-   * @return     True if the structure is a valid altar, False otherwise
+   * @param  loc                The location of the altar interface block
+   * @param  shouldHaveCandles  True if it should have candles, False if it should have lightning rods
+   * @return                    True if the structure is a valid altar, False otherwise
    */
-  public boolean meetsRequirements(Location loc) {
+  public boolean meetsRequirements(Location loc, boolean shouldHaveCandles) {
     boolean isInterfaceCorrect = loc.getBlock().getType() == interfaceBlockType;
-    boolean areBlocksCorrect = isInterfaceCorrect && areBlocksCorrect(loc);
+    boolean areBlocksCorrect = isInterfaceCorrect && areBlocksCorrect(loc, shouldHaveCandles);
     return areBlocksCorrect;
   }
 

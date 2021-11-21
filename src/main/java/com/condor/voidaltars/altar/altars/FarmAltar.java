@@ -64,7 +64,7 @@ public class FarmAltar extends AltarMeta {
   }
 
   public FarmAltar(Location interfaceLoc, UUID uuid) throws NotInATownException {
-    super(AltarType.FARM_ALTAR, uuid, interfaceLoc, AltarManager.getStructureFromLoc(interfaceLoc), weightMap);
+    super(AltarType.FARM_ALTAR, uuid, interfaceLoc, AltarManager.getStructureFromLoc(interfaceLoc, false), weightMap);
   }
 
   public FarmAltar(UUID uuid, String typeStr, UUID townUUID, String worldStr, int level, double x, double y, double z,

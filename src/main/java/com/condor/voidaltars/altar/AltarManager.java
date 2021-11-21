@@ -76,7 +76,10 @@ public class AltarManager {
         try {
           TownBlock tb = TownyAPI.getInstance().getTownBlock(meta.getLocation());
           if (tb != null && tb.getTown().equals(meta.getTown())) {
-            return meta;
+            // If it's still a valid altar
+            if (getStructureFromLoc(loc, true) != null) {
+              return meta;
+            }
           }
           return null;
         } catch (NotRegisteredException e) {
@@ -88,7 +91,7 @@ public class AltarManager {
       }
     }
 
-    AltarStructure struc = getStructureFromLoc(loc);
+    AltarStructure struc = getStructureFromLoc(loc, false);
 
     // TODO: Check if the player has permission in their town to create an altar
 
@@ -140,10 +143,10 @@ public class AltarManager {
     }
   }
 
-  public static AltarStructure getStructureFromLoc(Location loc) {
+  public static AltarStructure getStructureFromLoc(Location loc, boolean shouldHaveCandles) {
     AltarStructure struc = null;
     for (AltarStructure altarStructure : altarTypeMap.values()) {
-      if (altarStructure.meetsRequirements(loc)) {
+      if (altarStructure.meetsRequirements(loc, shouldHaveCandles)) {
         struc = altarStructure;
         break;
       }
