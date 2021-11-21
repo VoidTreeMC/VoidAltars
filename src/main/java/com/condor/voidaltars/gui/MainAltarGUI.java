@@ -36,16 +36,15 @@ public class MainAltarGUI {
   private static ItemStack INSTRUCTION_BOOK = new ItemStack(Material.BOOK);
   private static ItemStack SACRIFICE_SLOT_LOCKED = new ItemStack(Material.BARRIER);
   private static ItemStack BOON_SLOT_LOCKED = new ItemStack(Material.BARRIER);
+  private static final String ALTAR_WEBPAGE = "" + ChatColor.GOLD + ChatColor.UNDERLINE + "https://www.voidtreemc.com/voidtree-altar-help";
 
   static {
     ItemMeta bookMeta = INSTRUCTION_BOOK.getItemMeta();
     bookMeta.setDisplayName("Instructions");
     ArrayList<String> bookLore = new ArrayList<>();
-    bookLore.add("Blah blah");
-    bookLore.add("Blah blah");
-    bookLore.add("Blah blah");
-    bookLore.add("Blah blah");
-    bookLore.add("Blah blah");
+    bookLore.add("Click on me");
+    bookLore.add("for more information");
+    bookLore.add("about VoidTree altars");
     bookMeta.setLore(bookLore);
     INSTRUCTION_BOOK.setItemMeta(bookMeta);
 
@@ -210,7 +209,10 @@ public class MainAltarGUI {
       gui.setItem(5, 2 + (2 * i), boonSlotLocked);
     }
 
-    GuiItem bookItem = new GuiItem(INSTRUCTION_BOOK);
+    GuiItem bookItem = new GuiItem(INSTRUCTION_BOOK, event -> {
+      player.sendMessage(ChatColor.YELLOW + "More altar information is available at the following webpage");
+      player.sendMessage(ALTAR_WEBPAGE);
+    });
     GuiItem hopperItem = new GuiItem(sacrificeProgressItem);
 
     gui.setItem(1, 5, hopperItem);
