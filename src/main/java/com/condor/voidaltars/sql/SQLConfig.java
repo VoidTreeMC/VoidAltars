@@ -1,12 +1,12 @@
 package com.condor.voidaltars.sql;
 
-import java.util.TreeMap;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.io.File;
 
 public class SQLConfig {
-  private static TreeMap<String, String> valMap = new TreeMap<>();
+  private static HashMap<String, String> valMap = new HashMap<>();
 
   public static void init() {
     // TODO: Make dir and file if not exist

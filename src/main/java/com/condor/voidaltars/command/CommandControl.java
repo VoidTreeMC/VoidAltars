@@ -1,7 +1,7 @@
 package com.condor.voidaltars.command;
 
 import java.util.Map.Entry;
-import java.util.TreeMap;
+import java.util.HashMap;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -42,7 +42,7 @@ public abstract class CommandControl implements CommandExecutor {
 
 
 
-	private static TreeMap<String,CommandControl> executors = new TreeMap<>();
+	private static HashMap<String,CommandControl> executors = new HashMap<>();
 
 	public static void initExecutors() {
 

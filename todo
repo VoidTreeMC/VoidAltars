@@ -1,11 +1,9 @@
 Duck wants people to only be able to change the boon type after every couple sacrifices
 
-Check case where a town tries to have multiple altars
-
 The de-leveling code may be wrong. It checks if the last sacrifice was within a week, not the oldest sacrifice or whatever
 
 Check to see if an altar still meets its structure requirements (slightly complicated because of lightning rods / candles change)
 
 DID
 ===
-Made it so if a town unclaims its altar, the altar's boons get cleared, and the altar cannot be accessed again until the town claims that chunk again
+Ensured that a town can only have one altar

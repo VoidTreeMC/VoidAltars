@@ -1,6 +1,6 @@
 package com.condor.voidaltars.altar.altars;
 
-import java.util.TreeMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -16,7 +16,7 @@ import com.condor.voidaltars.altar.multiblock.structures.FarmAltarStructure;
 
 public class FarmAltar extends AltarMeta {
 
-  private static TreeMap<Material, Double> weightMap = new TreeMap<>();
+  private static HashMap<Material, Double> weightMap = new HashMap<>();
 
   static {
     weightMap.put(Material.HAY_BLOCK, 45.0);

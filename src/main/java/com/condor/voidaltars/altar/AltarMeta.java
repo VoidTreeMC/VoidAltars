@@ -3,7 +3,7 @@ package com.condor.voidaltars.altar;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.TreeMap;
+import java.util.HashMap;
 import java.util.UUID;
 
 import org.bukkit.Location;
@@ -47,7 +47,7 @@ public abstract class AltarMeta {
   int level;
   // The total number of sacrifices made to this altar, ever
   int totalSacrificesMade;
-  TreeMap<Material, Double> weightMap;
+  HashMap<Material, Double> weightMap;
   long nextEvalTime;
   // Might end up being unused. To be used later, when statistics are
   // being implemented.
@@ -60,7 +60,7 @@ public abstract class AltarMeta {
 
   private static Random rng = new Random();
 
-  public AltarMeta(AltarType type, UUID uuid, Location interfaceLoc, AltarStructure structure, TreeMap<Material, Double> weightMap) throws NotInATownException {
+  public AltarMeta(AltarType type, UUID uuid, Location interfaceLoc, AltarStructure structure, HashMap<Material, Double> weightMap) throws NotInATownException {
     this.type = type;
     this.structure = structure;
     TownBlock tb = TownyAPI.getInstance().getTownBlock(interfaceLoc);
@@ -88,7 +88,7 @@ public abstract class AltarMeta {
 
   public AltarMeta(UUID uuid, String type, UUID townUUID, String worldStr, int level, double x, double y, double z,
                    ArrayList<String> boonList, ArrayList<byte[]> sacrificeList, int totalRecentSacrifices, int totalSacrificesMade,
-                   TreeMap<Material, Double> weightMap, long nextEvalTime, AltarStructure structure) {
+                   HashMap<Material, Double> weightMap, long nextEvalTime, AltarStructure structure) {
    this.uuid = uuid;
    this.type = AltarType.getTypeFromString(type);
    this.weightMap = weightMap;

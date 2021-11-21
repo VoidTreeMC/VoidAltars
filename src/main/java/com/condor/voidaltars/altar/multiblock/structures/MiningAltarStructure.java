@@ -1,6 +1,6 @@
 package com.condor.voidaltars.altar.multiblock.structures;
 
-import java.util.TreeMap;
+import java.util.HashMap;
 import java.lang.Integer;
 
 import org.bukkit.Material;
@@ -9,7 +9,7 @@ import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.altar.AltarType;
 
 public class MiningAltarStructure extends AltarStructure {
-  private static TreeMap<Material, Integer> materialMap = new TreeMap<>();
+  private static HashMap<Material, Integer> materialMap = new HashMap<>();
   private static final int size = 5;
   private static final Material interfaceBlockType = Material.CAMPFIRE;
 

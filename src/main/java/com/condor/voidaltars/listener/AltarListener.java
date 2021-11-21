@@ -1,7 +1,7 @@
 package com.condor.voidaltars.listener;
 
 import java.util.Map.Entry;
-import java.util.TreeMap;
+import java.util.HashMap;
 
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,7 +20,7 @@ public abstract class AltarListener implements Listener {
 	 * @param String name simpleclass name
 	 * @param Listener listener
 	 */
-	private static TreeMap<String,Listener> listeners = new TreeMap<>();
+	private static HashMap<String,Listener> listeners = new HashMap<>();
 
 
 	//Create new Instances of every listener we want HERE

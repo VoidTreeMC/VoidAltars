@@ -1,6 +1,6 @@
 package com.condor.voidaltars.altar.boons;
 
-import java.util.TreeMap;
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Level;
@@ -43,7 +43,7 @@ public class EndBoon extends Boon {
 
   private static Random rng = new Random();
 
-  private static TreeMap<UUID, Long> cooldownMap = new TreeMap<>();
+  private static HashMap<UUID, Long> cooldownMap = new HashMap<>();
 
   // Message cooldown duration
   private static final long MESSAGE_COOLDOWN_DURATION = 40 * 5;

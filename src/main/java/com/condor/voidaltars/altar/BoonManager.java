@@ -1,6 +1,6 @@
 package com.condor.voidaltars.altar;
 
-import java.util.TreeMap;
+import java.util.HashMap;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.Map.Entry;
@@ -11,7 +11,7 @@ import org.bukkit.Bukkit;
 import com.condor.voidaltars.altar.boons.*;
 
 public class BoonManager {
-  private static TreeMap<BoonType, Boon> boonMap = new TreeMap<>();
+  private static HashMap<BoonType, Boon> boonMap = new HashMap<>();
 
   static {
     // boonMap.put(BoonType.HARVEST_BOON, new HarvestBoon());
@@ -33,7 +33,7 @@ public class BoonManager {
     return boonMap.values();
   }
 
-  public static TreeMap<BoonType, Boon> getMap() {
+  public static HashMap<BoonType, Boon> getMap() {
     return boonMap;
   }
 

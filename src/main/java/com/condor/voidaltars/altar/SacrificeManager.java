@@ -1,7 +1,7 @@
 package com.condor.voidaltars.altar;
 
 import java.lang.Long;
-import java.util.TreeMap;
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Random;
 import java.lang.Math;
@@ -16,10 +16,10 @@ public class SacrificeManager {
   // Long: The time sacrificed | Sacrifice: The sacrifice
 
   // Sacrifices whose quota may be empty or in progress and are thus not completed
-  private static TreeMap<Long, Sacrifice> currentSacrifices = new TreeMap<>();
+  private static HashMap<Long, Sacrifice> currentSacrifices = new HashMap<>();
 
   // Sacrifices whose quotas have already been satisfied and are thus completed
-  private static TreeMap<Long, Sacrifice> previousSacrifices = new TreeMap<>();
+  private static HashMap<Long, Sacrifice> previousSacrifices = new HashMap<>();
 
   private static Random rng = new Random();
 

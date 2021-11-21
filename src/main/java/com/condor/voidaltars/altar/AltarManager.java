@@ -1,6 +1,6 @@
 package com.condor.voidaltars.altar;
 
-import java.util.TreeMap;
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.Map.Entry;
 
@@ -27,8 +27,8 @@ import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 
 public class AltarManager {
-  private static TreeMap<AltarType, AltarStructure> altarTypeMap = new TreeMap<>();
-  private static TreeMap<UUID, AltarMeta> altarMap = new TreeMap<>();
+  private static HashMap<AltarType, AltarStructure> altarTypeMap = new HashMap<>();
+  private static HashMap<UUID, AltarMeta> altarMap = new HashMap<>();
 
   public AltarManager() {
     init();
@@ -75,7 +75,6 @@ public class AltarManager {
         // Check if the altar is still in the town it's supposed to be in
         try {
           TownBlock tb = TownyAPI.getInstance().getTownBlock(meta.getLocation());
-          // Everything is good. Return the altar
           if (tb != null && tb.getTown().equals(meta.getTown())) {
             return meta;
           }
@@ -101,6 +100,22 @@ public class AltarManager {
       // If it IS a valid altar but we dont know about it,
       // we create a new altar meta for it and add it to the map
       } else {
+        // If there's already an altar in that town, return null
+        try {
+          TownBlock tb = TownyAPI.getInstance().getTownBlock(loc);
+          if (tb != null) {
+            Town town = tb.getTown();
+            if (town != null) {
+              AltarMeta townAltar = getAltarFromTown(town);
+              if (townAltar != null) {
+                player.sendMessage("Your town already has an altar. You cannot create another one.");
+                return null;
+              }
+            }
+          }
+        } catch (NotRegisteredException e) {
+          // Ignore
+        }
         try {
           switch (struc.getType()) {
             case FARM_ALTAR:

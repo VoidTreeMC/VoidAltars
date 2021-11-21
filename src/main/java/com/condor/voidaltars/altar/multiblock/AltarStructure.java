@@ -1,6 +1,6 @@
 package com.condor.voidaltars.altar.multiblock;
 
-import java.util.TreeMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 
@@ -11,14 +11,14 @@ import org.bukkit.Bukkit;
 import com.condor.voidaltars.altar.AltarType;
 
 public abstract class AltarStructure {
-  private TreeMap<Material, Integer> materialMap;
+  private HashMap<Material, Integer> materialMap;
   private int size;
   private Material interfaceBlockType;
   private AltarType type;
   private static ArrayList<Material> knownInterfaceBlocks = new ArrayList<>();
 
 
-  public AltarStructure(AltarType type, TreeMap<Material, Integer> matMap, int size, Material interfaceBlockType) {
+  public AltarStructure(AltarType type, HashMap<Material, Integer> matMap, int size, Material interfaceBlockType) {
     // If we haven't seen this interface block type before, register it
     if (!isPossibleInterfaceBlock(interfaceBlockType)) {
       knownInterfaceBlocks.add(interfaceBlockType);
@@ -58,7 +58,7 @@ public abstract class AltarStructure {
    * @return     True if the structure is a valid altar, False otherwise
    */
   private boolean areBlocksCorrect(Location loc) {
-    TreeMap<Material, Integer> localBlockMap = new TreeMap<>();
+    HashMap<Material, Integer> localBlockMap = new HashMap<>();
     // Iterate through the nearby blocks and count them by type
     for (int i = -size; i < size * 2; i++) {
       for (int j = -size; j < size * 2; j++) {
