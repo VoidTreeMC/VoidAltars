@@ -55,8 +55,9 @@ public abstract class AltarMeta {
 
   // The amount of milliseconds in a quota period
   // Currently, 1 week
-  // private final static long QUOTA_PERIOD = 1000 * 60 * 60 * 24 * 7;
-  private final static long QUOTA_PERIOD = 1000 * 60 * 2;
+  private final static long QUOTA_PERIOD = 1000 * 60 * 60 * 24 * 7;
+  // A 2-minute quota window to be used for testing
+  // private final static long QUOTA_PERIOD = 1000 * 60 * 2;
 
   private static Random rng = new Random();
 

@@ -1,10 +1,13 @@
 Duck wants people to only be able to change the boon type after every couple sacrifices
+  - We decided to delay this. Players should be able to switch their altar boon as much as they want early on, so they can try out all of the boons and test them
 
-The de-leveling code may be wrong. It checks if the last sacrifice was within a week, not the oldest sacrifice or whatever
+Create a file with a bunch of constants, especially for strings
 
-Permission checking for altar creation
+A command that people can use to see recent transactions on their altar, such as who has recently sacrificed to the altar, and what boons have been changed, etc.
 
 DID
 ===
-Added a check that ensures altars require all of their material components. This includes needing lightning rods for the initial activation and needing candles for subsequent level-ups.
-Switched all TreeMaps to HashMaps as a small optimization
+Added permission checking
+- only mayors and high priests can create altars
+- only mayors, high priests, and people with the "condor.altar.override-boon" permission node can change altar boons
+Checked and fixed a bunch of cases, such as when players try to activate altars in a town they dont own.

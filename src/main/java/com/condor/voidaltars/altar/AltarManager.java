@@ -25,6 +25,8 @@ import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+import com.palmergames.bukkit.towny.object.Resident;
+import com.palmergames.bukkit.towny.TownyUniverse;
 
 public class AltarManager {
   private static HashMap<AltarType, AltarStructure> altarTypeMap = new HashMap<>();
@@ -66,6 +68,8 @@ public class AltarManager {
     return altarMap.get(uuid);
   }
 
+  // TODO: Refactor this to make it a bit cleaner.
+  // Separate it into two sections: Looking for existing altar, creating new altar
   public static AltarMeta getAltarFromLoc(Location loc, Player player) {
     AltarMeta altarMeta = null;
 
@@ -79,6 +83,8 @@ public class AltarManager {
             // If it's still a valid altar
             if (getStructureFromLoc(loc, true) != null) {
               return meta;
+            } else {
+              player.sendMessage("This is no longer a valid altar. The gods are not pleased.");
             }
           }
           return null;
@@ -93,7 +99,29 @@ public class AltarManager {
 
     AltarStructure struc = getStructureFromLoc(loc, false);
 
-    // TODO: Check if the player has permission in their town to create an altar
+    TownBlock tb = null;
+    Town town = null;
+    Resident resident = null;
+    resident = TownyUniverse.getInstance().getResident(player.getUniqueId());
+    tb = TownyAPI.getInstance().getTownBlock(loc);
+    if (tb != null) {
+      try {
+        town = tb.getTown();
+        if (town != null) {
+          if (resident.getTown() == null || !resident.getTown().getUUID().equals(town.getUUID())) {
+            player.sendMessage("You can only create altars in a town that you own.");
+            return null;
+          }
+        }
+      } catch (NotRegisteredException e) {
+        // Ignore
+      }
+    }
+
+    if (resident == null || (!resident.isMayor() && !resident.hasTownRank("high-priest"))) {
+      player.sendMessage("You must be a mayor or a high-priest of this town to create an altar here.");
+      return null;
+    }
 
     // If there's no known altar at this location
     if (altarMeta == null) {
@@ -104,20 +132,12 @@ public class AltarManager {
       // we create a new altar meta for it and add it to the map
       } else {
         // If there's already an altar in that town, return null
-        try {
-          TownBlock tb = TownyAPI.getInstance().getTownBlock(loc);
-          if (tb != null) {
-            Town town = tb.getTown();
-            if (town != null) {
-              AltarMeta townAltar = getAltarFromTown(town);
-              if (townAltar != null) {
-                player.sendMessage("Your town already has an altar. You cannot create another one.");
-                return null;
-              }
-            }
+        if (town != null) {
+          AltarMeta townAltar = getAltarFromTown(town);
+          if (townAltar != null) {
+            player.sendMessage("Your town already has an altar. You cannot create another one.");
+            return null;
           }
-        } catch (NotRegisteredException e) {
-          // Ignore
         }
         try {
           switch (struc.getType()) {

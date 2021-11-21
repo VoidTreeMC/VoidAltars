@@ -25,6 +25,10 @@ import com.condor.voidaltars.sql.SQLLinker;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 
+import com.palmergames.bukkit.towny.object.Resident;
+import com.palmergames.bukkit.towny.TownyUniverse;
+import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+
 public class MainAltarGUI {
 
   private static Random rng = new Random();
@@ -181,7 +185,22 @@ public class MainAltarGUI {
           player.sendMessage(ChatColor.GOLD + boon.getName() + ": " + ChatColor.YELLOW + boon.getDescription());
           gui.close(player);
         } else {
-          SelectBoonGUI.displayBoonGUI(player, altarMeta, index);
+          Resident resident = TownyUniverse.getInstance().getResident(player.getUniqueId());
+          try {
+            // If they're in the same town and are a mayor/high priest, OR they have the staff permission node to override any boon
+            if ((resident.getTown() != null && resident.getTown().getUUID().equals(altarMeta.getTown().getUUID())) ||
+                 player.hasPermission("condor.altar.override-boon")) {
+              if (resident.isMayor() || resident.hasTownRank("high-priest") || player.hasPermission("condor.altar.override-boon")) {
+                SelectBoonGUI.displayBoonGUI(player, altarMeta, index);
+              } else {
+                player.sendMessage("You must be a mayor or a high-priest to change your town's altar boons.");
+              }
+            } else {
+              player.sendMessage("You cannot change the boons of another town's altar.");
+            }
+          } catch (NotRegisteredException e) {
+            // Not registered. Ignore and do nothing.
+          }
         }
       });
       gui.setItem(5, 2 + (2 * i), boonGuiItem);
