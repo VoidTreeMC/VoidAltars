@@ -1,12 +1,13 @@
 Duck wants people to only be able to change the boon type after every couple sacrifices
   - We decided to delay this. Players should be able to switch their altar boon as much as they want early on, so they can try out all of the boons and test them
 
-Create a file with a bunch of constants, especially for strings
-
 A command that people can use to see recent transactions on their altar, such as who has recently sacrificed to the altar, and what boons have been changed, etc.
 
-Add config file for string messages
+Case handling for the database loading an altar from a town that no longer exists
+Command that reloads the text file
 
 DID
 ===
-Consolidated the majority of string constants to one file
+Added a new constants file that deals with lists of strings
+Plugged in the config loading code
+Made it so config loaders (both SQL and text) create the file if it does not already exist

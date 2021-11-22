@@ -85,7 +85,7 @@ public class AltarManager {
             if (getStructureFromLoc(loc, true) != null) {
               return meta;
             } else {
-              player.sendMessage(StringConstants.ALTAR_NO_LONGER_VALID);
+              player.sendMessage(StringConstants.ALTAR_NO_LONGER_VALID.get());
             }
           }
           return null;
@@ -110,7 +110,7 @@ public class AltarManager {
         town = tb.getTown();
         if (town != null) {
           if (resident.getTown() == null || !resident.getTown().getUUID().equals(town.getUUID())) {
-            player.sendMessage(StringConstants.MUST_BE_IN_TOWN_TO_CREATE_ALTAR_THERE);
+            player.sendMessage(StringConstants.MUST_BE_IN_TOWN_TO_CREATE_ALTAR_THERE.get());
             return null;
           }
         }
@@ -120,7 +120,7 @@ public class AltarManager {
     }
 
     if (resident == null || (!resident.isMayor() && !resident.hasTownRank("high-priest"))) {
-      player.sendMessage(StringConstants.NO_PERMISSIONS_TO_CREATE_ALTAR);
+      player.sendMessage(StringConstants.NO_PERMISSIONS_TO_CREATE_ALTAR.get());
       return null;
     }
 
@@ -136,7 +136,7 @@ public class AltarManager {
         if (town != null) {
           AltarMeta townAltar = getAltarFromTown(town);
           if (townAltar != null) {
-            player.sendMessage(StringConstants.NO_DUPLICATE_ALTARS);
+            player.sendMessage(StringConstants.NO_DUPLICATE_ALTARS.get());
             return null;
           }
         }
@@ -154,7 +154,7 @@ public class AltarManager {
           return altarMeta;
         } catch (NotInATownException e) {
           // They're not in a town. Ignore it.
-          player.sendMessage(StringConstants.NO_ALTARS_IN_THE_WILD);
+          player.sendMessage(StringConstants.NO_ALTARS_IN_THE_WILD.get());
           return null;
         }
       }

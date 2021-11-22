@@ -23,6 +23,7 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.condor.voidaltars.altar.Boon;
 import com.condor.voidaltars.altar.BoonType;
 import com.condor.voidaltars.constants.StringConstants;
+import com.condor.voidaltars.constants.StringListConstants;
 
 public class RancherBoon extends Boon {
 
@@ -35,14 +36,14 @@ public class RancherBoon extends Boon {
   }
 
   public RancherBoon() {
-    super(StringConstants.RANCHER_BLESSING_NAME, StringConstants.RANCHER_BLESSING_DESCRIPTION, triggerList, BoonType.RANCHER_BOON);
+    super(StringConstants.RANCHER_BLESSING_NAME.get(), StringConstants.RANCHER_BLESSING_DESCRIPTION.get(), triggerList, BoonType.RANCHER_BOON);
   }
 
   public ItemStack getIcon() {
     ItemStack is = new ItemStack(Material.BEACON, 1);
     ItemMeta meta = is.getItemMeta();
-    meta.setDisplayName(StringConstants.RANCHER_BLESSING_NAME);
-    meta.setLore(StringConstants.RANCHER_BLESSING_LORE);
+    meta.setDisplayName(StringConstants.RANCHER_BLESSING_NAME.get());
+    meta.setLore(StringListConstants.RANCHER_BLESSING_LORE.get());
     is.setItemMeta(meta);
     return is;
   }

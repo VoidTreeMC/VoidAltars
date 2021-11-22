@@ -33,6 +33,7 @@ import com.palmergames.bukkit.towny.object.Resident;
 import com.condor.voidaltars.altar.Boon;
 import com.condor.voidaltars.altar.BoonType;
 import com.condor.voidaltars.constants.StringConstants;
+import com.condor.voidaltars.constants.StringListConstants;
 
 public class EndBoon extends Boon {
 
@@ -50,14 +51,14 @@ public class EndBoon extends Boon {
   }
 
   public EndBoon() {
-    super(StringConstants.END_BLESSING_NAME, StringConstants.END_BLESSING_DESCRIPTION, triggerList, BoonType.END_BOON);
+    super(StringConstants.END_BLESSING_NAME.get(), StringConstants.END_BLESSING_DESCRIPTION.get(), triggerList, BoonType.END_BOON);
   }
 
   public ItemStack getIcon() {
     ItemStack is = new ItemStack(Material.BEACON, 1);
     ItemMeta meta = is.getItemMeta();
-    meta.setDisplayName(StringConstants.END_BLESSING_NAME);
-    meta.setLore(StringConstants.END_BLESSING_LORE);
+    meta.setDisplayName(StringConstants.END_BLESSING_NAME.get());
+    meta.setLore(StringListConstants.END_BLESSING_LORE.get());
     is.setItemMeta(meta);
     return is;
   }

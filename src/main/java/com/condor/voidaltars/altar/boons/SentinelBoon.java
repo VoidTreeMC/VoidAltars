@@ -22,6 +22,7 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.condor.voidaltars.altar.Boon;
 import com.condor.voidaltars.altar.BoonType;
 import com.condor.voidaltars.constants.StringConstants;
+import com.condor.voidaltars.constants.StringListConstants;
 
 public class SentinelBoon extends Boon {
 
@@ -34,14 +35,14 @@ public class SentinelBoon extends Boon {
   }
 
   public SentinelBoon() {
-    super(StringConstants.SENTINEL_BLESSING_NAME, StringConstants.SENTINEL_BLESSING_DESCRIPTION, triggerList, BoonType.SENTINEL_BOON);
+    super(StringConstants.SENTINEL_BLESSING_NAME.get(), StringConstants.SENTINEL_BLESSING_DESCRIPTION.get(), triggerList, BoonType.SENTINEL_BOON);
   }
 
   public ItemStack getIcon() {
     ItemStack is = new ItemStack(Material.BEACON, 1);
     ItemMeta meta = is.getItemMeta();
-    meta.setDisplayName(StringConstants.SENTINEL_BLESSING_NAME);
-    meta.setLore(StringConstants.SENTINEL_BLESSING_LORE);
+    meta.setDisplayName(StringConstants.SENTINEL_BLESSING_NAME.get());
+    meta.setLore(StringListConstants.SENTINEL_BLESSING_LORE.get());
     is.setItemMeta(meta);
     return is;
   }

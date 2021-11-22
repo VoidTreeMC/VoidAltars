@@ -121,9 +121,9 @@ public class MainAltarGUI {
     hopperLore.add("Altar level: " + altarMeta.getLevel());
     int sacRemaining = altarMeta.getSacrificesRemaining();
     if (sacRemaining > 0) {
-      hopperLore.add(StringConstants.SACRIFICES_REMAINING_TO_PLEASE + sacRemaining);
+      hopperLore.add(StringConstants.SACRIFICES_REMAINING_TO_PLEASE.get() + sacRemaining);
     } else {
-      hopperLore.add(StringConstants.SACRIFICES_REMAINING_TO_LEVEL + altarMeta.getSacrificesNeededForLevelUp());
+      hopperLore.add(StringConstants.SACRIFICES_REMAINING_TO_LEVEL.get() + altarMeta.getSacrificesNeededForLevelUp());
     }
     hopperMeta.setLore(hopperLore);
     sacrificeProgressItem.setItemMeta(hopperMeta);
@@ -192,10 +192,10 @@ public class MainAltarGUI {
               if (resident.isMayor() || resident.hasTownRank("high-priest") || player.hasPermission("condor.altar.override-boon")) {
                 SelectBoonGUI.displayBoonGUI(player, altarMeta, index);
               } else {
-                player.sendMessage(StringConstants.NO_PERMISSIONS_TO_CHANGE_BOONS);
+                player.sendMessage(StringConstants.NO_PERMISSIONS_TO_CHANGE_BOONS.get());
               }
             } else {
-              player.sendMessage(StringConstants.NOT_MEMBER_OF_ALTARS_TOWN);
+              player.sendMessage(StringConstants.NOT_MEMBER_OF_ALTARS_TOWN.get());
             }
           } catch (NotRegisteredException e) {
             // Not registered. Ignore and do nothing.
@@ -211,7 +211,7 @@ public class MainAltarGUI {
 
     GuiItem bookItem = new GuiItem(INSTRUCTION_BOOK, event -> {
       player.sendMessage(ChatColor.YELLOW + "More altar information is available at the following webpage");
-      player.sendMessage(StringConstants.ALTAR_HELP_WEBPAGE);
+      player.sendMessage(StringConstants.ALTAR_HELP_WEBPAGE.get());
     });
     GuiItem hopperItem = new GuiItem(sacrificeProgressItem);
 

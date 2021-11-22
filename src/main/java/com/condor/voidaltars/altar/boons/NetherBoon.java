@@ -27,6 +27,7 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.condor.voidaltars.altar.Boon;
 import com.condor.voidaltars.altar.BoonType;
 import com.condor.voidaltars.constants.StringConstants;
+import com.condor.voidaltars.constants.StringListConstants;
 
 public class NetherBoon extends Boon {
 
@@ -41,14 +42,14 @@ public class NetherBoon extends Boon {
   }
 
   public NetherBoon() {
-    super(StringConstants.NETHER_BLESSING_NAME, StringConstants.NETHER_BLESSING_DESCRIPTION, triggerList, BoonType.NETHER_BOON);
+    super(StringConstants.NETHER_BLESSING_NAME.get(), StringConstants.NETHER_BLESSING_DESCRIPTION.get(), triggerList, BoonType.NETHER_BOON);
   }
 
   public ItemStack getIcon() {
     ItemStack is = new ItemStack(Material.BEACON, 1);
     ItemMeta meta = is.getItemMeta();
-    meta.setDisplayName(StringConstants.NETHER_BLESSING_NAME);
-    meta.setLore(StringConstants.NETHER_BLESSING_LORE);
+    meta.setDisplayName(StringConstants.NETHER_BLESSING_NAME.get());
+    meta.setLore(StringListConstants.NETHER_BLESSING_LORE.get());
     is.setItemMeta(meta);
     return is;
   }

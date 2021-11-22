@@ -96,7 +96,7 @@ public class EventListener  extends AltarListener {
       for (Resident resident : town.getResidents()) {
         Player player = resident.getPlayer();
         if (player != null) {
-          player.sendMessage(StringConstants.TOWN_HAS_UNCLAIMED_ALTAR);
+          player.sendMessage(StringConstants.TOWN_HAS_UNCLAIMED_ALTAR.get());
         }
       }
       // Disable the altar's boons

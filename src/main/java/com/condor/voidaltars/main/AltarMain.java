@@ -14,6 +14,7 @@ import com.condor.voidaltars.listener.AltarListener;
 import com.condor.voidaltars.altar.AltarManager;
 import com.condor.voidaltars.sql.SQLLinker;
 import com.condor.voidaltars.sql.SQLConfig;
+import com.condor.voidaltars.constants.ConstantsLoader;
 
 // import net.milkbowl.vault.economy.Economy;
 // import net.milkbowl.vault.economy.EconomyResponse;
@@ -97,6 +98,9 @@ public class AltarMain extends JavaPlugin {
 
 		Bukkit.getLogger().info("Calling onStart...");
 		this.onStart();
+
+    Bukkit.getLogger().info("Loading text config...");
+    ConstantsLoader.init();
 
     Bukkit.getLogger().info("Loading has been completed!");
 
