@@ -7,7 +7,4 @@ A command that people can use to see recent transactions on their altar, such as
 
 DID
 ===
-Added permission checking
-- only mayors and high priests can create altars
-- only mayors, high priests, and people with the "condor.altar.override-boon" permission node can change altar boons
-Checked and fixed a bunch of cases, such as when players try to activate altars in a town they dont own.
+Changed "Farm altar" to "Agriculture altar"

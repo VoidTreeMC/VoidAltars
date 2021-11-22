@@ -1,7 +1,7 @@
 package com.condor.voidaltars.altar;
 
 public enum AltarType {
-  FARM_ALTAR("Farm Altar"),
+  FARM_ALTAR("Agriculture Altar"),
   MINING_ALTAR("Mining Altar"),
   NETHER_ALTAR("Nether Altar"),
   OCEAN_ALTAR("Ocean Altar");
