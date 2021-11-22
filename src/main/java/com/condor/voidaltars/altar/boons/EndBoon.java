@@ -32,14 +32,11 @@ import com.palmergames.bukkit.towny.object.Resident;
 
 import com.condor.voidaltars.altar.Boon;
 import com.condor.voidaltars.altar.BoonType;
+import com.condor.voidaltars.constants.StringConstants;
 
 public class EndBoon extends Boon {
 
-  private static final String NAME = "Blessing of the End";
-  private static ArrayList<String> loreList = new ArrayList<>();
   private static ArrayList<Class> triggerList = new ArrayList<>();
-
-  private static final String DESCRIPTION = "The gods protect everyone in your town from the void. If you fall into the void, you will wake up in bed.";
 
   private static Random rng = new Random();
 
@@ -49,21 +46,18 @@ public class EndBoon extends Boon {
   private static final long MESSAGE_COOLDOWN_DURATION = 40 * 5;
 
   static {
-    loreList.add("Gaze into the void.");
-    loreList.add(ChatColor.MAGIC + "123" + ChatColor.RESET + ChatColor.RED + "" + ChatColor.BOLD + "" + ChatColor.ITALIC + "IT GAZES BACK" + ChatColor.DARK_PURPLE + "" + ChatColor.MAGIC + "123" + ChatColor.RESET);
-
     triggerList.add(EntityDamageEvent.class);
   }
 
   public EndBoon() {
-    super(NAME, DESCRIPTION, triggerList, BoonType.END_BOON);
+    super(StringConstants.END_BLESSING_NAME, StringConstants.END_BLESSING_DESCRIPTION, triggerList, BoonType.END_BOON);
   }
 
   public ItemStack getIcon() {
     ItemStack is = new ItemStack(Material.BEACON, 1);
     ItemMeta meta = is.getItemMeta();
-    meta.setDisplayName(NAME);
-    meta.setLore(loreList);
+    meta.setDisplayName(StringConstants.END_BLESSING_NAME);
+    meta.setLore(StringConstants.END_BLESSING_LORE);
     is.setItemMeta(meta);
     return is;
   }

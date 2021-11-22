@@ -21,32 +21,27 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 
 import com.condor.voidaltars.altar.Boon;
 import com.condor.voidaltars.altar.BoonType;
+import com.condor.voidaltars.constants.StringConstants;
 
 public class SentinelBoon extends Boon {
 
-  private static final String NAME = "Blessing of the Sentinel";
-  private static ArrayList<String> loreList = new ArrayList<>();
   private static ArrayList<Class> triggerList = new ArrayList<>();
 
   private static Random rng = new Random();
 
-  private static final String DESCRIPTION = "The gods protect your small livestock. Foxes and cats are friendly to chickens and rabbits in your town and do not eat them.";
-
   static {
-    loreList.add("When the dog is awake, the shepherd may sleep.");
-
     triggerList.add(EntityTargetLivingEntityEvent.class);
   }
 
   public SentinelBoon() {
-    super(NAME, DESCRIPTION, triggerList, BoonType.SENTINEL_BOON);
+    super(StringConstants.SENTINEL_BLESSING_NAME, StringConstants.SENTINEL_BLESSING_DESCRIPTION, triggerList, BoonType.SENTINEL_BOON);
   }
 
   public ItemStack getIcon() {
     ItemStack is = new ItemStack(Material.BEACON, 1);
     ItemMeta meta = is.getItemMeta();
-    meta.setDisplayName(NAME);
-    meta.setLore(loreList);
+    meta.setDisplayName(StringConstants.SENTINEL_BLESSING_NAME);
+    meta.setLore(StringConstants.SENTINEL_BLESSING_LORE);
     is.setItemMeta(meta);
     return is;
   }

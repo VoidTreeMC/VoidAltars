@@ -62,6 +62,7 @@ import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.altar.AltarMeta;
 import com.condor.voidaltars.gui.MainAltarGUI;
 import com.condor.voidaltars.altar.BoonManager;
+import com.condor.voidaltars.constants.StringConstants;
 
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.event.town.TownUnclaimEvent;
@@ -95,7 +96,7 @@ public class EventListener  extends AltarListener {
       for (Resident resident : town.getResidents()) {
         Player player = resident.getPlayer();
         if (player != null) {
-          player.sendMessage("Your town has just unclaimed its altar! Claim it back to get the boons again.");
+          player.sendMessage(StringConstants.TOWN_HAS_UNCLAIMED_ALTAR);
         }
       }
       // Disable the altar's boons

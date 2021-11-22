@@ -21,6 +21,7 @@ import com.condor.voidaltars.altar.BoonManager;
 import com.condor.voidaltars.altar.AltarMeta;
 import com.condor.voidaltars.altar.Sacrifice;
 import com.condor.voidaltars.sql.SQLLinker;
+import com.condor.voidaltars.constants.StringConstants;
 
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -36,7 +37,6 @@ public class MainAltarGUI {
   private static ItemStack INSTRUCTION_BOOK = new ItemStack(Material.BOOK);
   private static ItemStack SACRIFICE_SLOT_LOCKED = new ItemStack(Material.BARRIER);
   private static ItemStack BOON_SLOT_LOCKED = new ItemStack(Material.BARRIER);
-  private static final String ALTAR_WEBPAGE = "" + ChatColor.GOLD + ChatColor.UNDERLINE + "https://www.voidtreemc.com/voidtree-altar-help";
 
   static {
     ItemMeta bookMeta = INSTRUCTION_BOOK.getItemMeta();
@@ -121,9 +121,9 @@ public class MainAltarGUI {
     hopperLore.add("Altar level: " + altarMeta.getLevel());
     int sacRemaining = altarMeta.getSacrificesRemaining();
     if (sacRemaining > 0) {
-      hopperLore.add("Sacrifices remaining to please the gods: " + sacRemaining);
+      hopperLore.add(StringConstants.SACRIFICES_REMAINING_TO_PLEASE + sacRemaining);
     } else {
-      hopperLore.add("Sacrifices remaining to level up altar: " + altarMeta.getSacrificesNeededForLevelUp());
+      hopperLore.add(StringConstants.SACRIFICES_REMAINING_TO_LEVEL + altarMeta.getSacrificesNeededForLevelUp());
     }
     hopperMeta.setLore(hopperLore);
     sacrificeProgressItem.setItemMeta(hopperMeta);
@@ -192,10 +192,10 @@ public class MainAltarGUI {
               if (resident.isMayor() || resident.hasTownRank("high-priest") || player.hasPermission("condor.altar.override-boon")) {
                 SelectBoonGUI.displayBoonGUI(player, altarMeta, index);
               } else {
-                player.sendMessage("You must be a mayor or a high-priest to change your town's altar boons.");
+                player.sendMessage(StringConstants.NO_PERMISSIONS_TO_CHANGE_BOONS);
               }
             } else {
-              player.sendMessage("You cannot change the boons of another town's altar.");
+              player.sendMessage(StringConstants.NOT_MEMBER_OF_ALTARS_TOWN);
             }
           } catch (NotRegisteredException e) {
             // Not registered. Ignore and do nothing.
@@ -211,7 +211,7 @@ public class MainAltarGUI {
 
     GuiItem bookItem = new GuiItem(INSTRUCTION_BOOK, event -> {
       player.sendMessage(ChatColor.YELLOW + "More altar information is available at the following webpage");
-      player.sendMessage(ALTAR_WEBPAGE);
+      player.sendMessage(StringConstants.ALTAR_HELP_WEBPAGE);
     });
     GuiItem hopperItem = new GuiItem(sacrificeProgressItem);
 

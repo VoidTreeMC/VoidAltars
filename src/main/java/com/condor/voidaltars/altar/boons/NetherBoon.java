@@ -26,35 +26,29 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 
 import com.condor.voidaltars.altar.Boon;
 import com.condor.voidaltars.altar.BoonType;
+import com.condor.voidaltars.constants.StringConstants;
 
 public class NetherBoon extends Boon {
 
-  private static final String NAME = "Blessing of the Nether";
-  private static ArrayList<String> loreList = new ArrayList<>();
   private static ArrayList<Class> triggerList = new ArrayList<>();
 
   private static final int EFFECT_DURATION = 20 * 10;
 
-  private static final String DESCRIPTION = "The gods protect everyone in your town from the flame. No players or mobs in your town will take damage from fire, lava or hot floors.";
-
   private static Random rng = new Random();
 
   static {
-    loreList.add("Turn your back on the Overworld.");
-    loreList.add(ChatColor.RED + "" + ChatColor.BOLD + "Welcome the fire.");
-
     triggerList.add(EntityDamageEvent.class);
   }
 
   public NetherBoon() {
-    super(NAME, DESCRIPTION, triggerList, BoonType.NETHER_BOON);
+    super(StringConstants.NETHER_BLESSING_NAME, StringConstants.NETHER_BLESSING_DESCRIPTION, triggerList, BoonType.NETHER_BOON);
   }
 
   public ItemStack getIcon() {
     ItemStack is = new ItemStack(Material.BEACON, 1);
     ItemMeta meta = is.getItemMeta();
-    meta.setDisplayName(NAME);
-    meta.setLore(loreList);
+    meta.setDisplayName(StringConstants.NETHER_BLESSING_NAME);
+    meta.setLore(StringConstants.NETHER_BLESSING_LORE);
     is.setItemMeta(meta);
     return is;
   }

@@ -5,6 +5,8 @@ Create a file with a bunch of constants, especially for strings
 
 A command that people can use to see recent transactions on their altar, such as who has recently sacrificed to the altar, and what boons have been changed, etc.
 
+Add config file for string messages
+
 DID
 ===
-Changed "Farm altar" to "Agriculture altar"
+Consolidated the majority of string constants to one file

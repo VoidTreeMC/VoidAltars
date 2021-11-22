@@ -20,6 +20,7 @@ import com.condor.voidaltars.altar.exception.NotInATownException;
 import com.condor.voidaltars.sql.SQLLinker;
 import com.condor.voidaltars.runnable.PlaySparkleEffect;
 import com.condor.voidaltars.main.AltarMain;
+import com.condor.voidaltars.constants.StringConstants;
 
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.TownyAPI;
@@ -84,7 +85,7 @@ public class AltarManager {
             if (getStructureFromLoc(loc, true) != null) {
               return meta;
             } else {
-              player.sendMessage("This is no longer a valid altar. The gods are not pleased.");
+              player.sendMessage(StringConstants.ALTAR_NO_LONGER_VALID);
             }
           }
           return null;
@@ -109,7 +110,7 @@ public class AltarManager {
         town = tb.getTown();
         if (town != null) {
           if (resident.getTown() == null || !resident.getTown().getUUID().equals(town.getUUID())) {
-            player.sendMessage("You can only create altars in a town that you own.");
+            player.sendMessage(StringConstants.MUST_BE_IN_TOWN_TO_CREATE_ALTAR_THERE);
             return null;
           }
         }
@@ -119,7 +120,7 @@ public class AltarManager {
     }
 
     if (resident == null || (!resident.isMayor() && !resident.hasTownRank("high-priest"))) {
-      player.sendMessage("You must be a mayor or a high-priest of this town to create an altar here.");
+      player.sendMessage(StringConstants.NO_PERMISSIONS_TO_CREATE_ALTAR);
       return null;
     }
 
@@ -135,7 +136,7 @@ public class AltarManager {
         if (town != null) {
           AltarMeta townAltar = getAltarFromTown(town);
           if (townAltar != null) {
-            player.sendMessage("Your town already has an altar. You cannot create another one.");
+            player.sendMessage(StringConstants.NO_DUPLICATE_ALTARS);
             return null;
           }
         }
@@ -153,7 +154,7 @@ public class AltarManager {
           return altarMeta;
         } catch (NotInATownException e) {
           // They're not in a town. Ignore it.
-          player.sendMessage("You must be in a town for this altar to function.");
+          player.sendMessage(StringConstants.NO_ALTARS_IN_THE_WILD);
           return null;
         }
       }

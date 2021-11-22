@@ -22,32 +22,27 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 
 import com.condor.voidaltars.altar.Boon;
 import com.condor.voidaltars.altar.BoonType;
+import com.condor.voidaltars.constants.StringConstants;
 
 public class RancherBoon extends Boon {
 
-  private static final String NAME = "Blessing of the Rancher";
-  private static ArrayList<String> loreList = new ArrayList<>();
   private static ArrayList<Class> triggerList = new ArrayList<>();
 
   private static Random rng = new Random();
 
-  private static final String DESCRIPTION = "The gods bless your herds. Whenever a livestock mob dies, you get extra drops.";
-
   static {
-    loreList.add("Additional drops from livestock");
-
     triggerList.add(EntityDeathEvent.class);
   }
 
   public RancherBoon() {
-    super(NAME, DESCRIPTION, triggerList, BoonType.RANCHER_BOON);
+    super(StringConstants.RANCHER_BLESSING_NAME, StringConstants.RANCHER_BLESSING_DESCRIPTION, triggerList, BoonType.RANCHER_BOON);
   }
 
   public ItemStack getIcon() {
     ItemStack is = new ItemStack(Material.BEACON, 1);
     ItemMeta meta = is.getItemMeta();
-    meta.setDisplayName(NAME);
-    meta.setLore(loreList);
+    meta.setDisplayName(StringConstants.RANCHER_BLESSING_NAME);
+    meta.setLore(StringConstants.RANCHER_BLESSING_LORE);
     is.setItemMeta(meta);
     return is;
   }
