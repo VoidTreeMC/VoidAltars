@@ -19,6 +19,7 @@ public class BoonManager {
     boonMap.put(BoonType.SENTINEL_BOON, new SentinelBoon());
     boonMap.put(BoonType.NETHER_BOON, new NetherBoon());
     boonMap.put(BoonType.END_BOON, new EndBoon());
+    boonMap.put(BoonType.FORGE_BOON, new ForgeBoon());
   }
 
   public static Boon getBoonByType(BoonType type) {

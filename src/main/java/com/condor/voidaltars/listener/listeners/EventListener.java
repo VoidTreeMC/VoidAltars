@@ -53,6 +53,7 @@ import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.FurnaceStartSmeltEvent;
 
 import com.condor.voidaltars.listener.AltarListener;
 import com.condor.voidaltars.main.AltarMain;
@@ -130,6 +131,11 @@ public class EventListener  extends AltarListener {
         event.getPlayer().sendMessage("If we had permissions implemented yet, you'd get a message here and the block wouldn't be broken.");
       }
     }
+  }
+
+  @EventHandler
+  public void onFurnaceStartSmeltEvent(FurnaceStartSmeltEvent event) {
+    BoonManager.parseEvent(event);
   }
 
   @EventHandler
