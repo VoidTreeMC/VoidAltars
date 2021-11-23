@@ -8,3 +8,9 @@ description: Void Altar plugin
 load: POSTWORLD
 prefix: ALTAR
 depend: [Vault, Towny]
+commands:
+   altarreloadtext:
+       description: Reloads text constants for altars
+       usage: /altarreloadtext
+       permission: condor.altars.reload.text
+       permission-message: You do not have permission to use this command.

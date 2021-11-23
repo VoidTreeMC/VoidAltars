@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.Bukkit;
 
+import com.condor.voidaltars.command.executors.CommandAltarReloadText;
 
 /**
  * Extends CommandExecutor to create new commands for RaceWars <br>
@@ -45,7 +46,7 @@ public abstract class CommandControl implements CommandExecutor {
 	private static HashMap<String,CommandControl> executors = new HashMap<>();
 
 	public static void initExecutors() {
-
+    new CommandAltarReloadText("altarreloadtext");
 	}
 
 	/**
