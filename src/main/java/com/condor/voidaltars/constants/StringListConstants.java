@@ -27,6 +27,10 @@ public enum StringListConstants {
     "Renewed shall be blade that was broken,",
     "The crownless again shall be king.",
     "― J.R.R. Tolkien, The Fellowship of the Ring"
+  }),
+  BEEKEEPER_BLESSING_LORE(new String[]{
+    "Out of the eater came something to eat.",
+    "Out of the strong came something sweet."
   });
 
   List<String> list;

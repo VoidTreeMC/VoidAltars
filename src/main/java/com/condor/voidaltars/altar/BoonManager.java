@@ -20,6 +20,7 @@ public class BoonManager {
     boonMap.put(BoonType.NETHER_BOON, new NetherBoon());
     boonMap.put(BoonType.END_BOON, new EndBoon());
     boonMap.put(BoonType.FORGE_BOON, new ForgeBoon());
+    boonMap.put(BoonType.BEEKEEPER_BOON, new BeekeeperBoon());
   }
 
   public static Boon getBoonByType(BoonType type) {

@@ -14,6 +14,8 @@ public enum StringConstants {
   SENTINEL_BLESSING_DESCRIPTION("The gods protect your small livestock. Foxes and cats are friendly to chickens and rabbits in your town and do not eat them."),
   FORGE_BLESSING_NAME("Blessing of the Forge"),
   FORGE_BLESSING_DESCRIPTION("The gods bestow power on your forge. Your items smelt faster and your fuel lasts longer."),
+  BEEKEEPER_BLESSING_NAME("Blessing of the Beekeeper"),
+  BEEKEEPER_BLESSING_DESCRIPTION("The gods bless your hives. Inside your town bees are never hostile. You have a chance for two bees when you breed them and a chance of extra bee products when you harvest by hand."),
   // User-visible error messages
   ALTAR_NO_LONGER_VALID("This is no longer a valid altar. The gods are not pleased."),
   MUST_BE_IN_TOWN_TO_CREATE_ALTAR_THERE("You can only create altars in a town that you own."),

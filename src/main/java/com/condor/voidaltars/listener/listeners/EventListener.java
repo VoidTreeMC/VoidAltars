@@ -54,6 +54,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.FurnaceStartSmeltEvent;
+import org.bukkit.event.entity.EntityBreedEvent;
+import io.papermc.paper.event.block.PlayerShearBlockEvent;
 
 import com.condor.voidaltars.listener.AltarListener;
 import com.condor.voidaltars.main.AltarMain;
@@ -155,6 +157,16 @@ public class EventListener  extends AltarListener {
 
   @EventHandler
   public void onEntityDamageEvent(EntityDamageEvent event) {
+    BoonManager.parseEvent(event);
+  }
+
+  @EventHandler
+  public void onEntityBreedEvent(EntityBreedEvent event) {
+    BoonManager.parseEvent(event);
+  }
+
+  @EventHandler
+  public void onPlayerShearBlockEvent(PlayerShearBlockEvent event) {
     BoonManager.parseEvent(event);
   }
 }
