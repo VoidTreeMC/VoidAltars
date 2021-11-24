@@ -109,6 +109,7 @@ public class EventListener  extends AltarListener {
 
   @EventHandler
   public void onPlayerInteractEvent(PlayerInteractEvent event) {
+    BoonManager.parseEvent(event);
     if (event.getHand() != EquipmentSlot.HAND || event.getAction() != Action.RIGHT_CLICK_BLOCK) {
       return;
     }

@@ -85,6 +85,7 @@ public abstract class AltarMeta {
     for (int i = 0; i < this.getNumSacrificeSlots(); i++) {
       sacrifices.add(SacrificeManager.getNewSacrifice(this));
     }
+    AltarManager.addAltar(this);
   }
 
   public AltarMeta(UUID uuid, String type, UUID townUUID, String worldStr, int level, double x, double y, double z,
@@ -97,7 +98,8 @@ public abstract class AltarMeta {
    try {
      this.town = TownyAPI.getInstance().getDataSource().getTown(townUUID);
    } catch (NotRegisteredException e) {
-     e.printStackTrace();
+     Bukkit.getLogger().info("The town " + townUUID + " is no longer registered. Purging from database.");
+     SQLLinker.removeAltarByTownUUID(townUUID);
    }
    Location location = new Location(AltarMain.getPlugin().getServer().getWorld(worldStr), x, y, z);
    this.interfaceLoc = location;
@@ -116,6 +118,7 @@ public abstract class AltarMeta {
    this.totalRecentSacrifices = totalRecentSacrifices;
    this.totalSacrificesMade = totalSacrificesMade;
    this.structure = structure;
+   AltarManager.addAltar(this);
  }
 
  public static AltarMeta create(UUID uuid, String typeStr, UUID townUUID, String worldStr, int level, double x, double y, double z,

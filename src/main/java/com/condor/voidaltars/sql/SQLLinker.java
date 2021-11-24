@@ -82,7 +82,6 @@ public class SQLLinker {
 
         AltarMeta altar = AltarMeta.create(uuid, type, townUUID, worldStr, level, x, y, z, boonList, sacrificeList,
                                            totalRecentSacrifices, totalSacrificesMade, nextEvalTime);
-        AltarManager.addAltar(altar);
         if (!altar.hasMetQuota()) {
           altar.levelDown();
         }
@@ -172,7 +171,18 @@ public class SQLLinker {
     } catch (SQLException e) {
       e.printStackTrace();
     }
+  }
 
+  public static void removeAltarByTownUUID(UUID townUUID) {
+    probeConnection();
+    try {
+
+      PreparedStatement stmt = conn.prepareStatement("DELETE FROM AltarTable WHERE uuid=?");
+      stmt.setString(1, townUUID.toString());
+      stmt.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   public static void init() {

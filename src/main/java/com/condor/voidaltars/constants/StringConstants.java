@@ -34,7 +34,8 @@ public enum StringConstants {
   ALTAR_HELP_WEBPAGE("" + ChatColor.GOLD + ChatColor.UNDERLINE + "https://www.voidtreemc.com/voidtree-altar-help"),
   // GUI strings
   SACRIFICES_REMAINING_TO_PLEASE("Sacrifices remaining to please the gods: "),
-  SACRIFICES_REMAINING_TO_LEVEL("Sacrifices remaining to level up altar: ");
+  SACRIFICES_REMAINING_TO_LEVEL("Sacrifices remaining to level up altar: "),
+  GODS_ARE_PLEASED("The gods are pleased.");
 
   String str;
 

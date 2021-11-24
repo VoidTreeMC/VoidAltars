@@ -67,7 +67,7 @@ public class BeekeeperBoon extends Boon {
       EntityTargetLivingEntityEvent etlee = (EntityTargetLivingEntityEvent) event;
       if (etlee.getEntity().getType() != EntityType.BEE) {
         ret = false;
-      } else {
+      } else if (etlee.getTarget() != null) {
         loc = etlee.getTarget().getLocation();
         ret = true;
       }
