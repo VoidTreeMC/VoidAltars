@@ -20,6 +20,7 @@ import org.bukkit.entity.Bee;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.block.data.type.Beehive;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import io.papermc.paper.event.block.PlayerShearBlockEvent;
 
 import com.palmergames.bukkit.towny.object.TownBlock;
@@ -140,8 +141,23 @@ public class BeekeeperBoon extends Boon {
       }
     } else if (event instanceof PlayerInteractEvent) {
       PlayerInteractEvent pie = (PlayerInteractEvent) event;
+      Player player = pie.getPlayer();
       if (rng.nextDouble() < EXTRA_DROPS_CHANCE) {
-        pie.getPlayer().getInventory().addItem(new ItemStack(Material.HONEY_BOTTLE));
+        int amtBottles = 0;
+        for (ItemStack item : player.getInventory().getContents()) {
+          if (item != null && item.getType() == Material.GLASS_BOTTLE) {
+            amtBottles += item.getAmount();
+          }
+        }
+        if (amtBottles >= 2) {
+          pie.getPlayer().getInventory().addItem(new ItemStack(Material.HONEY_BOTTLE));
+          for (ItemStack item : player.getInventory().getContents()) {
+            if (item != null && item.getType() == Material.GLASS_BOTTLE) {
+              item.setAmount(item.getAmount() - 1);
+              break;
+            }
+          }
+        }
       }
     }
   }
