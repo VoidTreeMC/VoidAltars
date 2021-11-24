@@ -23,6 +23,7 @@ public class BoonManager {
     boonMap.put(BoonType.BEEKEEPER_BOON, new BeekeeperBoon());
     boonMap.put(BoonType.FREEZE_BOON, new FreezeBoon());
     boonMap.put(BoonType.THAW_BOON, new ThawBoon());
+    boonMap.put(BoonType.PEACE_BOON, new PeaceBoon());
   }
 
   public static Boon getBoonByType(BoonType type) {

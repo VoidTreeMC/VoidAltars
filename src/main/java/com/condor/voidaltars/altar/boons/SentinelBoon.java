@@ -23,6 +23,7 @@ import com.condor.voidaltars.altar.Boon;
 import com.condor.voidaltars.altar.BoonType;
 import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.constants.StringListConstants;
+import com.condor.voidaltars.util.TownyFunctions;
 
 public class SentinelBoon extends Boon {
 
@@ -54,20 +55,11 @@ public class SentinelBoon extends Boon {
       EntityTargetLivingEntityEvent etlee = (EntityTargetLivingEntityEvent) event;
       if (etlee.getTarget() != null) {
         Location loc = etlee.getTarget().getLocation();
-        TownBlock tb = TownyAPI.getInstance().getTownBlock(loc);
-        if (tb != null) {
-          try {
-            Town town = tb.getTown();
-            if (this.registeredTowns.contains(town)) {
-              if (isChickenOrRabbit(etlee.getTarget().getType()) && isFoxOrCat(etlee.getEntity().getType())) {
-                ret = true;
-              }
-            }
-          } catch (NotRegisteredException e) {
-            ret = false;
+        Town town = TownyFunctions.getTownFromLocation(loc);
+        if (this.registeredTowns.contains(town)) {
+          if (isChickenOrRabbit(etlee.getTarget().getType()) && isFoxOrCat(etlee.getEntity().getType())) {
+            ret = true;
           }
-        } else {
-          ret = false;
         }
       }
     }

@@ -28,6 +28,7 @@ import com.condor.voidaltars.altar.Boon;
 import com.condor.voidaltars.altar.BoonType;
 import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.constants.StringListConstants;
+import com.condor.voidaltars.util.TownyFunctions;
 
 public class NetherBoon extends Boon {
 
@@ -60,21 +61,12 @@ public class NetherBoon extends Boon {
     if (event instanceof EntityDamageEvent) {
       EntityDamageEvent ede = (EntityDamageEvent) event;
       Location loc = ede.getEntity().getLocation();
-      TownBlock tb = TownyAPI.getInstance().getTownBlock(loc);
-      if (tb != null) {
-        try {
-          Town town = tb.getTown();
-          if (this.registeredTowns.contains(town)) {
-            if (ede.getCause() == DamageCause.LAVA || ede.getCause() == DamageCause.FIRE ||
-                ede.getCause() == DamageCause.FIRE_TICK || ede.getCause() == DamageCause.HOT_FLOOR) {
-              ret = true;
-            }
-          }
-        } catch (NotRegisteredException e) {
-          ret = false;
+      Town town = TownyFunctions.getTownFromLocation(loc);
+      if (this.registeredTowns.contains(town)) {
+        if (ede.getCause() == DamageCause.LAVA || ede.getCause() == DamageCause.FIRE ||
+            ede.getCause() == DamageCause.FIRE_TICK || ede.getCause() == DamageCause.HOT_FLOOR) {
+          ret = true;
         }
-      } else {
-        ret = false;
       }
     }
 

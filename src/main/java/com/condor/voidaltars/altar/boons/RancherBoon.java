@@ -24,6 +24,7 @@ import com.condor.voidaltars.altar.Boon;
 import com.condor.voidaltars.altar.BoonType;
 import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.constants.StringListConstants;
+import com.condor.voidaltars.util.TownyFunctions;
 
 public class RancherBoon extends Boon {
 
@@ -54,20 +55,11 @@ public class RancherBoon extends Boon {
     if (event instanceof EntityDeathEvent) {
       EntityDeathEvent ede = (EntityDeathEvent) event;
       Location loc = ede.getEntity().getLocation();
-      TownBlock tb = TownyAPI.getInstance().getTownBlock(loc);
-      if (tb != null) {
-        try {
-          Town town = tb.getTown();
-          if (this.registeredTowns.contains(town)) {
-            if (isLivestock(ede.getEntity().getType())) {
-              ret = true;
-            }
-          }
-        } catch (NotRegisteredException e) {
-          ret = false;
+      Town town = TownyFunctions.getTownFromLocation(loc);
+      if (this.registeredTowns.contains(town)) {
+        if (isLivestock(ede.getEntity().getType())) {
+          ret = true;
         }
-      } else {
-        ret = false;
       }
     }
 

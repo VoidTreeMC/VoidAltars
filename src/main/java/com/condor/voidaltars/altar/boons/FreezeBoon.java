@@ -25,6 +25,7 @@ import com.condor.voidaltars.altar.Boon;
 import com.condor.voidaltars.altar.BoonType;
 import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.constants.StringListConstants;
+import com.condor.voidaltars.util.TownyFunctions;
 
 public class FreezeBoon extends Boon {
 
@@ -56,17 +57,8 @@ public class FreezeBoon extends Boon {
       BlockFadeEvent bfe = (BlockFadeEvent) event;
       if (isIce(bfe.getBlock().getType())) {
         Location loc = bfe.getBlock().getLocation();
-        TownBlock tb = TownyAPI.getInstance().getTownBlock(loc);
-        if (tb != null) {
-          try {
-            Town town = tb.getTown();
-            ret = this.registeredTowns.contains(town);
-          } catch (NotRegisteredException e) {
-            ret = false;
-          }
-        } else {
-          ret = false;
-        }
+        Town town = TownyFunctions.getTownFromLocation(loc);
+        ret = this.registeredTowns.contains(town);
       }
     }
 

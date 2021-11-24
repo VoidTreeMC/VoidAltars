@@ -11,4 +11,6 @@ Create a way to destroy or move an altar
 
 DID
 ===
-Made it so you dont get extra glass bottles from the beekeeper blessing
+Added Blessing of the Peace
+Added a new class TownyFunctions which some helper functions
+Refactored code

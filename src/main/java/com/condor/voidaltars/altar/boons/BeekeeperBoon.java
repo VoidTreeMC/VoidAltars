@@ -32,6 +32,7 @@ import com.condor.voidaltars.altar.Boon;
 import com.condor.voidaltars.altar.BoonType;
 import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.constants.StringListConstants;
+import com.condor.voidaltars.util.TownyFunctions;
 
 public class BeekeeperBoon extends Boon {
 
@@ -102,17 +103,8 @@ public class BeekeeperBoon extends Boon {
     }
 
     if (loc != null) {
-      TownBlock tb = TownyAPI.getInstance().getTownBlock(loc);
-      if (ret && tb != null) {
-        try {
-          Town town = tb.getTown();
-          ret = ret && this.registeredTowns.contains(town);
-        } catch (NotRegisteredException e) {
-          ret = false;
-        }
-      } else {
-        ret = false;
-      }
+      Town town = TownyFunctions.getTownFromLocation(loc);
+      ret = ret && this.registeredTowns.contains(town);
     }
 
     return ret;

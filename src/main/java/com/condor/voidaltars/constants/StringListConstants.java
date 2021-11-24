@@ -45,6 +45,11 @@ public enum StringListConstants {
     "prepared for the nine silent harvests of the grim reaper",
     "which waited in the tomb.",
     "— H.P. Lovecraft"
+  }),
+  PEACE_BLESSING_LORE(new String[]{
+    "The wolf shall live with the lamb,",
+    "the leopard shall lie down with the kid,",
+    "the calf and the lion and the fatling together"
   });
 
   List<String> list;
