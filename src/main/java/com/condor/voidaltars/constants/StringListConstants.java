@@ -31,6 +31,20 @@ public enum StringListConstants {
   BEEKEEPER_BLESSING_LORE(new String[]{
     "Out of the eater came something to eat.",
     "Out of the strong came something sweet."
+  }),
+  FREEZE_BLESSING_LORE(new String[]{
+    "I hold with those who favor fire.",
+    "But if it had to perish twice,",
+    "I think I know enough of hate",
+    "To know that for destruction ice",
+    "Is also great",
+    "- Robert Frost"
+  }),
+  THAW_BLESSING_LORE(new String[]{
+    "At last the spring thaw came, and graves were laboriously",
+    "prepared for the nine silent harvests of the grim reaper",
+    "which waited in the tomb.",
+    "— H.P. Lovecraft"
   });
 
   List<String> list;

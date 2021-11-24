@@ -9,8 +9,5 @@ Make it so if you remove an entry from the text file and reload, it goes back to
 
 DID
 ===
-Finished blessing of the beekeeper
-Fixed a bug where sacrifice interface was inadvertently zero indexed, and said 'Sacrifices to level up altar: 0'
-Added a new line to the hopper lore
-Moved altar registration with AltarManager to AltarMeta's constructors
-Case handling for the database loading an altar from a town that no longer exists
+Added blessing of the Freeze
+Added blessing of the Thaw

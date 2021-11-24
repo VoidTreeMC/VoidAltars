@@ -56,6 +56,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.FurnaceStartSmeltEvent;
 import org.bukkit.event.entity.EntityBreedEvent;
 import io.papermc.paper.event.block.PlayerShearBlockEvent;
+import org.bukkit.event.block.BlockFadeEvent;
+import org.bukkit.event.block.BlockFormEvent;
 
 import com.condor.voidaltars.listener.AltarListener;
 import com.condor.voidaltars.main.AltarMain;
@@ -168,6 +170,16 @@ public class EventListener  extends AltarListener {
 
   @EventHandler
   public void onPlayerShearBlockEvent(PlayerShearBlockEvent event) {
+    BoonManager.parseEvent(event);
+  }
+
+  @EventHandler
+  public void onBlockFadeEvent(BlockFadeEvent event) {
+    BoonManager.parseEvent(event);
+  }
+
+  @EventHandler
+  public void onBlockFormEvent(BlockFormEvent event) {
     BoonManager.parseEvent(event);
   }
 }

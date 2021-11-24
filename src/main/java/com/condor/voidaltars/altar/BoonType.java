@@ -7,7 +7,9 @@ public enum BoonType {
   NETHER_BOON,
   END_BOON,
   FORGE_BOON,
-  BEEKEEPER_BOON;
+  BEEKEEPER_BOON,
+  FREEZE_BOON,
+  THAW_BOON;
 
   public static BoonType getTypeFromString(String name) {
     for (BoonType type : BoonType.values()) {
