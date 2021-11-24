@@ -5,9 +5,12 @@ A command that people can use to see recent transactions on their altar, such as
 
 Add handling for List<String> constants from config file
 Make it so if you remove an entry from the text file and reload, it goes back to the default
-
+Make it so newtown's altar doesnt scale with the number of people
+Add a config for loading the item weights in
+Create a way to destroy or move an altar
 
 DID
 ===
-Added blessing of the Freeze
-Added blessing of the Thaw
+Made it so bowls and bottles get returned to the player upon sacrifice of a soup/stew
+Reworked scaling for altars so that there's a benefit to have multiple people in your town working on an altar
+Changed some of the descriptions

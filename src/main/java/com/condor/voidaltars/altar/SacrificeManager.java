@@ -25,7 +25,6 @@ public class SacrificeManager {
 
   private final static int SCALE = 500;
   private final static int STACK_SIZE_FACTOR = 16;
-  private final static int RANDOM_ADDITIONAL_FACTOR = 10;
 
   public static Sacrifice getNewSacrifice(AltarMeta owner) {
     Material type = owner.getSacrificeType();
@@ -48,7 +47,12 @@ public class SacrificeManager {
 
     // amt = (int) (500 * ((0.5 * (1 / weight)) + (0.5 * town.getNumResidents())));
     // amt = (int) Math.floor(town.getNumResidents() * (SCALE * ((0.7 * (1 / weight))) * (maxStackAmount / 16)) + (randVal * maxStackAmount / 6.4));
-    amt = (int) (Math.max(1, (int) Math.floor(SCALE * town.getNumResidents() * ((0.7 * 1 / weight)) * maxStackAmount / STACK_SIZE_FACTOR)) * randVal);
+    int numResidents = town.getNumResidents();
+    if (numResidents > 1) {
+      amt = (int) (Math.max(1, (int) Math.floor(SCALE * numResidents * ((0.7 * 1 / weight)) * maxStackAmount / STACK_SIZE_FACTOR)) * randVal);
+    } else {
+      amt = (int) (Math.max(1, (int) Math.floor(SCALE * (numResidents * 0.75) * ((0.7 * 1 / weight)) * maxStackAmount / STACK_SIZE_FACTOR)) * randVal);
+    }
 
     if (amt <= 0) {
       amt = 1;

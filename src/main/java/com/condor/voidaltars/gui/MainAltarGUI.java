@@ -81,6 +81,30 @@ public class MainAltarGUI {
     }
   }
 
+  public static boolean isBowl(Material type) {
+    switch (type) {
+      case MUSHROOM_STEW:
+      case BEETROOT_SOUP:
+      case RABBIT_STEW:
+      case SUSPICIOUS_STEW:
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  public static boolean isBottle(Material type) {
+    switch (type) {
+      case HONEY_BOTTLE:
+      // Water bottles are considered potions. Who'dathunkit?
+      case POTION:
+      case DRAGON_BREATH:
+        return true;
+      default:
+        return false;
+    }
+  }
+
   private static int handleSacrificeClick(Player player, Material type, int amt) {
     int amtCharged = 0;
 
@@ -146,14 +170,15 @@ public class MainAltarGUI {
           Material type = sacrificeItem.getType();
           int amtWanted = sacrifice.getNumRemaining();
           int amtSacrificed = handleSacrificeClick(player, type, amtWanted);
-          if (isBucket(type) && amtSacrificed > 0) {
+          if ((isBucket(type) || isBowl(type) || isBottle(type)) && amtSacrificed > 0) {
             int num = amtSacrificed;
             while (num > 0) {
+              Material containerMat = (isBucket(type)) ? Material.BUCKET : ((isBowl(type)) ? Material.BOWL : Material.GLASS_BOTTLE);
               if (num >= 16) {
-                player.getInventory().addItem(new ItemStack(Material.BUCKET, 16));
+                player.getInventory().addItem(new ItemStack(containerMat, 16));
                 num -= 16;
               } else {
-                player.getInventory().addItem(new ItemStack(Material.BUCKET, num));
+                player.getInventory().addItem(new ItemStack(containerMat, num));
                 break;
               }
             }

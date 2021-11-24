@@ -17,9 +17,9 @@ public enum StringConstants {
   BEEKEEPER_BLESSING_NAME("Blessing of the Beekeeper"),
   BEEKEEPER_BLESSING_DESCRIPTION("The gods bless your hives. Inside your town bees are never hostile. You have a chance for two bees when you breed them and a chance of extra bee products when you harvest by hand."),
   FREEZE_BLESSING_NAME("Blessing of the Freeze"),
-  FREEZE_BLESSING_DESCRIPTION("The gods bless your town with eternal winter."),
+  FREEZE_BLESSING_DESCRIPTION("The gods bless your town with eternal winter. Ice, snow, and other cold blocks will not melt while this boon is active."),
   THAW_BLESSING_NAME("Blessing of the Thaw"),
-  THAW_BLESSING_DESCRIPTION("The gods bless your town with spring on the coldest days."),
+  THAW_BLESSING_DESCRIPTION("The gods bless your town with spring on the coldest days. Snow will not collect on the ground and ice will not freeze while this boon is active."),
   // User-visible error messages
   ALTAR_NO_LONGER_VALID("This is no longer a valid altar. The gods are not pleased."),
   MUST_BE_IN_TOWN_TO_CREATE_ALTAR_THERE("You can only create altars in a town that you own."),
