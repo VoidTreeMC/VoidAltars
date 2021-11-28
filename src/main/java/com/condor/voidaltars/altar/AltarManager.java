@@ -58,7 +58,7 @@ public class AltarManager {
 
   public static AltarMeta getAltarFromTown(Town town) {
     for (AltarMeta altar : altarMap.values()) {
-      if (altar.getTown().equals(town)) {
+      if (town.equals(altar.getTown())) {
         return altar;
       }
     }
@@ -147,10 +147,7 @@ public class AltarManager {
               altarMeta = new FarmAltar(loc, UUID.randomUUID());
               break;
           }
-          altarMap.put(altarMeta.getUniqueId(), altarMeta);
           altarMeta.doEffect();
-          // TODO: Make this run on another thread
-          SQLLinker.pushToDB(altarMeta);
           return altarMeta;
         } catch (NotInATownException e) {
           // They're not in a town. Ignore it.

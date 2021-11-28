@@ -23,6 +23,7 @@ import com.condor.voidaltars.altar.Sacrifice;
 import com.condor.voidaltars.altar.Boon;
 import com.condor.voidaltars.altar.BoonManager;
 import com.condor.voidaltars.sql.SQLLinker;
+import com.condor.voidaltars.main.AltarMain;
 
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -60,7 +61,12 @@ public class SelectBoonGUI {
           gui.close(player);
         } else {
           altarMeta.setBoon(boon, index);
-          SQLLinker.pushToDB(altarMeta);
+          Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
+            @Override
+            public void run() {
+              SQLLinker.pushToDB(altarMeta);
+            }
+          });
           MainAltarGUI.displayAltarGUI(player, altarMeta);
         }
       });

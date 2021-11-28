@@ -14,6 +14,7 @@ import java.net.SocketException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
@@ -21,6 +22,8 @@ import com.condor.voidaltars.altar.AltarMeta;
 import com.condor.voidaltars.main.AltarMain;
 import com.condor.voidaltars.altar.AltarManager;
 import com.condor.voidaltars.sql.SQLConfig;
+
+import com.palmergames.bukkit.towny.object.Town;
 
 public class SQLLinker {
 
@@ -95,14 +98,19 @@ public class SQLLinker {
   public static void pushToDB(AltarMeta altar) {
     probeConnection();
     UUID uuid = altar.getUniqueId();
-    String type = altar.getType().toString();
-    UUID townUUID = altar.getTown().getUuid();
     Location altarLoc = altar.getLocation();
     String worldStr = altarLoc.getWorld().getName();
     int level = altar.getLevel();
     double x = altarLoc.getX();
     double y = altarLoc.getY();
     double z = altarLoc.getZ();
+    String type = altar.getType().toString();
+    Town town = altar.getTown();
+    if (town == null) {
+      Bukkit.getLogger().warning("Couldn't push altar to DB because it's town no longer exists: " + worldStr + ": " + x + ", " + y + ", " + z);
+      return;
+    }
+    UUID townUUID = town.getUuid();
     String boonOne = (altar.getBoon(0) != null) ? altar.getBoon(0).getType().toString() : "";
     String boonTwo = (altar.getBoon(1) != null) ? altar.getBoon(1).getType().toString() : "";
     String boonThree = (altar.getBoon(2) != null) ? altar.getBoon(2).getType().toString() : "";
@@ -166,6 +174,31 @@ public class SQLLinker {
         stmt.setInt(18, totalSacrificesMade);
         stmt.setLong(19, nextEvalTime);
       }
+
+      stmt.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public static void pushSacrificeToDB(long time, UUID playerUUID, AltarMeta altar, Material matType, int amt, int amount_remaining) {
+    probeConnection();
+    UUID uuid = altar.getUniqueId();
+    UUID townUUID = altar.getTown().getUuid();
+    String type = altar.getType().toString();
+    int level = altar.getLevel();
+    try {
+
+      PreparedStatement stmt = conn.prepareStatement("INSERT INTO SacrificeTable(time_sacrificed, town_uuid, player_uuid, altar_id, altar_type, altar_level, item_type, amount, amount_remaining) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
+      stmt.setLong(1, time);
+      stmt.setString(2, townUUID.toString());
+      stmt.setString(3, playerUUID.toString());
+      stmt.setString(4, uuid.toString());
+      stmt.setString(5, type);
+      stmt.setInt(6, level);
+      stmt.setString(7, matType.toString());
+      stmt.setInt(8, amt);
+      stmt.setInt(9, amount_remaining);
 
       stmt.executeUpdate();
     } catch (SQLException e) {

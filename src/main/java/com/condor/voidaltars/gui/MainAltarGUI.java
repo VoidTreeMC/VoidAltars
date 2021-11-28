@@ -22,6 +22,7 @@ import com.condor.voidaltars.altar.AltarMeta;
 import com.condor.voidaltars.altar.Sacrifice;
 import com.condor.voidaltars.sql.SQLLinker;
 import com.condor.voidaltars.constants.StringConstants;
+import com.condor.voidaltars.main.AltarMain;
 
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -187,7 +188,15 @@ public class MainAltarGUI {
           if (sacrifice.isFinished()) {
             altarMeta.finishSacrifice(sacrifice);
           }
-          SQLLinker.pushToDB(altarMeta);
+          if (amtSacrificed > 0) {
+            Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
+              @Override
+              public void run() {
+                SQLLinker.pushToDB(altarMeta);
+                SQLLinker.pushSacrificeToDB(System.currentTimeMillis(), player.getUniqueId(), altarMeta, type, amtSacrificed, sacrifice.getNumRemaining());
+              }
+            });
+          }
           gui.close(player);
         });
       }

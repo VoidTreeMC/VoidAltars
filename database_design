@@ -1,17 +1,17 @@
 AltarTable
 ==========
   uuid:                     VARCHAR(36)
-  type:                     Varchar(16)
-  town_uuid:                Varchar(36)
-  world:                    Varchar(32)
+  type:                     VARCHAR(16)
+  town_uuid:                VARCHAR(36)
+  world:                    VARCHAR(32)
   level:                    TINYINT
   x:                        INT
   y:                        INT
   z:                        INT
-  boon_1:                   Varchar(16)
-  boon_2:                   Varchar(16)
-  boon_3:                   Varchar(16)
-  boon_4:                   Varchar(16)
+  boon_1:                   VARCHAR(16)
+  boon_2:                   VARCHAR(16)
+  boon_3:                   VARCHAR(16)
+  boon_4:                   VARCHAR(16)
   sacrifice_1:              BLOB
   sacrifice_2:              BLOB
   sacrifice_3:              BLOB
@@ -22,13 +22,13 @@ AltarTable
 
 SacrificeTable
 ==============
-  time:                     BIGINT
-  town_uuid:                Varchar(36)
-  player_uuid:              Varchar(36)
-  altar_id:                 INT
-  altar_type:               VarChar(16)
+  time_sacrificed:          BIGINT
+  town_uuid:                VARCHAR(36)
+  player_uuid:              VARCHAR(36)
+  altar_id:                 VARCHAR(36)
+  altar_type:               VARCHAR(16)
   altar_level:              TINYINT
-  item_type:                Varchar(40)
+  item_type:                VARCHAR(40)
   amount:                   INT
   amount_remaining:         INT
 

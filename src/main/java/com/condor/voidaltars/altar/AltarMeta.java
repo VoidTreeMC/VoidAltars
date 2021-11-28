@@ -86,6 +86,13 @@ public abstract class AltarMeta {
       sacrifices.add(SacrificeManager.getNewSacrifice(this));
     }
     AltarManager.addAltar(this);
+    AltarMeta tempMeta = this;
+    Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
+      @Override
+      public void run() {
+        SQLLinker.pushToDB(tempMeta);
+      }
+    });
   }
 
   public AltarMeta(UUID uuid, String type, UUID townUUID, String worldStr, int level, double x, double y, double z,
@@ -99,7 +106,12 @@ public abstract class AltarMeta {
      this.town = TownyAPI.getInstance().getDataSource().getTown(townUUID);
    } catch (NotRegisteredException e) {
      Bukkit.getLogger().info("The town " + townUUID + " is no longer registered. Purging from database.");
-     SQLLinker.removeAltarByTownUUID(townUUID);
+     Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
+       @Override
+       public void run() {
+         SQLLinker.removeAltarByTownUUID(townUUID);
+       }
+     });
    }
    Location location = new Location(AltarMain.getPlugin().getServer().getWorld(worldStr), x, y, z);
    this.interfaceLoc = location;
@@ -192,7 +204,13 @@ public abstract class AltarMeta {
       boons.remove(boons.size() - 1);
     }
     this.totalRecentSacrifices = 0;
-    SQLLinker.pushToDB(this);
+    AltarMeta tempMeta = this;
+    Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
+      @Override
+      public void run() {
+        SQLLinker.pushToDB(tempMeta);
+      }
+    });
   }
 
   public void doEffect() {
