@@ -7,9 +7,11 @@ Add handling for List<String> constants from config file
 Make it so if you remove an entry from the text file and reload, it goes back to the default
 Make it so newtown's altar doesnt scale with the number of people
 Add a config for loading the item weights in
+Add a config for changing the material requirements for altars
+Add a config for changing the sacrifice requirements for altars
+Admin commands to help with altars, such as setting an altar's level from ingame or adding a certain number of sacrifices
 Create a way to destroy or move an altar
 
 DID
 ===
-Plugged in SacrificeTable (described in database_design)
-Made database interactions run asynchronously
+Fixed a bug that caused bees to not follow flowers when the BeekeeperBoon was activated

@@ -21,6 +21,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.block.data.type.Beehive;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
 import io.papermc.paper.event.block.PlayerShearBlockEvent;
 
 import com.palmergames.bukkit.towny.object.TownBlock;
@@ -69,7 +70,7 @@ public class BeekeeperBoon extends Boon {
       EntityTargetLivingEntityEvent etlee = (EntityTargetLivingEntityEvent) event;
       if (etlee.getEntity().getType() != EntityType.BEE) {
         ret = false;
-      } else if (etlee.getTarget() != null) {
+      } else if (etlee.getTarget() != null && etlee.getReason() != TargetReason.TEMPT) {
         loc = etlee.getTarget().getLocation();
         ret = true;
       }
