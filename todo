@@ -15,3 +15,6 @@ Create a way to destroy or move an altar
 DID
 ===
 Fixed a bug that caused bees to not follow flowers when the BeekeeperBoon was activated
+Made it so altar evaluation times get reset upon level up or level down
+Added some checking to make altars more robust to database changes
+Resolved merge conflict

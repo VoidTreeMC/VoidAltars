@@ -185,6 +185,14 @@ public abstract class AltarMeta {
     sacrifices.add(newSacrifice);
     this.sacrificesWanted = AltarManager.getSacrificesNeededByLevel(this.level);
     this.totalRecentSacrifices = 0;
+    this.nextEvalTime = this.calcNextEvalTime();
+    AltarMeta tempMeta = this;
+    Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
+      @Override
+      public void run() {
+        SQLLinker.pushToDB(tempMeta);
+      }
+    });
     doEffect();
   }
 
@@ -205,6 +213,7 @@ public abstract class AltarMeta {
     }
     this.totalRecentSacrifices = 0;
     AltarMeta tempMeta = this;
+    this.nextEvalTime = this.calcNextEvalTime();
     Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
       @Override
       public void run() {
@@ -353,6 +362,10 @@ public abstract class AltarMeta {
   public Sacrifice getSacrifice(int index) {
     if (index < sacrifices.size()) {
       return sacrifices.get(index);
+    } else if (index >= sacrifices.size() && index < getNumSacrificeSlots()) {
+      Sacrifice sacrifice = SacrificeManager.getNewSacrifice(this);
+      this.sacrifices.add(sacrifice);
+      return sacrifice;
     } else {
       return null;
     }

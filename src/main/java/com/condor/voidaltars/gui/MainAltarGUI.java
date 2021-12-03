@@ -20,6 +20,7 @@ import com.condor.voidaltars.altar.BoonType;
 import com.condor.voidaltars.altar.BoonManager;
 import com.condor.voidaltars.altar.AltarMeta;
 import com.condor.voidaltars.altar.Sacrifice;
+import com.condor.voidaltars.altar.SacrificeManager;
 import com.condor.voidaltars.sql.SQLLinker;
 import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.main.AltarMain;
