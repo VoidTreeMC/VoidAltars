@@ -9,12 +9,8 @@ Make it so newtown's altar doesnt scale with the number of people
 Add a config for loading the item weights in
 Add a config for changing the material requirements for altars
 Add a config for changing the sacrifice requirements for altars
-Add admin command for adding a certain number of sacrifices
 Create a way to destroy or move an altar
 
 DID
 ===
-Created a way to move an altar. Should work for destroying it as well
-Added permission-handling for who can destroy the altar's interface block
-Added an admin command for setting an altar's level
-Added an admin command for refreshing an altar's sacrifices
+Add admin command for adding a certain number of sacrifices

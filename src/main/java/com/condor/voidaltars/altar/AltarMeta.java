@@ -145,15 +145,33 @@ public abstract class AltarMeta {
    // return null;
  }
 
-  public Sacrifice finishSacrifice(Sacrifice finished) {
-    sacrifices.remove(finished);
+  public void incrementSacrifices() {
     totalRecentSacrifices++;
     totalSacrificesMade++;
     if (shouldLevelUp()) {
       levelUp();
     }
+    AltarMeta tempMeta = this;
+    Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
+      @Override
+      public void run() {
+        SQLLinker.pushToDB(tempMeta);
+      }
+    });
+  }
+
+  public Sacrifice finishSacrifice(Sacrifice finished) {
+    sacrifices.remove(finished);
+    incrementSacrifices();
     Sacrifice newSacrifice = SacrificeManager.getNewSacrifice(this);
     sacrifices.add(newSacrifice);
+    AltarMeta tempMeta = this;
+    Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
+      @Override
+      public void run() {
+        SQLLinker.pushToDB(tempMeta);
+      }
+    });
     return newSacrifice;
   }
 

@@ -24,3 +24,8 @@ commands:
        usage: /refreshsacrifices <town name>
        permission: condor.altar.refreshsacrifices
        permission-message: You do not have permission to use this command.
+   addsacrifices:
+       description: Adds 'n' amount of sacrifices to an altar
+       usage: /addsacrifices <town name> <n>
+       permission: condor.altar.addsacrifices
+       permission-message: You do not have permission to use this command.
