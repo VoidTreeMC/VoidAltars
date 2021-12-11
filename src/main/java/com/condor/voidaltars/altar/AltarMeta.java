@@ -346,6 +346,17 @@ public abstract class AltarMeta {
     }
   }
 
+  public void setLocation(Location newLoc) {
+    this.interfaceLoc = newLoc;
+    AltarMeta tempMeta = this;
+    Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
+      @Override
+      public void run() {
+        SQLLinker.pushToDB(tempMeta);
+      }
+    });
+  }
+
   public AltarType getType() {
     return this.type;
   }
@@ -430,6 +441,10 @@ public abstract class AltarMeta {
 
   public int getSacrificesRemaining() {
     return this.sacrificesWanted - this.totalRecentSacrifices;
+  }
+
+  public ArrayList<Sacrifice> getSacrifices() {
+    return this.sacrifices;
   }
 
   public int getTotalRecentSacrifices() {

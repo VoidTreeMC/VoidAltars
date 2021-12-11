@@ -10,6 +10,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.Bukkit;
 
 import com.condor.voidaltars.command.executors.CommandAltarReloadText;
+import com.condor.voidaltars.command.executors.SetAltarLevel;
+import com.condor.voidaltars.command.executors.RefreshSacrifices;
 
 /**
  * Extends CommandExecutor to create new commands for RaceWars <br>
@@ -47,6 +49,8 @@ public abstract class CommandControl implements CommandExecutor {
 
 	public static void initExecutors() {
     new CommandAltarReloadText("altarreloadtext");
+    new SetAltarLevel("setaltarlevel");
+    new RefreshSacrifices("refreshsacrifices");
 	}
 
 	/**

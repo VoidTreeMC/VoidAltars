@@ -74,6 +74,7 @@ import com.palmergames.bukkit.towny.event.town.TownUnclaimEvent;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.Resident;
+import com.palmergames.bukkit.towny.TownyUniverse;
 
 /**
  *
@@ -132,8 +133,12 @@ public class EventListener  extends AltarListener {
     if (AltarStructure.isPossibleInterfaceBlock(block.getType())) {
       AltarMeta altarMeta = AltarManager.getAltarFromLoc(block.getLocation(), event.getPlayer());
       if (altarMeta != null) {
-        // TODO: Check access here
-        event.getPlayer().sendMessage("If we had permissions implemented yet, you'd get a message here and the block wouldn't be broken.");
+        Player player = event.getPlayer();
+        Resident resident = TownyUniverse.getInstance().getResident(player.getUniqueId());
+        if (resident == null || (!resident.isMayor() && !resident.hasTownRank("high-priest") && !player.hasPermission("condor.altar.destroy"))) {
+          event.getPlayer().sendMessage(StringConstants.NO_PERMISSIONS_TO_BREAK_ALTAR.get());
+          event.setCancelled(true);
+        }
       }
     }
   }

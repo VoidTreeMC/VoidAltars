@@ -18,7 +18,7 @@ public class CommandAltarReloadText extends CommandControl {
 
 	@Override
 	protected FailureCode execute(CommandSender sender, String label, String[] args) {
-    if (!sender.hasPermission("condor.altars.reload.text")) {
+    if (!sender.hasPermission("condor.altar.reload.text")) {
       sender.sendMessage("You do not have permission to use this command.");
       return FailureCode.PERMISSION_DENIED;
     }

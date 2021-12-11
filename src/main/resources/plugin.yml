@@ -12,5 +12,15 @@ commands:
    altarreloadtext:
        description: Reloads text constants for altars
        usage: /altarreloadtext
-       permission: condor.altars.reload.text
+       permission: condor.altar.reload.text
+       permission-message: You do not have permission to use this command.
+   setaltarlevel:
+       description: Sets the altar's level
+       usage: /setaltarlevel <town name> <level>
+       permission: condor.altar.setlevel
+       permission-message: You do not have permission to use this command.
+   refreshsacrifices:
+       description: Refreshes an altar's sacrifices
+       usage: /refreshsacrifices <town name>
+       permission: condor.altar.refreshsacrifices
        permission-message: You do not have permission to use this command.

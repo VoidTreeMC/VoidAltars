@@ -76,25 +76,34 @@ public class AltarManager {
 
     for (AltarMeta meta : altarMap.values()) {
       // if (locsAreEqual(meta.getLocation(), loc)) {
-      if (meta.getLocation().equals(loc)) {
-        // Check if the altar is still in the town it's supposed to be in
-        try {
-          TownBlock tb = TownyAPI.getInstance().getTownBlock(meta.getLocation());
-          if (tb != null && tb.getTown().equals(meta.getTown())) {
+      // Check if the altar is still in the town it's supposed to be in
+      try {
+        TownBlock tb = TownyAPI.getInstance().getTownBlock(meta.getLocation());
+        if (tb != null && tb.getTown().equals(meta.getTown())) {
+          if (meta.getLocation().equals(loc)) {
             // If it's still a valid altar
             if (getStructureFromLoc(loc, true) != null) {
               return meta;
             } else {
               player.sendMessage(StringConstants.ALTAR_NO_LONGER_VALID.get());
             }
+          // If this campfire is somewhere else, but it's still a valid altar
+          } else if (getStructureFromLoc(loc, true) != null) {
+            // If the original location still contains a campfire
+            if (meta.getStructure().isPossibleInterfaceBlock(meta.getLocation().getBlock().getType())) {
+              player.sendMessage(StringConstants.NO_DUPLICATE_ALTARS.get());
+            // If the original location's campfire is gone, update it
+            } else {
+              player.sendMessage(StringConstants.ALTAR_HAS_BEEN_MOVED.get());
+              meta.setLocation(loc);
+              return meta;
+            }
           }
-          return null;
-        } catch (NotRegisteredException e) {
-          // It's not in a town. This altar's town unclaimed the chunk and it is thus deactivated. Return null.
-          return null;
         }
-        // altarMeta = meta;
-        // break;
+        return null;
+      } catch (NotRegisteredException e) {
+        // It's not in a town. This altar's town unclaimed the chunk and it is thus deactivated. Return null.
+        return null;
       }
     }
 
