@@ -73,6 +73,14 @@ public class FarmAltar extends AltarMeta {
     super(uuid, typeStr, townUUID, worldStr, level, x, y, z, boonList, sacrificeList, totalRecentSacrifices, totalSacrificesMade, weightMap, nextEvalTime, new FarmAltarStructure());
   }
 
+  public static void clearWeightMap() {
+    weightMap.clear();
+  }
+
+  public static void addToWeightMap(Material mat, Double weight) {
+    weightMap.put(mat, weight);
+  }
+
   public List<Material> getSacrificeTypes() {
     ArrayList<Material> matList = new ArrayList<>();
     for (Material m : weightMap.keySet()) {

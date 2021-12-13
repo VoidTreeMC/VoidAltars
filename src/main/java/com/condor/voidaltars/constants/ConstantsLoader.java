@@ -15,6 +15,10 @@ public class ConstantsLoader {
   // Key: A string representation of the enum in StringConstants
   // Value: The new version of the string
   private static HashMap<String, String> valMap = new HashMap<>();
+  // Key: A string representation of the enum in StringListConstants
+  // Value: The new version of the string-list
+  // TODO: Change the protocol for these to be easier for humans to read
+  private static HashMap<String, String[]> listValMap = new HashMap<>();
 
   // TODO: Instantiate default file
   public static void init() {
@@ -25,7 +29,13 @@ public class ConstantsLoader {
       while (scanner.hasNextLine()) {
         String line = scanner.nextLine();
         String[] arr = line.split(": ");
-        valMap.put(arr[0], arr[1]);
+        // This has to be 4 \'s because it's being parsed as regex as well
+        String[] splitAsList = arr[1].split("\\\\n");
+        if (splitAsList.length <= 1) {
+          valMap.put(arr[0], arr[1]);
+        } else {
+          listValMap.put(arr[0], splitAsList);
+        }
       }
     } catch (IOException e) {
       e.printStackTrace();
@@ -37,6 +47,16 @@ public class ConstantsLoader {
     for (Entry<String, String> entry : valMap.entrySet()) {
       try {
         StringConstants toUpdate = StringConstants.valueOf(entry.getKey());
+        toUpdate.set(entry.getValue());
+      } catch (IllegalArgumentException e) {
+        // Ignore
+        // Bukkit.getLogger().warning("Malformed key detected in " + CONFIG_LOC + ": " + entry.getKey());
+      }
+    }
+
+    for (Entry<String, String[]> entry : listValMap.entrySet()) {
+      try {
+        StringListConstants toUpdate = StringListConstants.valueOf(entry.getKey());
         toUpdate.set(entry.getValue());
       } catch (IllegalArgumentException e) {
         // Ignore

@@ -61,4 +61,8 @@ public enum StringListConstants {
   public List<String> get() {
     return this.list;
   }
+
+  public void set(String[] newList) {
+    this.list = Arrays.asList(newList);
+  }
 }

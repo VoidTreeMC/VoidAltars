@@ -3,14 +3,13 @@ Duck wants people to only be able to change the boon type after every couple sac
 
 A command that people can use to see recent transactions on their altar, such as who has recently sacrificed to the altar, and what boons have been changed, etc.
 
-Add handling for List<String> constants from config file
+Add a config for changing the material requirements for altars
+Add a config for loading the item weights in
 Make it so if you remove an entry from the text file and reload, it goes back to the default
 Make it so newtown's altar doesnt scale with the number of people
-Add a config for loading the item weights in
-Add a config for changing the material requirements for altars
-Add a config for changing the sacrifice requirements for altars
-Create a way to destroy or move an altar
 
 DID
 ===
-Add admin command for adding a certain number of sacrifices
+Added handling for List<String> constants from config file. These now work, but the input format will be reworked later to be more human readable
+Added a config for changing the sacrifice requirements for altars. I resorted to using Reflection for this, but I'd like to revisit this later to see about other possible options.
+Added planning doc for new database design.

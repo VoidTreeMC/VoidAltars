@@ -1,6 +1,7 @@
 package com.condor.voidaltars.altar;
 
 import com.condor.voidaltars.constants.StringConstants;
+import com.condor.voidaltars.altar.altars.FarmAltar;
 
 public enum AltarType {
   FARM_ALTAR(StringConstants.FARM_ALTAR_NAME.get()),
@@ -25,5 +26,14 @@ public enum AltarType {
       }
     }
     return null;
+  }
+
+  public static Class getMetaFromType(AltarType type) {
+    switch (type) {
+      case FARM_ALTAR:
+        return FarmAltar.class;
+      default:
+        return null;
+    }
   }
 }

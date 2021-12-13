@@ -15,6 +15,7 @@ import com.condor.voidaltars.altar.AltarManager;
 import com.condor.voidaltars.sql.SQLLinker;
 import com.condor.voidaltars.sql.SQLConfig;
 import com.condor.voidaltars.constants.ConstantsLoader;
+import com.condor.voidaltars.constants.SacrificesConfigLoader;
 
 // import net.milkbowl.vault.economy.Economy;
 // import net.milkbowl.vault.economy.EconomyResponse;
@@ -89,6 +90,9 @@ public class AltarMain extends JavaPlugin {
 
     Bukkit.getLogger().info("Loading Altar Manager...");
     this.altarManager = new AltarManager();
+
+    Bukkit.getLogger().info("Loading Sacrifice config...");
+    SacrificesConfigLoader.init();
 
     Bukkit.getLogger().info("Loading SQL config...");
     SQLConfig.init();

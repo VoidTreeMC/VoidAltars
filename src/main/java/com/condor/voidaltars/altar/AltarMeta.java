@@ -385,6 +385,10 @@ public abstract class AltarMeta {
 
   public Material getSacrificeType() {
     List<Material> sacrificeTypes = this.getSacrificeTypes();
+    Bukkit.getLogger().info("Sacrifice types");
+    for (int i = 0; i < sacrificeTypes.size(); i++) {
+      Bukkit.getLogger().info("- " + sacrificeTypes.get(i));
+    }
     return sacrificeTypes.get(rng.nextInt(sacrificeTypes.size()));
   }
 
