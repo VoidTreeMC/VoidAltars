@@ -11,6 +11,7 @@ import com.condor.voidaltars.constants.ConstantsLoader;
 import com.condor.voidaltars.command.CommandControl;
 import com.condor.voidaltars.altar.AltarMeta;
 import com.condor.voidaltars.altar.AltarManager;
+import com.condor.voidaltars.altar.TownAltarLink;
 
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.Town;
@@ -56,15 +57,15 @@ public class AddSacrifices extends CommandControl {
       return FailureCode.FAILURE;
     }
 
-    AltarMeta altar = AltarManager.getAltarFromTown(town);
-    if (altar == null) {
+    TownAltarLink altarLink = AltarManager.getAltarLinkFromTown(town);
+    if (altarLink == null) {
       sender.sendMessage("ERROR: Could not find an altar belonging to that town.");
       return FailureCode.FAILURE;
     }
 
     // TODO: Rework method, remove for loop
     for (int i = 0; i < newSacrifices; i++) {
-      altar.incrementSacrifices();
+      altarLink.incrementSacrifices();
     }
 
     sender.sendMessage("Successfully added " + newSacrifices + " to altar.");

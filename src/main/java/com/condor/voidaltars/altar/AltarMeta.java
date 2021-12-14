@@ -18,12 +18,16 @@ import org.bukkit.Sound;
 
 import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.altar.exception.NotInATownException;
+import com.condor.voidaltars.altar.exception.WrongTownException;
 import com.condor.voidaltars.main.AltarMain;
 import com.condor.voidaltars.altar.altars.FarmAltar;
+import com.condor.voidaltars.altar.altars.MiningAltar;
 import com.condor.voidaltars.altar.multiblock.structures.FarmAltarStructure;
+import com.condor.voidaltars.altar.multiblock.structures.MiningAltarStructure;
 import com.condor.voidaltars.runnable.PlaySparkleEffect;
 import com.condor.voidaltars.runnable.LightCandles;
 import com.condor.voidaltars.sql.SQLLinker;
+import com.condor.voidaltars.altar.TownAltarLink;
 
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.TownyAPI;
@@ -32,60 +36,41 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 
 public abstract class AltarMeta {
   AltarType type;
-  Town town;
+  TownAltarLink link;
   Location interfaceLoc;
   AltarStructure structure;
-  ArrayList<Boon> boons = new ArrayList<>();
   ArrayList<Sacrifice> sacrifices = new ArrayList<>();
   // The ID of the altar
   UUID uuid;
-  // The number of sacrifices made in this interval
-  int totalRecentSacrifices;
-  // The number of sacrifices wanted in this interval
-  int sacrificesWanted;
-  // The level of the altar
-  int level;
-  // The total number of sacrifices made to this altar, ever
-  int totalSacrificesMade;
   HashMap<Material, Double> weightMap;
-  long nextEvalTime;
-  // Might end up being unused. To be used later, when statistics are
-  // being implemented.
-  // ArrayList<Sacrifice> sacrificeHistory = new ArrayList<>();
-
-  // The amount of milliseconds in a quota period
-  // Currently, 1 week
-  private final static long QUOTA_PERIOD = 1000 * 60 * 60 * 24 * 7;
-  // A 2-minute quota window to be used for testing
-  // private final static long QUOTA_PERIOD = 1000 * 60 * 2;
 
   private static Random rng = new Random();
 
-  public AltarMeta(AltarType type, UUID uuid, Location interfaceLoc, AltarStructure structure, HashMap<Material, Double> weightMap) throws NotInATownException {
+  public AltarMeta(TownAltarLink link, AltarType type, UUID uuid, Location interfaceLoc, AltarStructure structure, HashMap<Material, Double> weightMap) throws NotInATownException, WrongTownException {
+    this.link = link;
     this.type = type;
     this.structure = structure;
     TownBlock tb = TownyAPI.getInstance().getTownBlock(interfaceLoc);
+    Town town = null;
     if (tb != null) {
       try {
-        this.town = tb.getTown();
+        town = tb.getTown();
       } catch (NotRegisteredException e) {
         e.printStackTrace();
       }
     } else {
       throw new NotInATownException(interfaceLoc);
     }
+    if (!town.getUUID().equals(link.getUniqueId())) {
+      throw new WrongTownException(town.getUUID(), link.getUniqueId());
+    }
     this.uuid = uuid;
-    this.totalRecentSacrifices = 0;
-    this.level = 0;
     this.weightMap = weightMap;
-    this.sacrificesWanted = AltarManager.getSacrificesNeededByLevel(this.level);
     this.interfaceLoc = interfaceLoc;
-    this.nextEvalTime = this.calcNextEvalTime();
 
     for (int i = 0; i < this.getNumSacrificeSlots(); i++) {
       sacrifices.add(SacrificeManager.getNewSacrifice(this));
     }
-    AltarManager.addAltar(this);
     AltarMeta tempMeta = this;
     Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
       @Override
@@ -95,74 +80,37 @@ public abstract class AltarMeta {
     });
   }
 
-  public AltarMeta(UUID uuid, String type, UUID townUUID, String worldStr, int level, double x, double y, double z,
-                   ArrayList<String> boonList, ArrayList<byte[]> sacrificeList, int totalRecentSacrifices, int totalSacrificesMade,
-                   HashMap<Material, Double> weightMap, long nextEvalTime, AltarStructure structure) {
+  public AltarMeta(UUID uuid, String type, UUID townUUID, String worldStr, double x, double y, double z,
+                   ArrayList<byte[]> sacrificeList, HashMap<Material, Double> weightMap, AltarStructure structure) {
    this.uuid = uuid;
    this.type = AltarType.getTypeFromString(type);
    this.weightMap = weightMap;
-   this.nextEvalTime = nextEvalTime;
-   try {
-     this.town = TownyAPI.getInstance().getDataSource().getTown(townUUID);
-   } catch (NotRegisteredException e) {
-     Bukkit.getLogger().info("The town " + townUUID + " is no longer registered. Purging from database.");
-     Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
-       @Override
-       public void run() {
-         SQLLinker.removeAltarByTownUUID(townUUID);
-       }
-     });
-   }
+   this.link = AltarManager.getAltarLink(uuid);
    Location location = new Location(AltarMain.getPlugin().getServer().getWorld(worldStr), x, y, z);
    this.interfaceLoc = location;
-   this.level = level;
-   this.sacrificesWanted = AltarManager.getSacrificesNeededByLevel(this.level);
-   for (int i = 0; i < boonList.size(); i++) {
-     if (!boonList.get(i).isEmpty()) {
-        setBoon(BoonManager.getBoonByType(BoonType.getTypeFromString(boonList.get(i))), i);
-     }
-   }
    for (int i = 0; i < sacrificeList.size(); i++) {
      if (sacrificeList.get(i) != null) {
        sacrifices.add(new Sacrifice(sacrificeList.get(i), this));
      }
    }
-   this.totalRecentSacrifices = totalRecentSacrifices;
-   this.totalSacrificesMade = totalSacrificesMade;
    this.structure = structure;
-   AltarManager.addAltar(this);
+   this.link.addAltar(this.type, this);
  }
 
- public static AltarMeta create(UUID uuid, String typeStr, UUID townUUID, String worldStr, int level, double x, double y, double z,
-                  ArrayList<String> boonList, ArrayList<byte[]> sacrificeList, int totalRecentSacrifices, int totalSacrificesMade, long nextEvalTime) {
+ public static AltarMeta create(UUID uuid, String typeStr, UUID townUUID, String worldStr, double x, double y, double z, ArrayList<byte[]> sacrificeList) {
    AltarType type = AltarType.getTypeFromString(typeStr);
    switch (type) {
+     case MINING_ALTAR:
+       return new MiningAltar(uuid, typeStr, townUUID, worldStr, x, y, z, sacrificeList);
      case FARM_ALTAR:
      default:
-      return new FarmAltar(uuid, typeStr, townUUID, worldStr, level, x, y, z, boonList, sacrificeList,
-                           totalRecentSacrifices, totalSacrificesMade, nextEvalTime);
+      return new FarmAltar(uuid, typeStr, townUUID, worldStr, x, y, z, sacrificeList);
    }
-   // return null;
  }
-
-  public void incrementSacrifices() {
-    totalRecentSacrifices++;
-    totalSacrificesMade++;
-    if (shouldLevelUp()) {
-      levelUp();
-    }
-    AltarMeta tempMeta = this;
-    Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
-      @Override
-      public void run() {
-        SQLLinker.pushToDB(tempMeta);
-      }
-    });
-  }
 
   public Sacrifice finishSacrifice(Sacrifice finished) {
     sacrifices.remove(finished);
-    incrementSacrifices();
+    this.link.incrementSacrifices();
     Sacrifice newSacrifice = SacrificeManager.getNewSacrifice(this);
     sacrifices.add(newSacrifice);
     AltarMeta tempMeta = this;
@@ -175,69 +123,13 @@ public abstract class AltarMeta {
     return newSacrifice;
   }
 
-  public boolean isSatisfied() {
-    return this.totalRecentSacrifices >= this.sacrificesWanted;
-  }
-
-  public boolean shouldLevelUp() {
-    return this.totalRecentSacrifices >= (this.sacrificesWanted * 1.5);
-  }
-
-  public boolean hasMetQuota() {
-    if (this.getSacrificesRemaining() > 0) {
-      long now = System.currentTimeMillis();
-      if (now > this.getNextEvalTime()) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  // Process the level up event
-  public void levelUp() {
-    if (this.level >= 4) {
-      return;
-    }
-    this.level++;
+  public void addNewSacrifice() {
     Sacrifice newSacrifice = SacrificeManager.getNewSacrifice(this);
     sacrifices.add(newSacrifice);
-    this.sacrificesWanted = AltarManager.getSacrificesNeededByLevel(this.level);
-    this.totalRecentSacrifices = 0;
-    this.nextEvalTime = this.calcNextEvalTime();
-    AltarMeta tempMeta = this;
-    Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
-      @Override
-      public void run() {
-        SQLLinker.pushToDB(tempMeta);
-      }
-    });
-    doEffect();
   }
 
-  public void levelDown() {
-    if (this.level <= 0) {
-      return;
-    }
-    this.level--;
+  public void removeSacrifice() {
     sacrifices.remove(sacrifices.size() - 1);
-    if (this.level == 0) {
-      setCandlesLit(false);
-    } else {
-      setCandles(this.level);
-    }
-    if (boons.size() > 0) {
-      boons.get(boons.size() - 1).removeTown(this.getTown());
-      boons.remove(boons.size() - 1);
-    }
-    this.totalRecentSacrifices = 0;
-    AltarMeta tempMeta = this;
-    this.nextEvalTime = this.calcNextEvalTime();
-    Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
-      @Override
-      public void run() {
-        SQLLinker.pushToDB(tempMeta);
-      }
-    });
   }
 
   public void doEffect() {
@@ -245,13 +137,13 @@ public abstract class AltarMeta {
     // The interval between lightning strikes. Measured in ticks.
     final int STRIKE_INTERVAL = 40;
     int timeOffset = STRIKE_INTERVAL;
-    if (this.level == 1) {
+    if (this.link.getLevel() == 1) {
       transformLightningRodsOrCandles(true);
     }
     ArrayList<Block> strikeables = this.getCandles();
     strikeables.addAll(this.getLightningRods());
     for (Block block : strikeables) {
-      (new LightCandles(block, this.level, this.structure)).runTaskLater(AltarMain.getPlugin(), timeOffset);
+      (new LightCandles(block, this.link.getLevel(), this.structure)).runTaskLater(AltarMain.getPlugin(), timeOffset);
       timeOffset += STRIKE_INTERVAL;
     }
     world.strikeLightningEffect(interfaceLoc);
@@ -313,7 +205,7 @@ public abstract class AltarMeta {
     }
   }
 
-  private void setCandles(int amt) {
+  public void setCandles(int amt) {
     if (amt > 0) {
       ArrayList<Block> candles = getCandles();
       for (Block block : candles) {
@@ -343,27 +235,6 @@ public abstract class AltarMeta {
     }
   }
 
-  public void setBoon(Boon boon, int index) {
-    if (boons.size() > index) {
-      if (boons.get(index) != null) {
-        boons.get(index).removeTown(this.town);
-      }
-      boons.set(index, boon);
-    } else {
-      boons.add(boon);
-    }
-    boon.addTown(this.town);
-  }
-
-  public void clearBoons() {
-    for (int i = 0; i < boons.size(); i++) {
-      if (boons.get(i) != null) {
-        boons.get(i).removeTown(this.getTown());
-        boons.set(i, null);
-      }
-    }
-  }
-
   public void setLocation(Location newLoc) {
     this.interfaceLoc = newLoc;
     AltarMeta tempMeta = this;
@@ -377,6 +248,10 @@ public abstract class AltarMeta {
 
   public AltarType getType() {
     return this.type;
+  }
+
+  public TownAltarLink getLink() {
+    return this.link;
   }
 
   public UUID getUniqueId() {
@@ -404,37 +279,8 @@ public abstract class AltarMeta {
     }
   }
 
-  public Boon getBoon(int index) {
-    if (index < boons.size()) {
-      return boons.get(index);
-    } else {
-      return null;
-    }
-  }
-
-  public long getNextEvalTime() {
-    return this.nextEvalTime;
-  }
-
-  public long calcNextEvalTime() {
-    long now = System.currentTimeMillis();
-    return now + QUOTA_PERIOD;
-  }
-
-  public int getLevel() {
-    return this.level;
-  }
-
-  public int getMaxLevel() {
-    return 4;
-  }
-
   public int getNumSacrificeSlots() {
-    return Math.max(1, this.getLevel());
-  }
-
-  public int getNumBoonSlots() {
-    return this.getLevel();
+    return Math.max(1, this.link.getLevel());
   }
 
   public double getSacrificeWeight(Material type) {
@@ -445,36 +291,24 @@ public abstract class AltarMeta {
     return this.interfaceLoc;
   }
 
+  public int getLevel() {
+    return this.link.getLevel();
+  }
+
+  public int getMaxLevel() {
+    return this.link.getMaxLevel();
+  }
+
   public Town getTown() {
-    return this.town;
+    return this.link.getTown();
   }
 
   public AltarStructure getStructure() {
     return this.structure;
   }
 
-  public int getSacrificesWanted() {
-    return this.sacrificesWanted;
-  }
-
-  public int getSacrificesNeededForLevelUp() {
-    return ((int) (this.sacrificesWanted * 1.5)) - this.totalRecentSacrifices;
-  }
-
-  public int getSacrificesRemaining() {
-    return this.sacrificesWanted - this.totalRecentSacrifices;
-  }
-
   public ArrayList<Sacrifice> getSacrifices() {
     return this.sacrifices;
-  }
-
-  public int getTotalRecentSacrifices() {
-    return this.totalRecentSacrifices;
-  }
-
-  public int getTotalSacrificesMade() {
-    return this.totalSacrificesMade;
   }
 
   public abstract List<Material> getSacrificeTypes();

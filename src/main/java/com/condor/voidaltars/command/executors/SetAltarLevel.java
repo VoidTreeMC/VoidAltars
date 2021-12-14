@@ -11,6 +11,7 @@ import com.condor.voidaltars.constants.ConstantsLoader;
 import com.condor.voidaltars.command.CommandControl;
 import com.condor.voidaltars.altar.AltarMeta;
 import com.condor.voidaltars.altar.AltarManager;
+import com.condor.voidaltars.altar.TownAltarLink;
 
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.Town;
@@ -56,13 +57,13 @@ public class SetAltarLevel extends CommandControl {
       return FailureCode.FAILURE;
     }
 
-    AltarMeta altar = AltarManager.getAltarFromTown(town);
-    if (altar == null) {
+    TownAltarLink altarLink = AltarManager.getAltarLinkFromTown(town);
+    if (altarLink == null) {
       sender.sendMessage("ERROR: Could not find an altar belonging to that town.");
       return FailureCode.FAILURE;
     }
 
-    int currLevel = altar.getLevel();
+    int currLevel = altarLink.getLevel();
 
     if (newLevel == currLevel) {
       sender.sendMessage("The altar is already at level " + currLevel);
@@ -71,8 +72,8 @@ public class SetAltarLevel extends CommandControl {
 
     if (newLevel > currLevel) {
       for (int i = 0; i < (newLevel - currLevel); i++) {
-        // TODO: Make a method in AltarMeta that allows it to level up by a certain number of times, or to a certain level
-        altar.levelUp();
+        // TODO: Make a method in TownAltarLink that allows it to level up by a certain number of times, or to a certain level
+        altarLink.levelUp();
       }
       sender.sendMessage("Successfully set altar to level " + newLevel);
       return FailureCode.SUCCESS;
@@ -81,7 +82,7 @@ public class SetAltarLevel extends CommandControl {
     if (newLevel < currLevel) {
       for (int i = 0; i < (currLevel - newLevel); i++) {
         // TODO: Make a method in AltarMeta that allows it to level down by a certain number of times, or to a certain level
-        altar.levelDown();
+        altarLink.levelDown();
       }
       sender.sendMessage("Successfully set altar to level " + newLevel);
       return FailureCode.SUCCESS;

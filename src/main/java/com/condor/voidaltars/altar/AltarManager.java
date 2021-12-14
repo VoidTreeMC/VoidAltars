@@ -17,6 +17,7 @@ import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.altar.altars.*;
 import com.condor.voidaltars.altar.multiblock.structures.*;
 import com.condor.voidaltars.altar.exception.NotInATownException;
+import com.condor.voidaltars.altar.exception.WrongTownException;
 import com.condor.voidaltars.sql.SQLLinker;
 import com.condor.voidaltars.runnable.PlaySparkleEffect;
 import com.condor.voidaltars.main.AltarMain;
@@ -31,7 +32,7 @@ import com.palmergames.bukkit.towny.TownyUniverse;
 
 public class AltarManager {
   private static HashMap<AltarType, AltarStructure> altarTypeMap = new HashMap<>();
-  private static HashMap<UUID, AltarMeta> altarMap = new HashMap<>();
+  private static HashMap<UUID, TownAltarLink> altarLinkMap = new HashMap<>();
 
   public AltarManager() {
     init();
@@ -44,29 +45,29 @@ public class AltarManager {
     altarTypeMap.put(AltarType.OCEAN_ALTAR, new OceanAltarStructure());
   }
 
-  public static void addAltar(AltarMeta altar) {
-    altarMap.put(altar.getUniqueId(), altar);
+  public static void addAltarLink(TownAltarLink link) {
+    altarLinkMap.put(link.getUniqueId(), link);
   }
 
-  public static void clearAltars() {
-    altarMap.clear();
+  public static TownAltarLink getAltarLink(UUID uuid) {
+    return altarLinkMap.get(uuid);
+  }
+
+  public static void clearAltarLinks() {
+    altarLinkMap.clear();
   }
 
   public static AltarStructure getAltarByType(AltarType type) {
     return altarTypeMap.get(type);
   }
 
-  public static AltarMeta getAltarFromTown(Town town) {
-    for (AltarMeta altar : altarMap.values()) {
-      if (town.equals(altar.getTown())) {
-        return altar;
+  public static TownAltarLink getAltarLinkFromTown(Town town) {
+    for (TownAltarLink link : altarLinkMap.values()) {
+      if (town.equals(link.getTown())) {
+        return link;
       }
     }
     return null;
-  }
-
-  public static AltarMeta getAltar(UUID uuid) {
-    return altarMap.get(uuid);
   }
 
   // TODO: Refactor this to make it a bit cleaner.
@@ -74,36 +75,38 @@ public class AltarManager {
   public static AltarMeta getAltarFromLoc(Location loc, Player player) {
     AltarMeta altarMeta = null;
 
-    for (AltarMeta meta : altarMap.values()) {
+    for (TownAltarLink link : altarLinkMap.values()) {
       // if (locsAreEqual(meta.getLocation(), loc)) {
       // Check if the altar is still in the town it's supposed to be in
-      try {
-        TownBlock tb = TownyAPI.getInstance().getTownBlock(meta.getLocation());
-        if (tb != null && tb.getTown().equals(meta.getTown())) {
-          if (meta.getLocation().equals(loc)) {
-            // If it's still a valid altar
-            if (getStructureFromLoc(loc, true) != null) {
-              return meta;
-            } else {
-              player.sendMessage(StringConstants.ALTAR_NO_LONGER_VALID.get());
-            }
-          // If this campfire is somewhere else, but it's still a valid altar
-          } else if (getStructureFromLoc(loc, true) != null) {
-            // If the original location still contains a campfire
-            if (meta.getStructure().isPossibleInterfaceBlock(meta.getLocation().getBlock().getType())) {
-              player.sendMessage(StringConstants.NO_DUPLICATE_ALTARS.get());
-            // If the original location's campfire is gone, update it
-            } else {
-              player.sendMessage(StringConstants.ALTAR_HAS_BEEN_MOVED.get());
-              meta.setLocation(loc);
-              return meta;
+      for (AltarMeta meta : link.getAltars()) {
+        try {
+          TownBlock tb = TownyAPI.getInstance().getTownBlock(meta.getLocation());
+          if (tb != null && tb.getTown().equals(meta.getTown())) {
+            if (meta.getLocation().equals(loc)) {
+              // If it's still a valid altar
+              if (getStructureFromLoc(loc, true) != null) {
+                return meta;
+              } else {
+                player.sendMessage(StringConstants.ALTAR_NO_LONGER_VALID.get());
+              }
+              // If this campfire is somewhere else, but it's still a valid altar
+            } else if (getStructureFromLoc(loc, true) != null) {
+              // If the original location still contains a campfire
+              if (meta.getStructure().isPossibleInterfaceBlock(meta.getLocation().getBlock().getType())) {
+                player.sendMessage(StringConstants.NO_DUPLICATE_ALTARS.get());
+                // If the original location's campfire is gone, update it
+              } else {
+                player.sendMessage(StringConstants.ALTAR_HAS_BEEN_MOVED.get());
+                meta.setLocation(loc);
+                return meta;
+              }
             }
           }
+          return null;
+        } catch (NotRegisteredException e) {
+          // It's not in a town. This altar's town unclaimed the chunk and it is thus deactivated. Return null.
+          return null;
         }
-        return null;
-      } catch (NotRegisteredException e) {
-        // It's not in a town. This altar's town unclaimed the chunk and it is thus deactivated. Return null.
-        return null;
       }
     }
 
@@ -141,24 +144,35 @@ public class AltarManager {
       // If it IS a valid altar but we dont know about it,
       // we create a new altar meta for it and add it to the map
       } else {
-        // If there's already an altar in that town, return null
-        if (town != null) {
-          AltarMeta townAltar = getAltarFromTown(town);
-          if (townAltar != null) {
-            player.sendMessage(StringConstants.NO_DUPLICATE_ALTARS.get());
-            return null;
-          }
-        }
         try {
+          // If there's already an altar in that town, return null
+          if (town != null) {
+            TownAltarLink link = AltarManager.getAltarLink(town.getUUID());
+            if (link == null) {
+              link = new TownAltarLink(town);
+            }
+            AltarMeta townAltar = link.getAltar(struc.getType());
+            if (townAltar != null) {
+              player.sendMessage(StringConstants.NO_DUPLICATE_ALTARS.get());
+              return null;
+            }
+          }
+          TownAltarLink link = AltarManager.getAltarLink(town.getUUID());
+          if (link == null) {
+            link = new TownAltarLink(town);
+          }
           switch (struc.getType()) {
+            case MINING_ALTAR:
+              altarMeta = new MiningAltar(link, loc, UUID.randomUUID());
+              break;
             case FARM_ALTAR:
             default:
-              altarMeta = new FarmAltar(loc, UUID.randomUUID());
+              altarMeta = new FarmAltar(link, loc, UUID.randomUUID());
               break;
           }
           altarMeta.doEffect();
           return altarMeta;
-        } catch (NotInATownException e) {
+        } catch (NotInATownException | WrongTownException e) {
           // They're not in a town. Ignore it.
           player.sendMessage(StringConstants.NO_ALTARS_IN_THE_WILD.get());
           return null;

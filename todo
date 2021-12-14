@@ -2,11 +2,21 @@ Duck wants people to only be able to change the boon type after every couple sac
   - We decided to delay this. Players should be able to switch their altar boon as much as they want early on, so they can try out all of the boons and test them
 
 A command that people can use to see recent transactions on their altar, such as who has recently sacrificed to the altar, and what boons have been changed, etc.
+ - Transaction types
+   - Built altar
+   - Destroyed altar
+   - Sacrificed to altar
+   - Changed boon
+   - Altar leveled up
 
+Add a command that lets administrators reload sacrifices based on the config file
 Add a config for changing the material requirements for altars
-Add a config for loading the item weights in
 Make it so if you remove an entry from the text file and reload, it goes back to the default
 Make it so newtown's altar doesnt scale with the number of people
+
+Check on the activation of multiple altars and see if it works with the new system
+Currently, when players unclaim an altar, any subsequent chunks that are unclaimed will tell them their altar has been unclaimed. Until they re-claim it.
+RefreshSacrifices has been temporarily disabled
 
 DID
 ===

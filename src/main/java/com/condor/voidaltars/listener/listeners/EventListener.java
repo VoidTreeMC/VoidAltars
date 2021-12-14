@@ -68,6 +68,7 @@ import com.condor.voidaltars.altar.AltarMeta;
 import com.condor.voidaltars.gui.MainAltarGUI;
 import com.condor.voidaltars.altar.BoonManager;
 import com.condor.voidaltars.constants.StringConstants;
+import com.condor.voidaltars.altar.TownAltarLink;
 
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.event.town.TownUnclaimEvent;
@@ -88,26 +89,12 @@ public class EventListener  extends AltarListener {
   @EventHandler
   public void onTownUnclaimEvent(TownUnclaimEvent event) {
     Town town = event.getTown();
-    AltarMeta altar = AltarManager.getAltarFromTown(town);
-    // If they don't have an altar, we don't care
-    if (altar == null) {
+    TownAltarLink altarLink = AltarManager.getAltarLinkFromTown(town);
+    // If they don't have any altars, we don't care
+    if (altarLink == null) {
       return;
     }
-    // If they *do* have an altar, check if it's in the chunk that was just unclaimed
-    Location altarLoc = altar.getLocation();
-    TownBlock tb = TownyAPI.getInstance().getTownBlock(altarLoc);
-    // If the altar's chunk is no longer a town block
-    if (tb == null) {
-      // Send a message to all town members telling them their altar was just unclaimed
-      for (Resident resident : town.getResidents()) {
-        Player player = resident.getPlayer();
-        if (player != null) {
-          player.sendMessage(StringConstants.TOWN_HAS_UNCLAIMED_ALTAR.get());
-        }
-      }
-      // Disable the altar's boons
-      altar.clearBoons();
-    }
+    altarLink.handleChunkUnclaim();
   }
 
   @EventHandler

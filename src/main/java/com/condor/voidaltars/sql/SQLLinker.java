@@ -22,6 +22,7 @@ import com.condor.voidaltars.altar.AltarMeta;
 import com.condor.voidaltars.main.AltarMain;
 import com.condor.voidaltars.altar.AltarManager;
 import com.condor.voidaltars.sql.SQLConfig;
+import com.condor.voidaltars.altar.TownAltarLink;
 
 import com.palmergames.bukkit.towny.object.Town;
 
@@ -58,38 +59,111 @@ public class SQLLinker {
   public static void pullFromDB() {
     probeConnection();
     Bukkit.getLogger().log(Level.INFO, "Fetching altars from DB...");
+    ArrayList<TownAltarLink> toDelevel = new ArrayList<>();
     try {
-      PreparedStatement stmt = conn.prepareStatement("SELECT * FROM AltarTable;");
-      ResultSet results = stmt.executeQuery();
-      boolean rsnext = results.next();
-      AltarManager.clearAltars();
+      PreparedStatement tatStmt = conn.prepareStatement("SELECT * FROM TownAltarTable;");
+      ResultSet tatResults = tatStmt.executeQuery();
+      boolean rsnext = tatResults.next();
+      AltarManager.clearAltarLinks();
       while (rsnext) {
-        UUID uuid = UUID.fromString(results.getString("uuid"));
-        String type = results.getString("type");
-        UUID townUUID = UUID.fromString(results.getString("town_uuid"));
-        String worldStr = results.getString("world");
-        int level = results.getInt("level");
-        double x = (double) results.getInt("x");
-        double y = (double) results.getInt("y");
-        double z = (double) results.getInt("z");
+        UUID townUUID = UUID.fromString(tatResults.getString("town_uuid"));
+        int level = tatResults.getInt("level");
         ArrayList<String> boonList = new ArrayList<>();
+        for (int i = 1; i <= NUM_SACRIFICES_AND_BOONS; i++) {
+          boonList.add(tatResults.getString("boon_" + i));
+        }
+        int totalRecentSacrifices = tatResults.getInt("total_recent_sacrifices");
+        int totalSacrificesMade = tatResults.getInt("total_sacrifices_made");
+        long nextEvalTime = tatResults.getLong("next_eval_time");
+
+
+        TownAltarLink altarLink = new TownAltarLink(townUUID, level, boonList, totalRecentSacrifices, totalSacrificesMade, nextEvalTime);
+        if (!altarLink.hasMetQuota()) {
+          toDelevel.add(altarLink);
+        }
+        rsnext = tatResults.next();
+      }
+
+      PreparedStatement altarStmt = conn.prepareStatement("SELECT * FROM AltarTable;");
+      ResultSet altarResults = altarStmt.executeQuery();
+      rsnext = altarResults.next();
+      AltarManager.clearAltarLinks();
+      while (rsnext) {
+        UUID uuid = UUID.fromString(altarResults.getString("uuid"));
+        UUID townUUID = UUID.fromString(altarResults.getString("town_uuid"));
+        String type = altarResults.getString("type");
+        String worldStr = altarResults.getString("world");
+        double x = (double) altarResults.getInt("x");
+        double y = (double) altarResults.getInt("y");
+        double z = (double) altarResults.getInt("z");
         ArrayList<byte[]> sacrificeList = new ArrayList<>();
         for (int i = 1; i <= NUM_SACRIFICES_AND_BOONS; i++) {
-          boonList.add(results.getString("boon_" + i));
-          sacrificeList.add(results.getBytes("sacrifice_" + i));
+          sacrificeList.add(altarResults.getBytes("sacrifice_" + i));
         }
-        int totalRecentSacrifices = results.getInt("total_recent_sacrifices");
-        int totalSacrificesMade = results.getInt("total_sacrifices_made");
-        long nextEvalTime = results.getLong("next_eval_time");
 
+        AltarMeta altar = AltarMeta.create(uuid, type, townUUID, worldStr, x, y, z, sacrificeList);
 
-        AltarMeta altar = AltarMeta.create(uuid, type, townUUID, worldStr, level, x, y, z, boonList, sacrificeList,
-                                           totalRecentSacrifices, totalSacrificesMade, nextEvalTime);
-        if (!altar.hasMetQuota()) {
-          altar.levelDown();
-        }
-        rsnext = results.next();
+        rsnext = altarResults.next();
       }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    // De-level all of the altars that need to be de-leveled
+    for (TownAltarLink link : toDelevel) {
+      link.levelDown();
+    }
+  }
+
+  public static void pushToDB(TownAltarLink altarLink) {
+    probeConnection();
+    int level = altarLink.getLevel();
+    Town town = altarLink.getTown();
+    if (town == null) {
+      Bukkit.getLogger().warning("Couldn't push altar to DB because it's town no longer exists: " + altarLink.getUniqueId());
+      return;
+    }
+    UUID townUUID = altarLink.getUniqueId();
+    String boonOne = (altarLink.getBoon(0) != null) ? altarLink.getBoon(0).getType().toString() : "";
+    String boonTwo = (altarLink.getBoon(1) != null) ? altarLink.getBoon(1).getType().toString() : "";
+    String boonThree = (altarLink.getBoon(2) != null) ? altarLink.getBoon(2).getType().toString() : "";
+    String boonFour = (altarLink.getBoon(3) != null) ? altarLink.getBoon(3).getType().toString() : "";
+    int totalRecentSacrifices = altarLink.getTotalRecentSacrifices();
+    int totalSacrificesMade = altarLink.getTotalSacrificesMade();
+    long nextEvalTime = altarLink.getNextEvalTime();
+
+    try {
+
+      PreparedStatement isInTableStmt = conn.prepareStatement("SELECT town_uuid FROM TownAltarTable WHERE town_uuid=?");
+      isInTableStmt.setString(1, townUUID.toString());
+      boolean isInTable = isInTableStmt.executeQuery().next();
+
+      PreparedStatement stmt;
+      if (isInTable) {
+        stmt = conn.prepareStatement("UPDATE TownAltarTable SET town_uuid=?, level=?, boon_1=?, boon_2=?, boon_3=?, boon_4=?, total_recent_sacrifices=?, total_sacrifices_made=?, next_eval_time=? WHERE town_uuid=?;");
+        stmt.setString(1, townUUID.toString());
+        stmt.setInt(2, level);
+        stmt.setString(3, boonOne);
+        stmt.setString(4, boonTwo);
+        stmt.setString(5, boonThree);
+        stmt.setString(6, boonFour);
+        stmt.setInt(7, totalRecentSacrifices);
+        stmt.setInt(8, totalSacrificesMade);
+        stmt.setLong(9, nextEvalTime);
+        stmt.setString(10, townUUID.toString());
+      } else {
+        stmt = conn.prepareStatement("INSERT INTO TownAltarTable(town_uuid, level, boon_1, boon_2, boon_3, boon_4, total_recent_sacrifices, total_sacrifices_made, next_eval_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
+        stmt.setString(1, townUUID.toString());
+        stmt.setInt(2, level);
+        stmt.setString(3, boonOne);
+        stmt.setString(4, boonTwo);
+        stmt.setString(5, boonThree);
+        stmt.setString(6, boonFour);
+        stmt.setInt(7, totalRecentSacrifices);
+        stmt.setInt(8, totalSacrificesMade);
+        stmt.setLong(9, nextEvalTime);
+      }
+
+      stmt.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -100,7 +174,6 @@ public class SQLLinker {
     UUID uuid = altar.getUniqueId();
     Location altarLoc = altar.getLocation();
     String worldStr = altarLoc.getWorld().getName();
-    int level = altar.getLevel();
     double x = altarLoc.getX();
     double y = altarLoc.getY();
     double z = altarLoc.getZ();
@@ -111,17 +184,10 @@ public class SQLLinker {
       return;
     }
     UUID townUUID = town.getUuid();
-    String boonOne = (altar.getBoon(0) != null) ? altar.getBoon(0).getType().toString() : "";
-    String boonTwo = (altar.getBoon(1) != null) ? altar.getBoon(1).getType().toString() : "";
-    String boonThree = (altar.getBoon(2) != null) ? altar.getBoon(2).getType().toString() : "";
-    String boonFour = (altar.getBoon(3) != null) ? altar.getBoon(3).getType().toString() : "";
     byte[] sacrificeOne = (altar.getSacrifice(0) != null) ? altar.getSacrifice(0).serialize() : null;
     byte[] sacrificeTwo = (altar.getSacrifice(1) != null) ? altar.getSacrifice(1).serialize() : null;
     byte[] sacrificeThree = (altar.getSacrifice(2) != null) ? altar.getSacrifice(2).serialize() : null;
     byte[] sacrificeFour = (altar.getSacrifice(3) != null) ? altar.getSacrifice(3).serialize() : null;
-    int totalRecentSacrifices = altar.getTotalRecentSacrifices();
-    int totalSacrificesMade = altar.getTotalSacrificesMade();
-    long nextEvalTime = altar.getNextEvalTime();
 
     try {
 
@@ -131,49 +197,35 @@ public class SQLLinker {
 
       PreparedStatement stmt;
       if (isInTable) {
-        stmt = conn.prepareStatement("UPDATE AltarTable SET uuid=?, type=?, town_uuid=?, world=?, level=?, x=?, y=?, z=?, boon_1=?, boon_2=?, boon_3=?, boon_4=?, sacrifice_1=?, sacrifice_2=?, sacrifice_3=?, sacrifice_4=?, total_recent_sacrifices=?, total_sacrifices_made=?, next_eval_time=? WHERE uuid=?;");
+        stmt = conn.prepareStatement("UPDATE AltarTable SET uuid=?, town_uuid=?, type=?, world=?, x=?, y=?, z=?, sacrifice_1=?, sacrifice_2=?, sacrifice_3=?, sacrifice_4=? WHERE uuid=?;");
         stmt.setString(1, uuid.toString());
-        stmt.setString(2, type);
-        stmt.setString(3, townUUID.toString());
+        stmt.setString(2, townUUID.toString());
+        stmt.setString(3, type);
         stmt.setString(4, worldStr);
-        stmt.setInt(5, level);
-        stmt.setInt(6, (int) x);
-        stmt.setInt(7, (int) y);
-        stmt.setInt(8, (int) z);
-        stmt.setString(9, boonOne);
-        stmt.setString(10, boonTwo);
-        stmt.setString(11, boonThree);
-        stmt.setString(12, boonFour);
-        stmt.setBytes(13, sacrificeOne);
-        stmt.setBytes(14, sacrificeTwo);
-        stmt.setBytes(15, sacrificeThree);
-        stmt.setBytes(16, sacrificeFour);
-        stmt.setInt(17, totalRecentSacrifices);
-        stmt.setInt(18, totalSacrificesMade);
-        stmt.setLong(19, nextEvalTime);
-        stmt.setString(20, uuid.toString());
+        stmt.setInt(5, (int) x);
+        stmt.setInt(6, (int) y);
+        stmt.setInt(7, (int) z);
+        stmt.setBytes(8, sacrificeOne);
+        stmt.setBytes(9, sacrificeTwo);
+        stmt.setBytes(10, sacrificeThree);
+        stmt.setBytes(11, sacrificeFour);
+        stmt.setString(12, uuid.toString());
       } else {
-        stmt = conn.prepareStatement("INSERT INTO AltarTable(uuid, type, town_uuid, world, level, x, y, z, boon_1, boon_2, boon_3, boon_4, sacrifice_1, sacrifice_2, sacrifice_3, sacrifice_4, total_recent_sacrifices, total_sacrifices_made, next_eval_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+        stmt = conn.prepareStatement("INSERT INTO AltarTable(uuid, town_uuid, type, world, x, y, z, sacrifice_1, sacrifice_2, sacrifice_3, sacrifice_4) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
         stmt.setString(1, uuid.toString());
-        stmt.setString(2, type);
-        stmt.setString(3, townUUID.toString());
+        stmt.setString(2, townUUID.toString());
+        stmt.setString(3, type);
         stmt.setString(4, worldStr);
-        stmt.setInt(5, level);
-        stmt.setInt(6, (int) x);
-        stmt.setInt(7, (int) y);
-        stmt.setInt(8, (int) z);
-        stmt.setString(9, boonOne);
-        stmt.setString(10, boonTwo);
-        stmt.setString(11, boonThree);
-        stmt.setString(12, boonFour);
-        stmt.setBytes(13, sacrificeOne);
-        stmt.setBytes(14, sacrificeTwo);
-        stmt.setBytes(15, sacrificeThree);
-        stmt.setBytes(16, sacrificeFour);
-        stmt.setInt(17, totalRecentSacrifices);
-        stmt.setInt(18, totalSacrificesMade);
-        stmt.setLong(19, nextEvalTime);
+        stmt.setInt(5, (int) x);
+        stmt.setInt(6, (int) y);
+        stmt.setInt(7, (int) z);
+        stmt.setBytes(8, sacrificeOne);
+        stmt.setBytes(9, sacrificeTwo);
+        stmt.setBytes(10, sacrificeThree);
+        stmt.setBytes(11, sacrificeFour);
       }
+
+      Bukkit.getLogger().info(stmt.toString());
 
       stmt.executeUpdate();
     } catch (SQLException e) {

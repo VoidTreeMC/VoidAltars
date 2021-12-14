@@ -60,11 +60,11 @@ public class SelectBoonGUI {
           player.sendMessage(ChatColor.GOLD + boon.getName() + ": " + ChatColor.YELLOW + boon.getDescription());
           gui.close(player);
         } else {
-          altarMeta.setBoon(boon, index);
+          altarMeta.getLink().setBoon(boon, index);
           Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
             @Override
             public void run() {
-              SQLLinker.pushToDB(altarMeta);
+              SQLLinker.pushToDB(altarMeta.getLink());
             }
           });
           MainAltarGUI.displayAltarGUI(player, altarMeta);

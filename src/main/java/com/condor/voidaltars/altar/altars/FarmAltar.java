@@ -12,7 +12,9 @@ import com.condor.voidaltars.altar.AltarMeta;
 import com.condor.voidaltars.altar.AltarType;
 import com.condor.voidaltars.altar.AltarManager;
 import com.condor.voidaltars.altar.exception.NotInATownException;
+import com.condor.voidaltars.altar.exception.WrongTownException;
 import com.condor.voidaltars.altar.multiblock.structures.FarmAltarStructure;
+import com.condor.voidaltars.altar.TownAltarLink;
 
 public class FarmAltar extends AltarMeta {
 
@@ -63,14 +65,14 @@ public class FarmAltar extends AltarMeta {
     weightMap.put(Material.SWEET_BERRIES, 5.0);
   }
 
-  public FarmAltar(Location interfaceLoc, UUID uuid) throws NotInATownException {
-    super(AltarType.FARM_ALTAR, uuid, interfaceLoc, AltarManager.getStructureFromLoc(interfaceLoc, false), weightMap);
+  public FarmAltar(TownAltarLink link, Location interfaceLoc, UUID uuid) throws NotInATownException, WrongTownException {
+    super(link, AltarType.FARM_ALTAR, uuid, interfaceLoc, AltarManager.getStructureFromLoc(interfaceLoc, false), weightMap);
   }
 
-  public FarmAltar(UUID uuid, String typeStr, UUID townUUID, String worldStr, int level, double x, double y, double z,
-                   ArrayList<String> boonList, ArrayList<byte[]> sacrificeList, int totalRecentSacrifices, int totalSacrificesMade, long nextEvalTime) {
+  public FarmAltar(UUID uuid, String typeStr, UUID townUUID, String worldStr, double x, double y, double z,
+                   ArrayList<byte[]> sacrificeList) {
     // TODO: Check to make sure that by not calling AltarManager.getStructureFromLoc(), we're not allowing invalid altars to persist once created in the DB
-    super(uuid, typeStr, townUUID, worldStr, level, x, y, z, boonList, sacrificeList, totalRecentSacrifices, totalSacrificesMade, weightMap, nextEvalTime, new FarmAltarStructure());
+    super(uuid, typeStr, townUUID, worldStr, x, y, z, sacrificeList, weightMap, new FarmAltarStructure());
   }
 
   public static void clearWeightMap() {

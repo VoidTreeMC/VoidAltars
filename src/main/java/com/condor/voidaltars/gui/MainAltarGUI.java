@@ -145,12 +145,12 @@ public class MainAltarGUI {
     hopperMeta.setDisplayName("Sacrifice Progress");
     ArrayList<String> hopperLore = new ArrayList<>();
     hopperLore.add("Altar level: " + altarMeta.getLevel());
-    int sacRemaining = altarMeta.getSacrificesRemaining();
+    int sacRemaining = altarMeta.getLink().getSacrificesRemaining();
     if (sacRemaining > 0) {
       hopperLore.add(StringConstants.SACRIFICES_REMAINING_TO_PLEASE.get() + (sacRemaining + 1));
     } else {
       hopperLore.add(StringConstants.GODS_ARE_PLEASED.get());
-      hopperLore.add(StringConstants.SACRIFICES_REMAINING_TO_LEVEL.get() + (altarMeta.getSacrificesNeededForLevelUp() + 1));
+      hopperLore.add(StringConstants.SACRIFICES_REMAINING_TO_LEVEL.get() + (altarMeta.getLink().getSacrificesNeededForLevelUp() + 1));
     }
     hopperMeta.setLore(hopperLore);
     sacrificeProgressItem.setItemMeta(hopperMeta);
@@ -194,6 +194,7 @@ public class MainAltarGUI {
               @Override
               public void run() {
                 SQLLinker.pushToDB(altarMeta);
+                SQLLinker.pushToDB(altarMeta.getLink());
                 SQLLinker.pushSacrificeToDB(System.currentTimeMillis(), player.getUniqueId(), altarMeta, type, amtSacrificed, sacrifice.getNumRemaining());
               }
             });
@@ -208,9 +209,9 @@ public class MainAltarGUI {
       gui.setItem(2, 2 + (2 * i), sacrificeSlotLocked);
     }
 
-    for (int i = 0; i < altarMeta.getNumBoonSlots(); i++) {
+    for (int i = 0; i < altarMeta.getLink().getNumBoonSlots(); i++) {
       ItemStack boonItem = new ItemStack(Material.BEACON);
-      Boon boon = altarMeta.getBoon(i);
+      Boon boon = altarMeta.getLink().getBoon(i);
       final int index = i;
       if (boon != null) {
         boonItem = boon.getIcon();
@@ -241,7 +242,7 @@ public class MainAltarGUI {
       gui.setItem(5, 2 + (2 * i), boonGuiItem);
     }
 
-    for (int i = altarMeta.getNumBoonSlots(); i < altarMeta.getMaxLevel(); i++) {
+    for (int i = altarMeta.getLink().getNumBoonSlots(); i < altarMeta.getMaxLevel(); i++) {
       gui.setItem(5, 2 + (2 * i), boonSlotLocked);
     }
 
