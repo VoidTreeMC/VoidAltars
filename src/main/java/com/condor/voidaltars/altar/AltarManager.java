@@ -75,6 +75,11 @@ public class AltarManager {
   public static AltarMeta getAltarFromLoc(Location loc, Player player) {
     AltarMeta altarMeta = null;
 
+    TownBlock locTB = TownyAPI.getInstance().getTownBlock(loc);
+    if (locTB == null) {
+      return null;
+    }
+
     for (TownAltarLink link : altarLinkMap.values()) {
       // if (locsAreEqual(meta.getLocation(), loc)) {
       // Check if the altar is still in the town it's supposed to be in
@@ -83,26 +88,30 @@ public class AltarManager {
           TownBlock tb = TownyAPI.getInstance().getTownBlock(meta.getLocation());
           if (tb != null && tb.getTown().equals(meta.getTown())) {
             if (meta.getLocation().equals(loc)) {
-              // If it's still a valid altar
-              if (getStructureFromLoc(loc, true) != null) {
+              // If it's still a valid altar and the same type
+              if (getStructureFromLoc(loc, true).getType().equals(meta.getType())) {
                 return meta;
-              } else {
+              } else if (getStructureFromLoc(loc, true) == null) {
                 player.sendMessage(StringConstants.ALTAR_NO_LONGER_VALID.get());
+              } else {
+                // If it's a different type of altar, just continue.
+                continue;
               }
               // If this campfire is somewhere else, but it's still a valid altar
             } else if (getStructureFromLoc(loc, true) != null) {
-              // If the original location still contains a campfire
-              if (meta.getStructure().isPossibleInterfaceBlock(meta.getLocation().getBlock().getType())) {
+              AltarType typeAtLoc = getStructureFromLoc(loc, true).getType();
+              AltarType metaType = meta.getType();
+              // If the original location still contains a campfire and is the same type of altar
+              if (meta.getStructure().isPossibleInterfaceBlock(meta.getLocation().getBlock().getType()) && typeAtLoc.equals(metaType)) {
                 player.sendMessage(StringConstants.NO_DUPLICATE_ALTARS.get());
-                // If the original location's campfire is gone, update it
-              } else {
+              // If the original location's campfire is gone and they're the same type of altar, update its location
+              } else if (!meta.getStructure().isPossibleInterfaceBlock(meta.getLocation().getBlock().getType()) && typeAtLoc.equals(metaType)) {
                 player.sendMessage(StringConstants.ALTAR_HAS_BEEN_MOVED.get());
                 meta.setLocation(loc);
                 return meta;
               }
             }
           }
-          return null;
         } catch (NotRegisteredException e) {
           // It's not in a town. This altar's town unclaimed the chunk and it is thus deactivated. Return null.
           return null;
@@ -112,14 +121,12 @@ public class AltarManager {
 
     AltarStructure struc = getStructureFromLoc(loc, false);
 
-    TownBlock tb = null;
     Town town = null;
     Resident resident = null;
     resident = TownyUniverse.getInstance().getResident(player.getUniqueId());
-    tb = TownyAPI.getInstance().getTownBlock(loc);
-    if (tb != null) {
+    if (locTB != null) {
       try {
-        town = tb.getTown();
+        town = locTB.getTown();
         if (town != null) {
           if (resident.getTown() == null || !resident.getTown().getUUID().equals(town.getUUID())) {
             player.sendMessage(StringConstants.MUST_BE_IN_TOWN_TO_CREATE_ALTAR_THERE.get());
@@ -145,7 +152,7 @@ public class AltarManager {
       // we create a new altar meta for it and add it to the map
       } else {
         try {
-          // If there's already an altar in that town, return null
+          // If there's already an altar of that type in that town, return null
           if (town != null) {
             TownAltarLink link = AltarManager.getAltarLink(town.getUUID());
             if (link == null) {
@@ -171,6 +178,7 @@ public class AltarManager {
               break;
           }
           altarMeta.doEffect();
+          link.addAltar(altarMeta.getType(), altarMeta);
           return altarMeta;
         } catch (NotInATownException | WrongTownException e) {
           // They're not in a town. Ignore it.

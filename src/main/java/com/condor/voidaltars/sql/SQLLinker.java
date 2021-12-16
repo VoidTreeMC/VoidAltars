@@ -58,7 +58,7 @@ public class SQLLinker {
 
   public static void pullFromDB() {
     probeConnection();
-    Bukkit.getLogger().log(Level.INFO, "Fetching altars from DB...");
+    Bukkit.getLogger().log(Level.INFO, "Fetching altar links from DB...");
     ArrayList<TownAltarLink> toDelevel = new ArrayList<>();
     try {
       PreparedStatement tatStmt = conn.prepareStatement("SELECT * FROM TownAltarTable;");
@@ -84,10 +84,11 @@ public class SQLLinker {
         rsnext = tatResults.next();
       }
 
+      Bukkit.getLogger().log(Level.INFO, "Fetching altars from DB...");
+
       PreparedStatement altarStmt = conn.prepareStatement("SELECT * FROM AltarTable;");
       ResultSet altarResults = altarStmt.executeQuery();
       rsnext = altarResults.next();
-      AltarManager.clearAltarLinks();
       while (rsnext) {
         UUID uuid = UUID.fromString(altarResults.getString("uuid"));
         UUID townUUID = UUID.fromString(altarResults.getString("town_uuid"));
@@ -224,8 +225,6 @@ public class SQLLinker {
         stmt.setBytes(10, sacrificeThree);
         stmt.setBytes(11, sacrificeFour);
       }
-
-      Bukkit.getLogger().info(stmt.toString());
 
       stmt.executeUpdate();
     } catch (SQLException e) {

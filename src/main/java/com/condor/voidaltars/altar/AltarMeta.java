@@ -85,7 +85,9 @@ public abstract class AltarMeta {
    this.uuid = uuid;
    this.type = AltarType.getTypeFromString(type);
    this.weightMap = weightMap;
-   this.link = AltarManager.getAltarLink(uuid);
+   this.link = AltarManager.getAltarLink(townUUID);
+   Bukkit.getLogger().info("Town UUID: " + townUUID);
+   Bukkit.getLogger().info("Link: " + this.link);
    Location location = new Location(AltarMain.getPlugin().getServer().getWorld(worldStr), x, y, z);
    this.interfaceLoc = location;
    for (int i = 0; i < sacrificeList.size(); i++) {

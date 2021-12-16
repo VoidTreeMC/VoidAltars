@@ -28,7 +28,7 @@ public enum StringConstants {
   NO_PERMISSIONS_TO_CREATE_ALTAR("You must be a mayor or a high-priest of this town to create an altar here."),
   NO_PERMISSIONS_TO_BREAK_ALTAR("You must be a mayor or a high-priest of this town to move/destroy an altar in this town."),
   NO_PERMISSIONS_TO_CHANGE_BOONS("You must be a mayor or a high-priest to change your town's altar boons."),
-  NO_DUPLICATE_ALTARS("Your town already has an altar. You cannot create another one."),
+  NO_DUPLICATE_ALTARS("Your town already has an altar of that type. You cannot create another one of the same type."),
   NO_ALTARS_IN_THE_WILD("You must be in a town for this altar to function."),
   NOT_MEMBER_OF_ALTARS_TOWN("You cannot change the boons of another town's altar."),
   TOWN_HAS_UNCLAIMED_ALTAR("Your town has just unclaimed its altar! Claim it back to get the boons again."),
