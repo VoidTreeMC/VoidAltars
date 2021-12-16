@@ -172,6 +172,12 @@ public class AltarManager {
             case MINING_ALTAR:
               altarMeta = new MiningAltar(link, loc, UUID.randomUUID());
               break;
+            case OCEAN_ALTAR:
+              altarMeta = new OceanAltar(link, loc, UUID.randomUUID());
+              break;
+            case NETHER_ALTAR:
+              altarMeta = new NetherAltar(link, loc, UUID.randomUUID());
+              break;
             case FARM_ALTAR:
             default:
               altarMeta = new FarmAltar(link, loc, UUID.randomUUID());

@@ -22,8 +22,12 @@ import com.condor.voidaltars.altar.exception.WrongTownException;
 import com.condor.voidaltars.main.AltarMain;
 import com.condor.voidaltars.altar.altars.FarmAltar;
 import com.condor.voidaltars.altar.altars.MiningAltar;
+import com.condor.voidaltars.altar.altars.OceanAltar;
+import com.condor.voidaltars.altar.altars.NetherAltar;
 import com.condor.voidaltars.altar.multiblock.structures.FarmAltarStructure;
 import com.condor.voidaltars.altar.multiblock.structures.MiningAltarStructure;
+import com.condor.voidaltars.altar.multiblock.structures.OceanAltarStructure;
+import com.condor.voidaltars.altar.multiblock.structures.NetherAltarStructure;
 import com.condor.voidaltars.runnable.PlaySparkleEffect;
 import com.condor.voidaltars.runnable.LightCandles;
 import com.condor.voidaltars.sql.SQLLinker;
@@ -104,6 +108,10 @@ public abstract class AltarMeta {
    switch (type) {
      case MINING_ALTAR:
        return new MiningAltar(uuid, typeStr, townUUID, worldStr, x, y, z, sacrificeList);
+     case OCEAN_ALTAR:
+       return new OceanAltar(uuid, typeStr, townUUID, worldStr, x, y, z, sacrificeList);
+     case NETHER_ALTAR:
+       return new NetherAltar(uuid, typeStr, townUUID, worldStr, x, y, z, sacrificeList);
      case FARM_ALTAR:
      default:
       return new FarmAltar(uuid, typeStr, townUUID, worldStr, x, y, z, sacrificeList);
