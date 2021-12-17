@@ -2,6 +2,7 @@ Duck wants people to only be able to change the boon type after every couple sac
   - We decided to delay this. Players should be able to switch their altar boon as much as they want early on, so they can try out all of the boons and test them
 
 A command that people can use to see recent transactions on their altar, such as who has recently sacrificed to the altar, and what boons have been changed, etc.
+- /altar log and /altar history, both aliased to this
  - Transaction types
    - Built altar
    - Destroyed altar
@@ -19,4 +20,4 @@ RefreshSacrifices has been temporarily disabled
 
 DID
 ===
-Added ocean and nether altars
+Added WIP code for transaction storage and processing

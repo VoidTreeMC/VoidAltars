@@ -1,35 +1,68 @@
-AltarTable
-==========
-  uuid:                     VARCHAR(36)
-  type:                     VARCHAR(16)
+TownAltarTable
+==============
   town_uuid:                VARCHAR(36)
-  world:                    VARCHAR(32)
   level:                    TINYINT
-  x:                        INT
-  y:                        INT
-  z:                        INT
   boon_1:                   VARCHAR(16)
   boon_2:                   VARCHAR(16)
   boon_3:                   VARCHAR(16)
   boon_4:                   VARCHAR(16)
-  sacrifice_1:              BLOB
-  sacrifice_2:              BLOB
-  sacrifice_3:              BLOB
-  sacrifice_4:              BLOB
   total_recent_sacrifices:  INT
   total_sacrifices_made:    INT
   next_eval_time:           BIGINT
 
-SacrificeTable
-==============
-  time_sacrificed:          BIGINT
+AltarTable
+==========
+  uuid:                     VARCHAR(36)
+  town_uuid:                VARCHAR(36)
+  type:                     VARCHAR(16)
+  world:                    VARCHAR(32)
+  x:                        INT
+  y:                        INT
+  z:                        INT
+  sacrifice_1:              BLOB
+  sacrifice_2:              BLOB
+  sacrifice_3:              BLOB
+  sacrifice_4:              BLOB
+
+AltarTransactionTable
+=====================
+  altar_uuid:               VARCHAR(36)
   town_uuid:                VARCHAR(36)
   player_uuid:              VARCHAR(36)
-  altar_id:                 VARCHAR(36)
+  transaction_type:         VARCHAR(16)
+  transaction_uuid:         VARCHAR(36)
+  transaction_time:         BIGINT
+
+SacrificeTransactionTable
+==============
+  transaction_uuid:         VARCHAR(36)
   altar_type:               VARCHAR(16)
   altar_level:              TINYINT
   item_type:                VARCHAR(40)
   amount:                   INT
   amount_remaining:         INT
 
-SELECT uuid,type,town_uuid,world,level,x,y,z,boon_1,boon_2,boon_3,boon_4,total_recent_sacrifices,total_sacrifices_made,next_eval_time FROM AltarTable;
+
+BuildDestroyTransactionTable
+============================
+  transaction_uuid:         VARCHAR(36)
+  type:                     VARCHAR(7)
+  world:                    VARCHAR(32)
+  x:                        INT
+  y:                        INT
+  z:                        INT
+
+BoonTransactionTable
+=====================
+  transaction_uuid:         VARCHAR(36)
+  old_boon:                 VARCHAR(16)
+  new_boon:                 VARCHAR(16)
+
+LevelTransactionTable
+======================
+  transaction_uuid:         VARCHAR(36)
+  new_level:                TINYINT
+
+
+SELECT uuid,town_uuid,type,world,x,y,z FROM AltarTable;
+SELECT town_uuid,level,boon_1,boon_2,boon_3,boon_4,total_recent_sacrifices,total_sacrifices_made,next_eval_time FROM TownAltarTable;

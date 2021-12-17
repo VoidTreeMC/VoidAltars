@@ -56,6 +56,11 @@ public class SQLLinker {
     }
   }
 
+  public static Connection getConn() {
+    probeConnection();
+    return conn;
+  }
+
   public static void pullFromDB() {
     probeConnection();
     Bukkit.getLogger().log(Level.INFO, "Fetching altar links from DB...");
@@ -225,31 +230,6 @@ public class SQLLinker {
         stmt.setBytes(10, sacrificeThree);
         stmt.setBytes(11, sacrificeFour);
       }
-
-      stmt.executeUpdate();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-  }
-
-  public static void pushSacrificeToDB(long time, UUID playerUUID, AltarMeta altar, Material matType, int amt, int amount_remaining) {
-    probeConnection();
-    UUID uuid = altar.getUniqueId();
-    UUID townUUID = altar.getTown().getUuid();
-    String type = altar.getType().toString();
-    int level = altar.getLevel();
-    try {
-
-      PreparedStatement stmt = conn.prepareStatement("INSERT INTO SacrificeTable(time_sacrificed, town_uuid, player_uuid, altar_id, altar_type, altar_level, item_type, amount, amount_remaining) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
-      stmt.setLong(1, time);
-      stmt.setString(2, townUUID.toString());
-      stmt.setString(3, playerUUID.toString());
-      stmt.setString(4, uuid.toString());
-      stmt.setString(5, type);
-      stmt.setInt(6, level);
-      stmt.setString(7, matType.toString());
-      stmt.setInt(8, amt);
-      stmt.setInt(9, amount_remaining);
 
       stmt.executeUpdate();
     } catch (SQLException e) {
