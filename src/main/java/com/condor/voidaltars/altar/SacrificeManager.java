@@ -23,7 +23,7 @@ public class SacrificeManager {
 
   private static Random rng = new Random();
 
-  private final static int SCALE = 500;
+  private final static int SCALE = 100;
   private final static int STACK_SIZE_FACTOR = 16;
 
   public static Sacrifice getNewSacrifice(AltarMeta owner) {
