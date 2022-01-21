@@ -49,7 +49,7 @@ public class SacrificeManager {
     // amt = (int) Math.floor(town.getNumResidents() * (SCALE * ((0.7 * (1 / weight))) * (maxStackAmount / 16)) + (randVal * maxStackAmount / 6.4));
     int numResidents = town.getNumResidents();
     if (numResidents > 1) {
-      amt = (int) (Math.max(1, (int) Math.floor(SCALE * numResidents * ((0.7 * 1 / weight)) * maxStackAmount / STACK_SIZE_FACTOR)) * randVal);
+      amt = (int) (Math.max(1, (int) Math.floor(SCALE * numResidents * ((0.5 * 1 / weight)) * maxStackAmount / STACK_SIZE_FACTOR)) * randVal);
     } else {
       amt = (int) (Math.max(1, (int) Math.floor(SCALE * (numResidents * 0.75) * ((0.7 * 1 / weight)) * maxStackAmount / STACK_SIZE_FACTOR)) * randVal);
     }

@@ -57,7 +57,7 @@ public class SentinelBoon extends Boon {
         Location loc = etlee.getTarget().getLocation();
         Town town = TownyFunctions.getTownFromLocation(loc);
         if (this.registeredTowns.contains(town)) {
-          if (isChickenOrRabbit(etlee.getTarget().getType()) && isFoxOrCat(etlee.getEntity().getType())) {
+          if (isPrey(etlee.getTarget().getType()) && isPredator(etlee.getEntity().getType())) {
             ret = true;
           }
         }
@@ -72,20 +72,29 @@ public class SentinelBoon extends Boon {
     etlee.setCancelled(true);
   }
 
-  public boolean isChickenOrRabbit(EntityType type) {
+  public boolean isPrey(EntityType type) {
     switch (type) {
       case CHICKEN:
       case RABBIT:
+      case SHEEP:
+      case TURTLE:
+      case COD:
+      case SALMON:
+      case TROPICAL_FISH:
+      case GLOW_SQUID:
         return true;
       default:
         return false;
     }
   }
 
-  public boolean isFoxOrCat(EntityType type) {
+  public boolean isPredator(EntityType type) {
     switch (type) {
       case FOX:
       case CAT:
+      case WOLF:
+      case AXOLOTL:
+      case SQUID:
         return true;
       default:
         return false;

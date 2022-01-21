@@ -69,6 +69,7 @@ import com.condor.voidaltars.gui.MainAltarGUI;
 import com.condor.voidaltars.altar.BoonManager;
 import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.altar.TownAltarLink;
+import com.condor.voidaltars.altar.transaction.DestroyTransaction;
 
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.event.town.TownUnclaimEvent;
@@ -125,6 +126,12 @@ public class EventListener  extends AltarListener {
         if (resident == null || (!resident.isMayor() && !resident.hasTownRank("high-priest") && !player.hasPermission("condor.altar.destroy"))) {
           event.getPlayer().sendMessage(StringConstants.NO_PERMISSIONS_TO_BREAK_ALTAR.get());
           event.setCancelled(true);
+        } else {
+          Location loc = block.getLocation();
+          DestroyTransaction transac = new DestroyTransaction(altarMeta.getUniqueId(), altarMeta.getLink(), player.getUniqueId(),
+                                                              UUID.randomUUID(), System.currentTimeMillis(), loc.getWorld().toString(),
+                                                              (int) loc.getX(), (int) loc.getY(), (int) loc.getZ());
+          altarMeta.getLink().getTransacCache().store(transac);
         }
       }
     }

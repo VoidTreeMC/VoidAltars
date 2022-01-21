@@ -13,6 +13,8 @@ import com.condor.voidaltars.main.AltarMain;
 import com.condor.voidaltars.altar.exception.NotInATownException;
 import com.condor.voidaltars.sql.SQLLinker;
 import com.condor.voidaltars.constants.StringConstants;
+import com.condor.voidaltars.altar.transaction.TransactionCache;
+import com.condor.voidaltars.altar.transaction.LevelTransaction;
 
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Town;
@@ -36,6 +38,7 @@ public class TownAltarLink {
   ArrayList<Boon> boons = new ArrayList<>();
   long nextEvalTime;
   Town town;
+  TransactionCache transacCache;
 
   public TownAltarLink(Town town) throws NotInATownException {
     this.town = town;
@@ -52,6 +55,7 @@ public class TownAltarLink {
         SQLLinker.pushToDB(temp);
       }
     });
+    this.transacCache = new TransactionCache(this);
   }
 
   public TownAltarLink(UUID townUUID, int level, ArrayList<String> boonList,
@@ -78,6 +82,7 @@ public class TownAltarLink {
     this.totalRecentSacrifices = totalRecentSacrifices;
     this.totalSacrificesMade = totalSacrificesMade;
     AltarManager.addAltarLink(this);
+    this.transacCache = new TransactionCache(this);
   }
 
    // TODO: Make this throw an error if someone tries to add a duplicate altar
@@ -179,6 +184,8 @@ public class TownAltarLink {
        SQLLinker.pushToDB(tempLink);
      }
    });
+   LevelTransaction transac = new LevelTransaction(this, UUID.randomUUID(), System.currentTimeMillis(), this.level);
+   this.getTransacCache().store(transac);
   }
 
   public void levelDown() {
@@ -289,5 +296,9 @@ public class TownAltarLink {
 
   public int getTotalSacrificesMade() {
     return this.totalSacrificesMade;
+  }
+
+  public TransactionCache getTransacCache() {
+    return this.transacCache;
   }
 }

@@ -17,7 +17,11 @@ Make it so newtown's altar doesnt scale with the number of people
 Add some type of sychronization to make sure that SQL changes are made synchronously but not on the same thread as the server runtime
 Currently, when players unclaim an altar, any subsequent chunks that are unclaimed will tell them their altar has been unclaimed. Until they re-claim it.
 RefreshSacrifices has been temporarily disabled
+Spurious "you are not a mayor/high priest" messages when people are right-clicking altars that are not actually altars
+Maybe build/destroy transactions should contain the type of altar
 
 DID
 ===
-Added WIP code for transaction storage and processing
+Established working backend for transaction processing
+Reduced scaling factor for number of people in town
+Fixed a bug with loading sacrifice configs

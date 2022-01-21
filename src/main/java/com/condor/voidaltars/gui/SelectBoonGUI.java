@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.Collection;
+import java.util.UUID;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.entity.Player;
@@ -24,6 +25,7 @@ import com.condor.voidaltars.altar.Boon;
 import com.condor.voidaltars.altar.BoonManager;
 import com.condor.voidaltars.sql.SQLLinker;
 import com.condor.voidaltars.main.AltarMain;
+import com.condor.voidaltars.altar.transaction.BoonTransaction;
 
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -60,7 +62,16 @@ public class SelectBoonGUI {
           player.sendMessage(ChatColor.GOLD + boon.getName() + ": " + ChatColor.YELLOW + boon.getDescription());
           gui.close(player);
         } else {
+          Boon oldBoon = altarMeta.getLink().getBoon(index);
+          String oldBoonStr = "";
+          if (oldBoon != null) {
+            oldBoonStr = oldBoon.getType().toString();
+          }
           altarMeta.getLink().setBoon(boon, index);
+          String newBoonStr = boon.getType().toString();
+          BoonTransaction transac = new BoonTransaction(altarMeta.getUniqueId(), altarMeta.getLink(), player.getUniqueId(),
+                                                        UUID.randomUUID(), System.currentTimeMillis(), oldBoonStr, newBoonStr);
+          altarMeta.getLink().getTransacCache().store(transac);
           Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
             @Override
             public void run() {

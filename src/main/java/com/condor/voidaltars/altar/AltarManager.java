@@ -22,6 +22,7 @@ import com.condor.voidaltars.sql.SQLLinker;
 import com.condor.voidaltars.runnable.PlaySparkleEffect;
 import com.condor.voidaltars.main.AltarMain;
 import com.condor.voidaltars.constants.StringConstants;
+import com.condor.voidaltars.altar.transaction.BuildTransaction;
 
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.TownyAPI;
@@ -88,11 +89,12 @@ public class AltarManager {
           TownBlock tb = TownyAPI.getInstance().getTownBlock(meta.getLocation());
           if (tb != null && tb.getTown().equals(meta.getTown())) {
             if (meta.getLocation().equals(loc)) {
-              // If it's still a valid altar and the same type
-              if (getStructureFromLoc(loc, true).getType().equals(meta.getType())) {
-                return meta;
-              } else if (getStructureFromLoc(loc, true) == null) {
+              // If it's no longer a valid altar
+              if (getStructureFromLoc(loc, true) == null) {
                 player.sendMessage(StringConstants.ALTAR_NO_LONGER_VALID.get());
+              // If it's still a valid altar and the same type
+              } else if (getStructureFromLoc(loc, true).getType().equals(meta.getType())) {
+                return meta;
               } else {
                 // If it's a different type of altar, just continue.
                 continue;
@@ -108,6 +110,10 @@ public class AltarManager {
               } else if (!meta.getStructure().isPossibleInterfaceBlock(meta.getLocation().getBlock().getType()) && typeAtLoc.equals(metaType)) {
                 player.sendMessage(StringConstants.ALTAR_HAS_BEEN_MOVED.get());
                 meta.setLocation(loc);
+                BuildTransaction transac = new BuildTransaction(meta.getUniqueId(), meta.getLink(), player.getUniqueId(),
+                                                                UUID.randomUUID(), System.currentTimeMillis(), loc.getWorld().toString(),
+                                                                (int) loc.getX(), (int) loc.getY(), (int) loc.getZ());
+                meta.getLink().getTransacCache().store(transac);
                 return meta;
               }
             }
@@ -185,6 +191,10 @@ public class AltarManager {
           }
           altarMeta.doEffect();
           link.addAltar(altarMeta.getType(), altarMeta);
+          BuildTransaction transac = new BuildTransaction(altarMeta.getUniqueId(), altarMeta.getLink(), player.getUniqueId(),
+                                                          UUID.randomUUID(), System.currentTimeMillis(), loc.getWorld().toString(),
+                                                          (int) loc.getX(), (int) loc.getY(), (int) loc.getZ());
+          altarMeta.getLink().getTransacCache().store(transac);
           return altarMeta;
         } catch (NotInATownException | WrongTownException e) {
           // They're not in a town. Ignore it.

@@ -41,8 +41,10 @@ public enum StringListConstants {
     "- Robert Frost"
   }),
   THAW_BLESSING_LORE(new String[]{
-    "At last the spring thaw came, and graves were laboriously",
-    "prepared for the nine silent harvests of the grim reaper",
+    "At last the spring thaw came",
+    "and graves were laboriously",
+    "prepared for the nine silent",
+    "harvests of the grim reaper",
     "which waited in the tomb.",
     "— H.P. Lovecraft"
   }),

@@ -61,6 +61,7 @@ public class SacrificesConfigLoader {
     for (Entry<AltarType, HashMap<Material, Double>> entry : altarWeightMap.entrySet()) {
       try {
         Class metaClass = AltarType.getMetaFromType(entry.getKey());
+        Bukkit.getLogger().info("- " + entry.getKey());
         metaClass.getMethod("clearWeightMap").invoke(null);
         for (Entry<Material, Double> weightEntry : entry.getValue().entrySet()) {
           Material mat = weightEntry.getKey();

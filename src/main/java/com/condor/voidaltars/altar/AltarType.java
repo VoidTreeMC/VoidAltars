@@ -2,6 +2,9 @@ package com.condor.voidaltars.altar;
 
 import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.altar.altars.FarmAltar;
+import com.condor.voidaltars.altar.altars.MiningAltar;
+import com.condor.voidaltars.altar.altars.NetherAltar;
+import com.condor.voidaltars.altar.altars.OceanAltar;
 
 public enum AltarType {
   FARM_ALTAR(StringConstants.FARM_ALTAR_NAME.get()),
@@ -32,6 +35,12 @@ public enum AltarType {
     switch (type) {
       case FARM_ALTAR:
         return FarmAltar.class;
+      case MINING_ALTAR:
+        return MiningAltar.class;
+      case NETHER_ALTAR:
+        return NetherAltar.class;
+      case OCEAN_ALTAR:
+        return OceanAltar.class;
       default:
         return null;
     }

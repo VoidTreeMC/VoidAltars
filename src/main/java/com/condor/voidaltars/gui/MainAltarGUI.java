@@ -3,6 +3,7 @@ package com.condor.voidaltars.gui;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Level;
+import java.util.UUID;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.entity.Player;
@@ -24,6 +25,7 @@ import com.condor.voidaltars.altar.SacrificeManager;
 import com.condor.voidaltars.sql.SQLLinker;
 import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.main.AltarMain;
+import com.condor.voidaltars.altar.transaction.SacrificeTransaction;
 
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -195,7 +197,10 @@ public class MainAltarGUI {
               public void run() {
                 SQLLinker.pushToDB(altarMeta);
                 SQLLinker.pushToDB(altarMeta.getLink());
-                SQLLinker.pushSacrificeToDB(System.currentTimeMillis(), player.getUniqueId(), altarMeta, type, amtSacrificed, sacrifice.getNumRemaining());
+                SacrificeTransaction transac = new SacrificeTransaction(altarMeta.getUniqueId(), altarMeta.getLink(), player.getUniqueId(),
+                                                                        UUID.randomUUID(), System.currentTimeMillis(), altarMeta.getType(), altarMeta.getLevel(),
+                                                                        sacrifice.getType().toString(), amtSacrificed, amtWanted - amtSacrificed);
+                altarMeta.getLink().getTransacCache().store(transac);
               }
             });
           }
