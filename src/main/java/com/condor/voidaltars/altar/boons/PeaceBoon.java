@@ -30,6 +30,12 @@ import com.condor.voidaltars.constants.StringListConstants;
 import com.condor.voidaltars.main.AltarMain;
 import com.condor.voidaltars.util.TownyFunctions;
 
+/**
+ * A boon that makes it so all mobs are
+ * passive to players while the players are
+ * inside of the town. If the players attack the
+ * mobs first, they become hostile again
+ */
 public class PeaceBoon extends Boon {
 
   private static ArrayList<Class> triggerList = new ArrayList<>();

@@ -15,6 +15,10 @@ import com.condor.voidaltars.command.executors.RefreshSacrifices;
 import com.condor.voidaltars.command.executors.AddSacrifices;
 import com.condor.voidaltars.command.executors.AltarCommand;
 
+/**
+ * Utility class used for registering commands with
+ * their appropriate executors
+ */
 public abstract class CommandControl implements CommandExecutor {
 
 	public enum FailureCode {
@@ -40,6 +44,10 @@ public abstract class CommandControl implements CommandExecutor {
 
 	private static HashMap<String,CommandControl> executors = new HashMap<>();
 
+  /**
+   * Initializes all executors.
+   * Add new executors here.
+   */
 	public static void initExecutors() {
     new CommandAltarReloadText("altarreloadtext");
     new SetAltarLevel("setaltarlevel");
@@ -67,10 +75,6 @@ public abstract class CommandControl implements CommandExecutor {
 		}
 	}
 
-	//------------------------------------
-	//--------------[END OF STATIC]----------------------
-	//------------------------------------
-
 	private String name;
 
 	private final int ARGS_LENGTH;
@@ -82,61 +86,57 @@ public abstract class CommandControl implements CommandExecutor {
 	 * @param argsLength int of required number of arguments, 0 if none required
 	 */
 	public CommandControl(String name, int argsLength) {
-
-		//always upper
-		this.name=name.toUpperCase();
-
-		//sets our needed args length
-		this.ARGS_LENGTH=argsLength;
-
-		//places this isn the map
+		// Always uppercase
+		this.name = name.toUpperCase();
+		this.ARGS_LENGTH = argsLength;
 		executors.put(name, this);
 	}
 
 	/**
-	 * @return object's declared name
-	 */
+   * Gets the executor's name
+   * @return The name of the executor
+   */
 	public String name() {
 		return this.name;
 	}
 
+  /**
+   * Processes a command registered by this plugin
+   * @param  sender               The command sender
+   * @param  cmd                  The command
+   * @param  label                The command's label
+   * @param  args                 The arguments provided to the command
+   * @return                      True if the command succeeded, false otherwise
+   */
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 		FailureCode ret = null;
 
-		//success!
 		FailureCode necc = null;
-		if(this.ARGS_LENGTH==0) {
+		if(this.ARGS_LENGTH == 0) {
 			necc = FailureCode.SUCCESS;
-			// sender.sendMessage("no args required");
 		}
-		else if(args==null||args.length<this.ARGS_LENGTH) {
+		else if(args == null || args.length < this.ARGS_LENGTH) {
 			necc = FailureCode.LENGTH_MISMATCH;
 		}
 		else {
 			necc = this.isNecessary(sender, label, args);
 		}
 
-		// sender.sendMessage("necc was: " + necc);
 		if(necc==FailureCode.SUCCESS) {
-			// sender.sendMessage("command execing");
 			ret = this.execute(sender, label, args);
 		}
-		//failure
-		else {
-			// sender.sendMessage("No Exec: Failure Code: " + necc);
-		}
 
-		return ret==FailureCode.SUCCESS;
+		return ret == FailureCode.SUCCESS;
 	}
 
 	/**
-	 * Executes command with given arguments
-	 * @param sender
-	 * @param label
-	 * @param args
-	 * @return FailureLevel
-	 */
+   * Executes the command with the given arguments
+   * @param  sender               The command sender
+   * @param  label                The command's label
+   * @param  args                 The arguments provided to the command
+   * @return                      The failure/success type
+   */
 	protected abstract FailureCode execute(CommandSender sender, String label, String[] args);
 
 
@@ -148,6 +148,14 @@ public abstract class CommandControl implements CommandExecutor {
 	 * @param args
 	 * @return failure level, 0 means success
 	 */
+	/**
+   * Used to determine if actions are necessary.
+   * Called before execution.
+   * @param  sender               The command sender
+   * @param  label                The command's label
+   * @param  args                 The arguments provided to the command
+   * @return                      The failure/success type
+   */
 	protected abstract FailureCode isNecessary(CommandSender sender, String label, String[] args);
 
 }

@@ -16,6 +16,11 @@ import com.condor.voidaltars.altar.TownAltarLink;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.Town;
 
+/**
+ * Administrator command used to add N sacrifices
+ * to the altars in the specified town
+ * Usage: /addsacrifices <town name> <n>
+ */
 public class AddSacrifices extends CommandControl {
 
   public AddSacrifices(String name) {

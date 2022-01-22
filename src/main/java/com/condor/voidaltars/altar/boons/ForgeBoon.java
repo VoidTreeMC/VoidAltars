@@ -27,6 +27,10 @@ import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.constants.StringListConstants;
 import com.condor.voidaltars.util.TownyFunctions;
 
+/**
+ * A boon that makes items inside of furnaces smelt faster,
+ * thus saving time and fuel.
+ */
 public class ForgeBoon extends Boon {
 
   private static ArrayList<Class> triggerList = new ArrayList<>();

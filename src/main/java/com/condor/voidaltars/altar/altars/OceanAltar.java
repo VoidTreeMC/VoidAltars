@@ -16,6 +16,9 @@ import com.condor.voidaltars.altar.exception.WrongTownException;
 import com.condor.voidaltars.altar.multiblock.structures.OceanAltarStructure;
 import com.condor.voidaltars.altar.TownAltarLink;
 
+/**
+ * Altar for ocean sacrifices
+ */
 public class OceanAltar extends AltarMeta {
 
   private static HashMap<Material, Double> weightMap = new HashMap<>();

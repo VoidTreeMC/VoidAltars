@@ -26,12 +26,20 @@ import com.condor.voidaltars.altar.TownAltarLink;
 
 import com.palmergames.bukkit.towny.object.Town;
 
+/**
+ * Utility class that performs most of the SQL interactions
+ */
 public class SQLLinker {
 
+  // The SQL connection
   private static Connection conn;
 
+  // The number of sacrifices and boons
   private static final int NUM_SACRIFICES_AND_BOONS = 4;
 
+  /**
+   * Initializes a connection with the host
+   */
   public static void initHost() {
 		try {
 	    String url = SQLConfig.getVal("jdbc-url");
@@ -39,28 +47,39 @@ public class SQLLinker {
 	    String password = SQLConfig.getVal("jdbc-password");
 
       conn = DriverManager.getConnection(url, username, password);
-	    // conn = DriverManager.getConnection(url, username, password);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+  /**
+   * Probes the connection to see if it is still active,
+   * and reinitializes it if it is inactive
+   */
   public static void probeConnection() {
     try {
       PreparedStatement stmt = conn.prepareStatement("Select * FROM AltarTable");
       stmt.executeQuery();
     } catch (Exception e) {
       Bukkit.getLogger().log(Level.INFO, "Connection probe failed. Re-establishing connection and re-probing.");
-      // initHost();
-      // probeConnection();
+      initHost();
+      probeConnection();
     }
   }
 
+  /**
+   * Gets the connection object to the SQL server
+   * @return A Connection object to the SQL server
+   */
   public static Connection getConn() {
     probeConnection();
     return conn;
   }
 
+  /**
+   * Pulls all data from the database and uses it to
+   * reconstruct the town-altar links and altars
+   */
   public static void pullFromDB() {
     probeConnection();
     Bukkit.getLogger().log(Level.INFO, "Fetching altar links from DB...");
@@ -120,6 +139,11 @@ public class SQLLinker {
     }
   }
 
+  /**
+   * Pushes the data from a town-altar link
+   * to the database
+   * @param altarLink  The town-altar link whose data is to be stored/updated
+   */
   public static void pushToDB(TownAltarLink altarLink) {
     probeConnection();
     int level = altarLink.getLevel();
@@ -175,6 +199,10 @@ public class SQLLinker {
     }
   }
 
+  /**
+   * Pushes the data from an altar to the database
+   * @param altar  The altar whose data is to be stored/updated
+   */
   public static void pushToDB(AltarMeta altar) {
     probeConnection();
     UUID uuid = altar.getUniqueId();
@@ -237,6 +265,12 @@ public class SQLLinker {
     }
   }
 
+  /**
+   * Removes all altars from the database associated
+   * with the town's UUID. Called upon server load,
+   * when it is discovered that a town no longer exists.
+   * @param townUUID  The town UUID whose altars are to be removed
+   */
   public static void removeAltarByTownUUID(UUID townUUID) {
     probeConnection();
     try {
@@ -249,6 +283,11 @@ public class SQLLinker {
     }
   }
 
+  /**
+   * Initializes the SQL connection and
+   * pulls all data from the database to
+   * reconstruct necessary objects.
+   */
   public static void init() {
     initHost();
     pullFromDB();

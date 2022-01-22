@@ -12,20 +12,25 @@ import org.bukkit.Bukkit;
 
 import com.palmergames.bukkit.towny.object.Town;
 
+/**
+ * Utility class for getting new sacrifices
+ * for a specific altar, and calculating the correct
+ * amount to demand for a sacrifice
+ */
 public class SacrificeManager {
-  // Long: The time sacrificed | Sacrifice: The sacrifice
-
-  // Sacrifices whose quota may be empty or in progress and are thus not completed
-  private static HashMap<Long, Sacrifice> currentSacrifices = new HashMap<>();
-
-  // Sacrifices whose quotas have already been satisfied and are thus completed
-  private static HashMap<Long, Sacrifice> previousSacrifices = new HashMap<>();
 
   private static Random rng = new Random();
 
-  private final static int SCALE = 500;
+  // The global scaling factor for all sacrifices
+  private final static int SCALE = 100;
+  // The scaling factor that penalizes sacrifice amounts for items with smaller stack caps
   private final static int STACK_SIZE_FACTOR = 16;
 
+  /**
+   * Gets a new sacrifice for the specified altar
+   * @param  owner               The altar that wants a new sacrifice
+   * @return                     The new sacrifice
+   */
   public static Sacrifice getNewSacrifice(AltarMeta owner) {
     Material type = owner.getSacrificeType();
     double weight = owner.getSacrificeWeight(type);
@@ -36,6 +41,13 @@ public class SacrificeManager {
     return sacrifice;
   }
 
+  /**
+   * Calculates the amount to demand for a specific sacrifice
+   * @param  weight                       The weight of the item
+   * @param  town                         The town for whom the sacrifice is being generated
+   * @param  maxStackAmount               The maximum amount of items that a stack of the item can hold
+   * @return                              The amount to demand for the sacrifice
+   */
   public static int calculateSacrificeAmount(double weight, Town town, int maxStackAmount) {
     int amt = 0;
 

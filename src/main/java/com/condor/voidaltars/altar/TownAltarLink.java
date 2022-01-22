@@ -22,6 +22,11 @@ import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.TownBlock;
 
+/**
+ * Class that links a town to its altars, and provides
+ * a variety of utility and administrative methods that affect
+ * all altars in the town
+ */
 public class TownAltarLink {
   // The amount of milliseconds in a quota period
   // Currently, 1 week
@@ -35,12 +40,22 @@ public class TownAltarLink {
   int level;
   // The total number of sacrifices made to this altar, ever
   int totalSacrificesMade;
+  // A list of the town's active boons
   ArrayList<Boon> boons = new ArrayList<>();
+  // The next time that the town's altars will be evaluated for de-ranking
   long nextEvalTime;
+  // The town that is being linked to its altars
   Town town;
+  // The cache that stores the town's altar transactions
   TransactionCache transacCache;
 
-  public TownAltarLink(Town town) throws NotInATownException {
+  /**
+   * Constructor for a TownAltarLink.
+   * Intended for creating a new TownAltarLink, rather than
+   * reconstructing one from the database
+   * @param  town                 The town to be linked
+   */
+  public TownAltarLink(Town town) {
     this.town = town;
     this.totalRecentSacrifices = 0;
     this.level = 0;
@@ -58,6 +73,17 @@ public class TownAltarLink {
     this.transacCache = new TransactionCache(this);
   }
 
+  /**
+   * A constructor for a TownAltarLink object.
+   * Intended for reconstructing a TownAltarLink
+   * object from the database.
+   * @param townUUID               The town's UUID
+   * @param level                  The level of the altars
+   * @param boonList               The list of boons active in the town
+   * @param totalRecentSacrifices  The total number of recent sacrifices made by the town (in this quota period)
+   * @param totalSacrificesMade    The total number of sacrifices made at this altar (over all time)
+   * @param nextEvalTime           The time of the next evaluation period for the altar
+   */
   public TownAltarLink(UUID townUUID, int level, ArrayList<String> boonList,
                    int totalRecentSacrifices, int totalSacrificesMade, long nextEvalTime) {
     this.nextEvalTime = nextEvalTime;
@@ -86,18 +112,38 @@ public class TownAltarLink {
   }
 
    // TODO: Make this throw an error if someone tries to add a duplicate altar
+   /**
+    * Registers a new altar with this town-altar link
+    * @param type  The type of altar to be registered
+    * @param meta  The meta object associated with the altar
+    */
    public void addAltar(AltarType type, AltarMeta meta) {
      altarMap.put(type, meta);
    }
 
+   /**
+    * Gets the altar of the specified type belonging to this town
+    * @param  type               The type of the altar
+    * @return                    The altar if it exists, or null otherwise
+    */
    public AltarMeta getAltar(AltarType type) {
      return altarMap.get(type);
    }
 
+   /**
+    * Gets a collection of all altars belonging to this town
+    * @return A collection of all altars in this town
+    */
    public Collection<AltarMeta> getAltars() {
      return altarMap.values();
    }
 
+   /**
+    * Handles the the unclaiming of a chunk by the town. If
+    * an altar was in that chunk, it deactivates the altar and
+    * informs all residents. If it was the town's only altar, it
+    * deactivates all boons for the town.
+    */
    public void handleChunkUnclaim() {
      int numUnclaimed = 0;
      for (AltarMeta altar : altarMap.values()) {
@@ -120,10 +166,18 @@ public class TownAltarLink {
      }
    }
 
+   /**
+    * Gets the town-altar link's UUID
+    * @return The UUID belonging to the town-altar link
+    */
    public UUID getUniqueId() {
      return this.town.getUUID();
    }
 
+  /**
+   * Increments the number of sacrifices performed by
+   * the town, and levels the altars if necessary
+   */
   public void incrementSacrifices() {
    totalRecentSacrifices++;
    totalSacrificesMade++;
@@ -139,14 +193,26 @@ public class TownAltarLink {
    });
   }
 
+  /**
+   * Returns true if the gods are satisfied, false otherwise
+   * @return True if the gods are satisfied, false otherwise
+   */
   public boolean isSatisfied() {
    return this.totalRecentSacrifices >= this.sacrificesWanted;
   }
 
+  /**
+   * Returns true if the altars should level up, false otherwise
+   * @return True if the altar should level up, false otherwise
+   */
   public boolean shouldLevelUp() {
    return this.totalRecentSacrifices >= (this.sacrificesWanted * 1.5);
   }
 
+  /**
+   * Returns true if the town has met its sacrifice quota, false otherwise
+   * @return True if the town has met its sacrifice quota, false otherwise
+   */
   public boolean hasMetQuota() {
    if (this.getSacrificesRemaining() > 0) {
      long now = System.currentTimeMillis();
@@ -157,7 +223,9 @@ public class TownAltarLink {
    return true;
   }
 
-  // Process the level up event
+  /**
+   * Processes the level-up event for a town's altars
+   */
   public void levelUp() {
    if (this.level >= 4) {
      return;
@@ -188,6 +256,9 @@ public class TownAltarLink {
    this.getTransacCache().store(transac);
   }
 
+  /**
+   * Processes the level-down event for a town's altars
+   */
   public void levelDown() {
    if (this.level <= 0) {
      return;
@@ -224,6 +295,11 @@ public class TownAltarLink {
    });
   }
 
+  /**
+   * Sets the boon at the specified index to the specified type
+   * @param boon   The boon
+   * @param index  The index (0-3)
+   */
   public void setBoon(Boon boon, int index) {
    if (boons.size() > index) {
      if (boons.get(index) != null) {
@@ -236,6 +312,9 @@ public class TownAltarLink {
    boon.addTown(this.town);
   }
 
+  /**
+   * Clears and deactivates all of the town's boons
+   */
   public void clearBoons() {
    for (int i = 0; i < boons.size(); i++) {
      if (boons.get(i) != null) {
@@ -245,6 +324,11 @@ public class TownAltarLink {
    }
   }
 
+  /**
+   * Gets the boon at the specified index
+   * @param  index               The index (0-3)
+   * @return                     The boon at the index
+   */
   public Boon getBoon(int index) {
    if (index < boons.size()) {
      return boons.get(index);
@@ -253,23 +337,46 @@ public class TownAltarLink {
    }
   }
 
+  /**
+   * Gets the next time after which the altar will be evaluated
+   * @return The next time after which the altar will be evaluated
+   */
   public long getNextEvalTime() {
    return this.nextEvalTime;
   }
 
+  /**
+   * Calculates the next time after which the town
+   * will be evaluated. Used when setting a new
+   * eval time.
+   * @return The next time after which the town should be evaluated
+   */
   public long calcNextEvalTime() {
    long now = System.currentTimeMillis();
    return now + QUOTA_PERIOD;
   }
 
+  /**
+   * Gets the level of the town's altars
+   * @return The level of the town's altars
+   */
   public int getLevel() {
    return this.level;
   }
 
+  /**
+   * Gets the maximum level of the town's altars
+   * @return The maximum level of the town's altars
+   */
   public int getMaxLevel() {
    return 4;
   }
 
+  /**
+   * Gets the number of boon slots available
+   * to the town
+   * @return The number of boon slots
+   */
   public int getNumBoonSlots() {
     return this.getLevel();
   }

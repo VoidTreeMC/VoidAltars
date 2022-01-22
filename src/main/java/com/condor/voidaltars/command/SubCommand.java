@@ -5,13 +5,11 @@ import org.bukkit.command.CommandSender;
 import com.condor.voidaltars.command.CommandControl.FailureCode;
 
 /**
- * Represents a subcommand - a command whose methods are invoked 
+ * Represents a subcommand - a command whose methods are invoked
  * by a parent command rather than from the plugin itself
- * @author iron-com.condor.voidaltars.
- *
  */
 public abstract class SubCommand {
-	
+
 	/**
 	 * Executes the code inside, and returns a FailureCode describing
 	 * the results of its execution

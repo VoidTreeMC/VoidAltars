@@ -16,14 +16,22 @@ import org.bukkit.Material;
 import com.condor.voidaltars.altar.AltarType;
 import com.condor.voidaltars.altar.AltarMeta;
 
-
+/**
+ * Loads the sacrifices.yml config file and
+ * updates the sacrifice weights for each altar structure
+ * to reflect the weights in the config
+ */
 public class SacrificesConfigLoader {
 
   private static final String CONFIG_LOC = "plugins/VoidAltars/sacrifices.yml";
   private static final String MATERIAL_LINE_PRECURSOR = "  - ";
   private static HashMap<AltarType, HashMap<Material, Double>> altarWeightMap = new HashMap<>();
 
-  // TODO: Instantiate default file
+  /**
+   * Loads the config file and updates the values in
+   * each altar structure
+   * TODO: Instantiate default file
+   */
   public static void init() {
     try {
       File file = new File(CONFIG_LOC);
@@ -57,6 +65,10 @@ public class SacrificesConfigLoader {
     updateValues();
   }
 
+  /**
+   * Updates values inside the StringConstants file to represent those
+   * stored in the value map
+   */
   public static void updateValues() {
     for (Entry<AltarType, HashMap<Material, Double>> entry : altarWeightMap.entrySet()) {
       try {

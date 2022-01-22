@@ -16,6 +16,9 @@ import com.condor.voidaltars.altar.exception.WrongTownException;
 import com.condor.voidaltars.altar.multiblock.structures.NetherAltarStructure;
 import com.condor.voidaltars.altar.TownAltarLink;
 
+/**
+ * Altar for nether sacrifices
+ */
 public class NetherAltar extends AltarMeta {
 
   private static HashMap<Material, Double> weightMap = new HashMap<>();

@@ -14,12 +14,30 @@ import org.bukkit.ChatColor;
 import com.condor.voidaltars.altar.TownAltarLink;
 import com.condor.voidaltars.sql.SQLLinker;
 
+/**
+ * Represents an altar transaction in which an altar's interface
+ * block was destroyed
+ */
 public class DestroyTransaction extends AltarTransaction {
   String worldName;
   int x;
   int y;
   int z;
 
+  /**
+   * Constructor for a DestroyTransaction.
+   * Intended for creating a new transaction rather
+   * than loading one from the database.
+   * @param altarUUID    The UUID of the altar
+   * @param link         The town-altar link
+   * @param playerUUID   The UUID of the player
+   * @param transacUUID  The transaction UUID
+   * @param transacTime  The time at which the transaction took place
+   * @param worldName    The name of the world in which the altar was created
+   * @param x            The X coordinate at which the altar was created
+   * @param y            The Y coordinate at which the altar was created
+   * @param z            The Z coordinate at which the altar was created
+   */
   public DestroyTransaction(UUID altarUUID, TownAltarLink link, UUID playerUUID, UUID transacUUID,
                           long transacTime, String worldName, int x, int y, int z) {
     super(TransactionType.DESTROY, altarUUID, link, playerUUID, transacUUID, transacTime);
@@ -29,6 +47,12 @@ public class DestroyTransaction extends AltarTransaction {
     this.z = z;
   }
 
+  /**
+   * Constructor for a DestroyTransaction.
+   * Intended for loading a boon from the
+   * database and re-constructing it.
+   * @param transacUUID  The transaction UUID, already in the database
+   */
   public DestroyTransaction(UUID transacUUID) {
     super(transacUUID);
     try {
@@ -46,7 +70,6 @@ public class DestroyTransaction extends AltarTransaction {
     }
   }
 
-  // TODO: Add text colors
   public String toString() {
     String ret = "";
     String playerName = Bukkit.getServer().getOfflinePlayer(playerUUID).getName();

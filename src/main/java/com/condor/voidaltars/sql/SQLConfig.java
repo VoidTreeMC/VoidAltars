@@ -6,13 +6,21 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.File;
 
+/**
+ * Loads the config.yml config file which contains
+ * details and credentials for the SQL connection
+ */
 public class SQLConfig {
   private static final String CONFIG_LOC = "plugins/VoidAltars/config.yml";
   private static HashMap<String, String> valMap = new HashMap<>();
 
+  /**
+   * Loads the config file and updates the connection
+   * details in the value map
+   * TODO: Instantiate default file
+   * TODO: Exception handling
+   */
   public static void init() {
-    // TODO: Make dir and file if not exist
-    // TODO: Exception handling
     try {
       File file = new File(CONFIG_LOC);
       file.createNewFile();

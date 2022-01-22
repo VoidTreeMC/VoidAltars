@@ -35,6 +35,11 @@ import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.constants.StringListConstants;
 import com.condor.voidaltars.util.TownyFunctions;
 
+/**
+ * A boon that makes bees in a town passive, adds a chance
+ * for two bees to be spawned from breeding, and adds a chance
+ * for extra bee products when harvested by hand
+ */
 public class BeekeeperBoon extends Boon {
 
   private static ArrayList<Class> triggerList = new ArrayList<>();

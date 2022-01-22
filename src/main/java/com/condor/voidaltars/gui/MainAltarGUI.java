@@ -34,6 +34,10 @@ import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 
+/**
+ * The main altar GUI in which players can
+ * select sacrifices and boon slots
+ */
 public class MainAltarGUI {
 
   private static Random rng = new Random();
@@ -67,6 +71,12 @@ public class MainAltarGUI {
     BOON_SLOT_LOCKED.setItemMeta(boonLockedMeta);
   }
 
+  /**
+   * Returns true if the item is a bucket of something,
+   * false otherwise
+   * @param  type               The item type to evaluate
+   * @return                    True if the item is a bucket, false otherwise
+   */
   public static boolean isBucket(Material type) {
     switch (type) {
       case BUCKET:
@@ -85,6 +95,12 @@ public class MainAltarGUI {
     }
   }
 
+  /**
+   * Returns true if the item is a bowl of something,
+   * false otherwise
+   * @param  type               The item type to evaluate
+   * @return                    True if the item is a bowl, false otherwise
+   */
   public static boolean isBowl(Material type) {
     switch (type) {
       case MUSHROOM_STEW:
@@ -97,6 +113,12 @@ public class MainAltarGUI {
     }
   }
 
+  /**
+   * Returns true if the item is a bottle of something,
+   * false otherwise
+   * @param  type               The item type to evaluate
+   * @return                    True if the item is a bottle, false otherwise
+   */
   public static boolean isBottle(Material type) {
     switch (type) {
       case HONEY_BOTTLE:
@@ -109,6 +131,15 @@ public class MainAltarGUI {
     }
   }
 
+  /**
+   * Handles a sacrifice click. Takes the specified amount away
+   * from the player's inventory, and returns the amount
+   * taken.
+   * @param  player               The player that is sacrificing
+   * @param  type                 The type of the item to sacrifice
+   * @param  amt                  The amount of the item to sacrifice
+   * @return                      The amount of the item taken for the sacrifice
+   */
   private static int handleSacrificeClick(Player player, Material type, int amt) {
     int amtCharged = 0;
 
@@ -129,6 +160,11 @@ public class MainAltarGUI {
     return amtCharged;
   }
 
+  /**
+   * Displays the main altar GUI to the player
+   * @param player     The player that is viewing the GUI
+   * @param altarMeta  The altar whose GUI is to be shown
+   */
   public static void displayAltarGUI(Player player, AltarMeta altarMeta) {
     Gui gui = new Gui(6, altarMeta.getType().getName());
   	gui.setDefaultClickAction(event -> {

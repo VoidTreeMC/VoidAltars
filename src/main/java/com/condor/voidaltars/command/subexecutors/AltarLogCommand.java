@@ -20,6 +20,12 @@ import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 
+/**
+ * Command that shows a list of altar transactions
+ * in a paginated display
+ * Usage: /altar log <page number>
+ *        /altar history <page number>
+ */
 public class AltarLogCommand extends SubCommand {
 
 	public final static String NAME = "log";

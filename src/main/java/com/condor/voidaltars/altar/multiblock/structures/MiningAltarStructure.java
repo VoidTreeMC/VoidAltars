@@ -8,6 +8,9 @@ import org.bukkit.Material;
 import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.altar.AltarType;
 
+/**
+ * Represents the structure for a mining altar
+ */
 public class MiningAltarStructure extends AltarStructure {
   private static HashMap<Material, Integer> materialMap = new HashMap<>();
   private static final int size = 5;

@@ -35,6 +35,11 @@ import com.condor.voidaltars.altar.BoonType;
 import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.constants.StringListConstants;
 
+/**
+ * A boon that gives all town members immunity to void damage. Instead,
+ * they wake up in their bed (or failing that, their town spawn).
+ * Works outside of the town.
+ */
 public class EndBoon extends Boon {
 
   private static ArrayList<Class> triggerList = new ArrayList<>();

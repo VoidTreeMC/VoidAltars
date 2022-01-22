@@ -81,10 +81,8 @@ import com.palmergames.bukkit.towny.TownyUniverse;
 /**
  *
  * Listens for Minecraft Events
- *
- * @author iron-condor
  */
-public class EventListener  extends AltarListener {
+public class EventListener extends AltarListener {
   private static final Random rng = new Random();
 
   @EventHandler

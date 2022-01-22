@@ -21,6 +21,11 @@ import com.condor.voidaltars.sql.SQLLinker;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.Town;
 
+/**
+ * Administrator command used to re-generate
+ * the sacrifices at a specific altar in a specific town
+ * Usage: /refreshsacrifices <town name> <altar type>
+ */
 public class RefreshSacrifices extends CommandControl {
 
   public RefreshSacrifices(String name) {

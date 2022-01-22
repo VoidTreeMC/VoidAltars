@@ -27,6 +27,10 @@ import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.constants.StringListConstants;
 import com.condor.voidaltars.util.TownyFunctions;
 
+/**
+ * A boon that makes it so ice blocks never melt inside of
+ * the active town
+ */
 public class FreezeBoon extends Boon {
 
   private static ArrayList<Class> triggerList = new ArrayList<>();

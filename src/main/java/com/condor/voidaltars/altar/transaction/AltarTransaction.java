@@ -9,6 +9,9 @@ import com.condor.voidaltars.altar.AltarManager;
 import com.condor.voidaltars.altar.TownAltarLink;
 import com.condor.voidaltars.sql.SQLLinker;
 
+/**
+ * Represents a transaction with an altar
+ */
 public abstract class AltarTransaction {
   protected TransactionType type;
   protected UUID altarUUID;
@@ -17,6 +20,17 @@ public abstract class AltarTransaction {
   protected UUID transacUUID;
   protected long transacTime;
 
+  /**
+   * Constructor for an AltarTransaction.
+   * Intended for creating new transactions rather than
+   * loading one from the database
+   * @param type         The type of transaction
+   * @param altarUUID    The altar's UUID
+   * @param link         The town-altar link
+   * @param playerUUID   The player's UUID who completed the transaction
+   * @param transacUUID  The UUID of the transaction
+   * @param transacTime  The time at which the transaction took place
+   */
   public AltarTransaction(TransactionType type, UUID altarUUID, TownAltarLink link,
                           UUID playerUUID, UUID transacUUID, long transacTime) {
     this.type = type;
@@ -27,6 +41,12 @@ public abstract class AltarTransaction {
     this.transacTime = transacTime;
   }
 
+  /**
+   * Constructor for an AltarTransaction
+   * Intended for pulling information from the database
+   * and using it to re-construct a transaction
+   * @param transacUUID  The UUID of the transaction, already stored in the database
+   */
   public AltarTransaction(UUID transacUUID) {
     this.transacUUID = transacUUID;
     try {
@@ -63,7 +83,15 @@ public abstract class AltarTransaction {
     return this.type;
   }
 
+  /**
+   * Converts the transaction to a chat-readable string,
+   * intended for usage with /altar log
+   * @return A string representing the transaction
+   */
   public abstract String toString();
 
+  /**
+   * Pushes the transaction to the database
+   */
   public abstract void pushToDB();
 }

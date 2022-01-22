@@ -12,6 +12,11 @@ import com.condor.voidaltars.constants.ConstantsLoader;
 import com.condor.voidaltars.command.CommandControl;
 import com.condor.voidaltars.command.SubCommand;
 
+/**
+ * Help command that returns a list of subcommands
+ * accessible by the /altar command
+ * Usage: /altar help <page>
+ */
 public class AltarHelpCommand extends SubCommand {
 
 	public final static String NAME = "help";

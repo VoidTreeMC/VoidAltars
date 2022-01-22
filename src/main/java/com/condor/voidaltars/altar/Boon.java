@@ -7,6 +7,10 @@ import org.bukkit.inventory.ItemStack;
 
 import com.palmergames.bukkit.towny.object.Town;
 
+/**
+ * Represents a boon -- a persistent benefit chosen
+ * by a mayor or high priest that affects their entire town
+ */
 public abstract class Boon {
   private String name;
   private String description;
@@ -14,6 +18,13 @@ public abstract class Boon {
   private BoonType type;
   protected ArrayList<Town> registeredTowns;
 
+  /**
+   * Constructor for a boon
+   * @param name         The name of the boon (used in GUI)
+   * @param description  The description of the boon (used in right-click)
+   * @param triggers     The events that trigger the boon's effects
+   * @param type         The type of boon
+   */
   protected Boon(String name, String description, ArrayList<Class> triggers, BoonType type) {
     this.name = name;
     // this.lore = lore;
@@ -23,18 +34,36 @@ public abstract class Boon {
     this.registeredTowns = new ArrayList<>();
   }
 
+  /**
+   * Gets the name of the boon
+   * @return The name of the boon
+   */
   public String getName() {
     return this.name;
   }
 
+  /**
+   * Gets the description of the boon
+   * @return The description of the boon
+   */
   public String getDescription() {
     return this.description;
   }
 
+  /**
+   * Adds a new town to the boon's list of
+   * registered towns, making it active.
+   * @param town  The town that has taken the boon
+   */
   public void addTown(Town town) {
     registeredTowns.add(town);
   }
 
+  /**
+   * Removes a town from the boon's list of
+   * registered towns, making it inactive.
+   * @param town  The town that has lost the boon
+   */
   public void removeTown(Town town) {
     registeredTowns.remove(town);
   }

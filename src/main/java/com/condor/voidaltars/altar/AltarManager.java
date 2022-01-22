@@ -31,14 +31,27 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.TownyUniverse;
 
+/**
+ * Provides a variety of altar utilities,
+ * including mapping altar types to their structures,
+ * town UUIDs to their town-altar links,
+ * and performs event-handling for altar clicks
+ */
 public class AltarManager {
   private static HashMap<AltarType, AltarStructure> altarTypeMap = new HashMap<>();
   private static HashMap<UUID, TownAltarLink> altarLinkMap = new HashMap<>();
 
+  /**
+   * Constructs and initializes the altar manager
+   */
   public AltarManager() {
     init();
   }
 
+  /**
+   * Initializes the altar by registering the
+   * altar types with their relevant structures
+   */
   private void init() {
     altarTypeMap.put(AltarType.FARM_ALTAR, new FarmAltarStructure());
     altarTypeMap.put(AltarType.NETHER_ALTAR, new NetherAltarStructure());
@@ -46,22 +59,44 @@ public class AltarManager {
     altarTypeMap.put(AltarType.OCEAN_ALTAR, new OceanAltarStructure());
   }
 
+  /**
+   * Registers a new town-altar link with the map
+   * @param link  The town-altar link
+   */
   public static void addAltarLink(TownAltarLink link) {
     altarLinkMap.put(link.getUniqueId(), link);
   }
 
+  /**
+   * Gets the altar link associated with the town UUID
+   * @param  uuid               The town's UUID
+   * @return                    The town's altar link
+   */
   public static TownAltarLink getAltarLink(UUID uuid) {
     return altarLinkMap.get(uuid);
   }
 
+  /**
+   * Clears the map of altar links
+   */
   public static void clearAltarLinks() {
     altarLinkMap.clear();
   }
 
+  /**
+   * Gets the altar structure associated with the type
+   * @param  type               The type of altar
+   * @return                    The altar's structure
+   */
   public static AltarStructure getAltarByType(AltarType type) {
     return altarTypeMap.get(type);
   }
 
+  /**
+   * Gets the town-altar link associated with the town
+   * @param  town               The town whose link to get
+   * @return                    The town's altar link
+   */
   public static TownAltarLink getAltarLinkFromTown(Town town) {
     for (TownAltarLink link : altarLinkMap.values()) {
       if (town.equals(link.getTown())) {
@@ -71,8 +106,16 @@ public class AltarManager {
     return null;
   }
 
-  // TODO: Refactor this to make it a bit cleaner.
-  // Separate it into two sections: Looking for existing altar, creating new altar
+  /**
+   * Gets the altar clicked by the player. Creates a new
+   * altar if it does not exist and it is valid to do so.
+   * Checks to verify that the altar is still valid, and
+   * performs permission-checking
+   * @param  loc                  The location of the click
+   * @param  player               The player who clicked
+   * @return                      The altar located at that location
+   * TODO: Refactor this to make it cleaner
+   */
   public static AltarMeta getAltarFromLoc(Location loc, Player player) {
     AltarMeta altarMeta = null;
 
@@ -208,6 +251,13 @@ public class AltarManager {
     }
   }
 
+  /**
+   * Gets the altar structure located at the location
+   * Returns null if invalid
+   * @param  loc                             The location of the structure
+   * @param  shouldHaveCandles               Whether the structure should have candles or not
+   * @return                                 The altar's structure, or null if invalid altar
+   */
   public static AltarStructure getStructureFromLoc(Location loc, boolean shouldHaveCandles) {
     AltarStructure struc = null;
     for (AltarStructure altarStructure : altarTypeMap.values()) {

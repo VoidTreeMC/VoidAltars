@@ -12,7 +12,12 @@ import org.bukkit.Bukkit;
 import com.condor.voidaltars.altar.TownAltarLink;
 import com.condor.voidaltars.sql.SQLLinker;
 
-// TODO: Implement actual caching for this
+/**
+ * Used to access a town's altar transactions.
+ * Does not currently support caching, but will
+ * eventually.
+ * TODO: Implement actual caching for this
+ */
 public class TransactionCache {
   private TownAltarLink link;
   // Maps transaction UUID to transaction
@@ -25,8 +30,13 @@ public class TransactionCache {
   // private ArrayList<AltarTransaction> transacList = new ArrayList<>();
   private int numTransactions;
 
+  // The maximum number of entries in a page
   public static final int PAGE_SIZE = 10;
 
+  /**
+   * Constructor for a TransactionCache
+   * @param link  The town-altar link whose transactions are being cached
+   */
   public TransactionCache(TownAltarLink link) {
     this.link = link;
     try {
@@ -42,6 +52,10 @@ public class TransactionCache {
     }
   }
 
+  /**
+   * Stores a new transaction in the cache and the database
+   * @param transac  The transaction to be stored
+   */
   public void store(AltarTransaction transac) {
     // uuidTransacMap.put(transac.getUUID(), transac);
     // playerTransacMap.put(transac.getPlayerUUID(), transac);
@@ -51,7 +65,11 @@ public class TransactionCache {
     numTransactions++;
   }
 
-  // TODO
+  /**
+   * Gets the transactions at a specific page number
+   * @param  pageNum               The page number whose transactions are to be accessed
+   * @return                       The transactions stored in this page
+   */
   public ArrayList<AltarTransaction> getPage(int pageNum) {
     ArrayList<AltarTransaction> ret = new ArrayList<>();
     try {

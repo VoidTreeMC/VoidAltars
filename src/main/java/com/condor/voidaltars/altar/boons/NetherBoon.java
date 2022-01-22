@@ -30,6 +30,10 @@ import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.constants.StringListConstants;
 import com.condor.voidaltars.util.TownyFunctions;
 
+/**
+ * A boon that makes it so all creatures inside of the town
+ * are immune to fire damage, lava damage, and hot floors.
+ */
 public class NetherBoon extends Boon {
 
   private static ArrayList<Class> triggerList = new ArrayList<>();

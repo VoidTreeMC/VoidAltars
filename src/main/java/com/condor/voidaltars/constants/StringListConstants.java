@@ -5,6 +5,11 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 
+/**
+ * Contains a list of multi-line string constants
+ * used internally by much of the GUI code and
+ * user-interaction code
+ */
 public enum StringListConstants {
   END_BLESSING_LORE(new String[]{
     "Gaze into the void.",
@@ -56,6 +61,10 @@ public enum StringListConstants {
 
   List<String> list;
 
+  /**
+   * Constructor for a StringListConstants enum
+   * @param arr  A String array where each entry is its own line
+   */
   StringListConstants(String[] arr) {
     this.list = Arrays.asList(arr);
   }

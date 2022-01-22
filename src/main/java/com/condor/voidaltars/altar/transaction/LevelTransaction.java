@@ -14,14 +14,33 @@ import org.bukkit.ChatColor;
 import com.condor.voidaltars.altar.TownAltarLink;
 import com.condor.voidaltars.sql.SQLLinker;
 
+/**
+ * Represents an altar transaction in which the altar was
+ * levelled up
+ */
 public class LevelTransaction extends AltarTransaction {
   int newLevel;
 
+  /**
+   * Constructor for a LevelTransaction.
+   * Intended for creating a new transaction rather
+   * than loading one from the database.
+   * @param link         The town-altar link
+   * @param transacUUID  The transaction UUID
+   * @param transacTime  The time at which the transaction took place
+   * @param newLevel     The new level, to which the altar has levelled up
+   */
   public LevelTransaction(TownAltarLink link, UUID transacUUID, long transacTime, int newLevel) {
     super(TransactionType.LEVEL, null, link, null, transacUUID, transacTime);
     this.newLevel = newLevel;
   }
 
+  /**
+   * Constructor for a LevelTransaction.
+   * Intended for loading a boon from the
+   * database and re-constructing it.
+   * @param transacUUID  The transaction UUID, already in the database
+   */
   public LevelTransaction(UUID transacUUID) {
     super(transacUUID);
     try {
@@ -36,7 +55,6 @@ public class LevelTransaction extends AltarTransaction {
     }
   }
 
-  // TODO: Add text colors
   public String toString() {
     String ret = "";
     Date theTime = new Date(this.transacTime);

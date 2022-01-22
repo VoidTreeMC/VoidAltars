@@ -10,6 +10,10 @@ import org.bukkit.Bukkit;
 
 import com.condor.voidaltars.altar.boons.*;
 
+/**
+ * Class that maps boon types to their
+ * boon objects
+ */
 public class BoonManager {
   private static HashMap<BoonType, Boon> boonMap = new HashMap<>();
 
@@ -26,6 +30,12 @@ public class BoonManager {
     boonMap.put(BoonType.PEACE_BOON, new PeaceBoon());
   }
 
+  /**
+   * Gets the boon object associated with
+   * the provided boon type
+   * @param  type               The type of boon
+   * @return                    The boon associated with that type
+   */
   public static Boon getBoonByType(BoonType type) {
     if (type != null) {
       return boonMap.get(type);
@@ -34,14 +44,26 @@ public class BoonManager {
     }
   }
 
+  /**
+   * Gets a collection of all boons
+   * @return A collection of all boons
+   */
   public static Collection<Boon> getBoons() {
     return boonMap.values();
   }
 
+  /**
+   * Gets the map of boon types to boons
+   * @return The map of boon types to boons
+   */
   public static HashMap<BoonType, Boon> getMap() {
     return boonMap;
   }
 
+  /**
+   * Parses an event for all relevant boons
+   * @param event  The event to be parsed
+   */
   public static void parseEvent(Event event) {
     for (Entry<BoonType, Boon> boonsByType : boonMap.entrySet()) {
       boonsByType.getValue().eval(event);

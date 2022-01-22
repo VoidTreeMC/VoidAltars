@@ -38,18 +38,41 @@ import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 
+/**
+ * Represents an altar's data. Most altar
+ * interactions are handled here.
+ */
 public abstract class AltarMeta {
+  // The type of altar
   AltarType type;
+  // The altar's town-altar link
   TownAltarLink link;
+  // The location of the altar's interface block
   Location interfaceLoc;
+  // The altar's structure
   AltarStructure structure;
+  // A list of the altar's currently demanded sacrifices
   ArrayList<Sacrifice> sacrifices = new ArrayList<>();
   // The ID of the altar
   UUID uuid;
+  // A map of sacrifice materials to their associated weights
   HashMap<Material, Double> weightMap;
 
   private static Random rng = new Random();
 
+  /**
+   * A constructor for an AltarMeta object.
+   * Intended for creating a new AltarMeta object, rather than
+   * reconstructing one from the database
+   * @param  link                              The altar's town-altar link
+   * @param  type                              The type of the altar
+   * @param  uuid                              The altar's UUID
+   * @param  interfaceLoc                      The location of the interface block
+   * @param  structure                         The altar's structure
+   * @param  weightMap                         The altar's map of sacrifice types to their weights
+   * @throws NotInATownException               Thrown if the altar is not located in a town
+   * @throws WrongTownException                Thrown if the altar is located in a town other than its registered town
+   */
   public AltarMeta(TownAltarLink link, AltarType type, UUID uuid, Location interfaceLoc, AltarStructure structure, HashMap<Material, Double> weightMap) throws NotInATownException, WrongTownException {
     this.link = link;
     this.type = type;
@@ -84,6 +107,21 @@ public abstract class AltarMeta {
     });
   }
 
+  /**
+   * A constructor for an AltarMeta object.
+   * Intended for reconstructing an AltarMeta
+   * object from the database
+   * @param uuid           The altar's UUID
+   * @param type           The type of the altar
+   * @param townUUID       The UUID of the town the altar is linked to
+   * @param worldStr       The name of the world the altar is in
+   * @param x              The X coordinate at which the altar's interface block is located
+   * @param y              The Y coordinate at which the altar's interface block is located
+   * @param z              The Z coordinate at which the altar's interface block is located
+   * @param sacrificeList  An arraylist of bytes containing the altar's current sacrifices
+   * @param weightMap      The altar's map of sacrifice types to their weights
+   * @param structure      The altar's structure
+   */
   public AltarMeta(UUID uuid, String type, UUID townUUID, String worldStr, double x, double y, double z,
                    ArrayList<byte[]> sacrificeList, HashMap<Material, Double> weightMap, AltarStructure structure) {
    this.uuid = uuid;
@@ -103,6 +141,18 @@ public abstract class AltarMeta {
    this.link.addAltar(this.type, this);
  }
 
+ /**
+  * Reconstructs an altar of the specified type
+  * @param  uuid                        The altar's UUID
+  * @param  typeStr                     The type of altar to create
+  * @param  townUUID                    The UUID of the town with which the altar is associated
+  * @param  worldStr                    The name of the world in which the altar is located
+  * @param  x                           The X coordinate of the altar's interface block
+  * @param  y                           The Y coordinate of the altar's interface block
+  * @param  z                           The Z coordinate of the altar's interface block
+  * @param  sacrificeList               An arraylist of bytes containing the altar's current sacrifices
+  * @return                             A new AltarMeta
+  */
  public static AltarMeta create(UUID uuid, String typeStr, UUID townUUID, String worldStr, double x, double y, double z, ArrayList<byte[]> sacrificeList) {
    AltarType type = AltarType.getTypeFromString(typeStr);
    switch (type) {
@@ -118,6 +168,11 @@ public abstract class AltarMeta {
    }
  }
 
+ /**
+  * Handles behavior for when a sacrifice is finished
+  * @param  finished               The sacrifice that was finished
+  * @return                        The new sacrifice that the altar wants instead
+  */
   public Sacrifice finishSacrifice(Sacrifice finished) {
     sacrifices.remove(finished);
     this.link.incrementSacrifices();
@@ -133,15 +188,25 @@ public abstract class AltarMeta {
     return newSacrifice;
   }
 
+  /**
+   * Adds a new sacrifice to the list
+   */
   public void addNewSacrifice() {
     Sacrifice newSacrifice = SacrificeManager.getNewSacrifice(this);
     sacrifices.add(newSacrifice);
   }
 
+  /**
+   * Removes the sacrifice at the last index of the list
+   */
   public void removeSacrifice() {
     sacrifices.remove(sacrifices.size() - 1);
   }
 
+  /**
+   * Plays an in-world animation with sound at the location.
+   * Used for when an altar is activated or leveled up.
+   */
   public void doEffect() {
     World world = interfaceLoc.getWorld();
     // The interval between lightning strikes. Measured in ticks.
@@ -167,6 +232,11 @@ public abstract class AltarMeta {
     }, 10);
   }
 
+  /**
+   * Returns a list of blocks at which
+   * candles are located around the altar.
+   * @return A list of candle blocks near the altar
+   */
   private ArrayList<Block> getCandles() {
     int size = this.structure.getSize();
     ArrayList<Block> ret = new ArrayList<>();
@@ -184,6 +254,11 @@ public abstract class AltarMeta {
     return ret;
   }
 
+  /**
+   * Returns a list of blocks at which
+   * lightning rods are located around the altar.
+   * @return A list of lightning rod blocks near the altar
+   */
   private ArrayList<Block> getLightningRods() {
     int size = this.structure.getSize();
     ArrayList<Block> ret = new ArrayList<>();
@@ -201,6 +276,11 @@ public abstract class AltarMeta {
     return ret;
   }
 
+  /**
+   * Transforms lightning rods to candles, or
+   * candles to lightning rods near the altar.
+   * @param toCandles  True if lightning rods should be turned to candles, false if the other way around
+   */
   public void transformLightningRodsOrCandles(boolean toCandles) {
     if (toCandles) {
       ArrayList<Block> lightningRods = this.getLightningRods();
@@ -215,6 +295,11 @@ public abstract class AltarMeta {
     }
   }
 
+  /**
+   * Sets candles near the altar to a specified number
+   * e.g. 4 candles per block instead of 3
+   * @param amt  The new amount of candles
+   */
   public void setCandles(int amt) {
     if (amt > 0) {
       ArrayList<Block> candles = getCandles();
@@ -231,13 +316,22 @@ public abstract class AltarMeta {
     }
   }
 
-  // TODO: Maybe move to a different file?
+  /**
+   * Lights or unlights the candle at the block
+   * @param block  The candle to be lit or unlit
+   * @param state  The state of the candle (true: lit; false: unlit)
+   * TODO: Maybe move to a different file
+   */
   public static void setCandleLit(Block block, boolean state) {
     Candle candle = (Candle) block.getBlockData();
     candle.setLit(state);
     block.setBlockData(candle);
   }
 
+  /**
+   * Lights or unlights all the candles near the altar
+   * @param state  The state of the candle (true: lit; false: unlit)
+   */
   public void setCandlesLit(boolean state) {
     ArrayList<Block> candles = getCandles();
     for (Block block : candles) {
@@ -245,6 +339,10 @@ public abstract class AltarMeta {
     }
   }
 
+  /**
+   * Sets the location of the altar's interface block
+   * @param newLoc  The new location
+   */
   public void setLocation(Location newLoc) {
     this.interfaceLoc = newLoc;
     AltarMeta tempMeta = this;
@@ -268,6 +366,11 @@ public abstract class AltarMeta {
     return this.uuid;
   }
 
+  /**
+   * Gets the type of the next sacrifice that the
+   * altar wants
+   * @return The next sacrifice type
+   */
   public Material getSacrificeType() {
     List<Material> sacrificeTypes = this.getSacrificeTypes();
     // Bukkit.getLogger().info("Sacrifice types");
@@ -277,6 +380,11 @@ public abstract class AltarMeta {
     return sacrificeTypes.get(rng.nextInt(sacrificeTypes.size()));
   }
 
+  /**
+   * Gets the sacrifice at the specified index
+   * @param  index               The index of the sacrifice slot (0-3)
+   * @return                     The sacrifice at that slot
+   */
   public Sacrifice getSacrifice(int index) {
     if (index < sacrifices.size()) {
       return sacrifices.get(index);
@@ -289,37 +397,78 @@ public abstract class AltarMeta {
     }
   }
 
+  /**
+   * Returns the number of sacrifice slots that
+   * this altar has available
+   * @return The number of sacrifice slots available
+   */
   public int getNumSacrificeSlots() {
     return Math.max(1, this.link.getLevel());
   }
 
+  /**
+   * Returns the weight of the sacrifice
+   * of a specific type
+   * @param  type               The type of the sacrifice
+   * @return                    The weight of the sacrifice
+   */
   public double getSacrificeWeight(Material type) {
     return weightMap.get(type);
   }
 
+  /**
+   * Returns the location of the altar's
+   * interface block
+   * @return The location of the altar's interface block
+   */
   public Location getLocation() {
     return this.interfaceLoc;
   }
 
+  /**
+   * Gets the altar's current level
+   * @return The altar's current level
+   */
   public int getLevel() {
     return this.link.getLevel();
   }
 
+  /**
+   * Gets the altar's maximum level
+   * @return The altar's maximum level
+   */
   public int getMaxLevel() {
     return this.link.getMaxLevel();
   }
 
+  /**
+   * Gets the town with which the altar is linked
+   * @return The town with which the altar is linked
+   */
   public Town getTown() {
     return this.link.getTown();
   }
 
+  /**
+   * Gets the altar's structure
+   * @return The altar's structure
+   */
   public AltarStructure getStructure() {
     return this.structure;
   }
 
+  /**
+   * A list of the altar's current sacrifices
+   * @return The altar's current sacrifices
+   */
   public ArrayList<Sacrifice> getSacrifices() {
     return this.sacrifices;
   }
 
+  /**
+   * Returns a list of item types that the
+   * altar may demand as a sacrifice
+   * @return A list of item types that the altar may demand
+   */
   public abstract List<Material> getSacrificeTypes();
 }

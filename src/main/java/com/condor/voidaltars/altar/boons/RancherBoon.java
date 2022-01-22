@@ -26,6 +26,10 @@ import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.constants.StringListConstants;
 import com.condor.voidaltars.util.TownyFunctions;
 
+/**
+ * A boon that makes it so animals yield
+ * additional products while inside the town
+ */
 public class RancherBoon extends Boon {
 
   private static ArrayList<Class> triggerList = new ArrayList<>();

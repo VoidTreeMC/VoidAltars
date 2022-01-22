@@ -10,6 +10,10 @@ import com.condor.voidaltars.command.CommandControl.FailureCode;
 import com.condor.voidaltars.constants.ConstantsLoader;
 import com.condor.voidaltars.command.CommandControl;
 
+/**
+ * Administrator command used to reload
+ * text from the text.yml config file
+ */
 public class CommandAltarReloadText extends CommandControl {
 
   public CommandAltarReloadText(String name) {

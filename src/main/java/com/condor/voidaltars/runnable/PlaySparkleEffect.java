@@ -11,6 +11,11 @@ import org.bukkit.Effect;
 
 import com.condor.voidaltars.main.AltarMain;
 
+/**
+ * BukkitRunnable for playing the sparkle effect
+ * above the campfire when an altar levels up for
+ * is activated
+ */
 public class PlaySparkleEffect extends BukkitRunnable {
 
 	//The plugin
@@ -24,6 +29,11 @@ public class PlaySparkleEffect extends BukkitRunnable {
 
   private static final int TIME_TO_LAST = 20;
 
+  /**
+   * Constructor for a PlaySparkleEffect BukkitRunnable
+   * @param loc    The location at which to play the effect
+   * @param depth  How deep this object is in its recursive cycle
+   */
 	public PlaySparkleEffect(Location loc, int depth) {
 		this.plugin = AltarMain.getPlugin();
 		this.loc = loc;

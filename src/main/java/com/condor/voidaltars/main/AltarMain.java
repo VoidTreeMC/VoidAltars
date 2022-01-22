@@ -17,9 +17,9 @@ import com.condor.voidaltars.sql.SQLConfig;
 import com.condor.voidaltars.constants.ConstantsLoader;
 import com.condor.voidaltars.constants.SacrificesConfigLoader;
 
-// import net.milkbowl.vault.economy.Economy;
-// import net.milkbowl.vault.economy.EconomyResponse;
-
+/**
+ * The main class for the VoidAltars plugin
+ */
 public class AltarMain extends JavaPlugin {
 
 	public static final String HEIRO = "<F#SDF";
@@ -55,7 +55,7 @@ public class AltarMain extends JavaPlugin {
 		Bukkit.getLogger().info("Initializing");
 	}
 
-	static final String RWLOAD =
+	static final String LOADING_STRING =
 			"\n"
 			+ "-----------------\n"
 			+ "-----------------\n"
@@ -66,7 +66,7 @@ public class AltarMain extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		plugin = this;
-		getLogger().info(RWLOAD + TIMEID);
+		getLogger().info(LOADING_STRING + TIMEID);
 
 		Bukkit.getLogger().info("Command Control...");
 
@@ -74,18 +74,13 @@ public class AltarMain extends JavaPlugin {
 		CommandControl.loadExecutors(this);
 		Bukkit.getLogger().info("<><><><><><><><><>");
 
-    // Bukkit.getLogger().info("Loading vault-economy hook...");
-    // if (!setupEconomy()) {
-    //   Bukkit.getLogger().info("Economy has failed to load.");
-    // }
-
 		//This registers the listener
 		Bukkit.getLogger().info("Loading listeners...");
 		try {
 			AltarListener.loadListeners(this);
 		}
 		catch(Exception e) {
-
+      e.printStackTrace();
 		}
 
     Bukkit.getLogger().info("Loading Altar Manager...");
@@ -110,39 +105,18 @@ public class AltarMain extends JavaPlugin {
 
 	}
 
-  // private boolean setupEconomy() {
-  //   if (getServer().getPluginManager().getPlugin("Vault") == null) {
-  //     return false;
-  //   }
-  //   RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-  //   if (rsp == null) {
-  //       return false;
-  //   }
-  //   econ = rsp.getProvider();
-  //   return econ != null;
-  // }
-  //
-  // public Economy getEconomy() {
-  //   return econ;
-  // }
 
 	/**
-	 * Called on server shutdown <p>
-	 *
-	 * 1. {@link OnPlayerJoinLeaveStartOrShutdown#shutdown()}
-	 */
+   * Called on plugin disable (reloading or server shutdown)
+   */
 	@Override
 	public void onDisable() {
 
 	}
 
-	//-------------------------------------------------------------------------------------
-
 	/**
-	 * Called on server start <p>
-	 *
-	 * 1. Calls {@link OnPlayerJoinLeaveStartOrShutdown#startup()}
-	 */
+   * Called on plugin loading (reloading or server start)
+   */
 	public void onStart() {
 
 	}

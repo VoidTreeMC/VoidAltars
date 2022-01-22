@@ -28,6 +28,10 @@ import com.condor.voidaltars.constants.StringListConstants;
 import com.condor.voidaltars.altar.boons.FreezeBoon;
 import com.condor.voidaltars.util.TownyFunctions;
 
+/**
+ * A boon that makes it so water never freezes
+ * and snow never falls while inside of the town
+ */
 public class ThawBoon extends Boon {
 
   private static ArrayList<Class> triggerList = new ArrayList<>();

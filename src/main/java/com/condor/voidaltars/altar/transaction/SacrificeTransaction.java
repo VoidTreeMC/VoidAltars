@@ -22,6 +22,21 @@ public class SacrificeTransaction extends AltarTransaction {
   int amt;
   int amtRemaining;
 
+  /**
+   * Constructor for a BuildTransaction.
+   * Intended for creating a new transaction rather
+   * than loading one from the database.
+   * @param altarUUID     The UUID of the altar
+   * @param link          The town-altar link
+   * @param playerUUID    The UUID of the player
+   * @param transacUUID   The transaction UUID
+   * @param transacTime   The time at which the transaction took place
+   * @param altarType     The type of altar
+   * @param level         The current level of the altar
+   * @param itemType      The type of item sacrificed
+   * @param amt           The amount of the item sacrificed
+   * @param amtRemaining  The amount of the item that is remaining
+   */
   public SacrificeTransaction(UUID altarUUID, TownAltarLink link, UUID playerUUID, UUID transacUUID,
                           long transacTime, AltarType altarType, int level, String itemType, int amt, int amtRemaining) {
     super(TransactionType.SACRIFICE, altarUUID, link, playerUUID, transacUUID, transacTime);
@@ -32,6 +47,12 @@ public class SacrificeTransaction extends AltarTransaction {
     this.amtRemaining = amtRemaining;
   }
 
+  /**
+   * Constructor for a SacrificeTransaction.
+   * Intended for loading a boon from the
+   * database and re-constructing it.
+   * @param transacUUID  The transaction UUID, already in the database
+   */
   public SacrificeTransaction(UUID transacUUID) {
     super(transacUUID);
     try {
@@ -50,7 +71,6 @@ public class SacrificeTransaction extends AltarTransaction {
     }
   }
 
-  // TODO: Add text colors
   public String toString() {
     String ret = "";
     String playerName = Bukkit.getServer().getOfflinePlayer(playerUUID).getName();

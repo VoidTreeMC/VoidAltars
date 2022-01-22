@@ -9,6 +9,9 @@ import java.io.IOException;
 
 import org.bukkit.Bukkit;
 
+/**
+ * Loads a list of string constants from the text.yml file
+ */
 public class ConstantsLoader {
 
   private static final String CONFIG_LOC = "plugins/VoidAltars/text.yml";
@@ -20,7 +23,11 @@ public class ConstantsLoader {
   // TODO: Change the protocol for these to be easier for humans to read
   private static HashMap<String, String[]> listValMap = new HashMap<>();
 
-  // TODO: Instantiate default file
+  /**
+   * Loads the config file and updates the
+   * the text constants
+   * TODO: Instantiate default file
+   */
   public static void init() {
     try {
       File file = new File(CONFIG_LOC);
@@ -43,6 +50,10 @@ public class ConstantsLoader {
     updateValues();
   }
 
+  /**
+   * Updates values inside the StringConstants file to represent those
+   * stored in the value map
+   */
   public static void updateValues() {
     for (Entry<String, String> entry : valMap.entrySet()) {
       try {

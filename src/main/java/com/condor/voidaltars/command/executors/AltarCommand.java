@@ -13,6 +13,11 @@ import com.condor.voidaltars.command.SubCommand;
 import com.condor.voidaltars.command.subexecutors.AltarHelpCommand;
 import com.condor.voidaltars.command.subexecutors.AltarLogCommand;
 
+/**
+ * Supercommand used to trigger various sub-commands,
+ * described in the subexecutors package.
+ * Usage: /altar <subcommand>
+ */
 public class AltarCommand extends CommandControl {
 
   private static TreeMap<String, SubCommand> subcommandTree = new TreeMap<>();

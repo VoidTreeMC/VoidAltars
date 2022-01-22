@@ -32,6 +32,10 @@ import dev.triumphteam.gui.guis.GuiItem;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 
+/**
+ * The boon selection GUI in which players can
+ * select new boons
+ */
 public class SelectBoonGUI {
 
   private static Random rng = new Random();
@@ -44,6 +48,12 @@ public class SelectBoonGUI {
     BACK_BUTTON.setItemMeta(backButtonMeta);
   }
 
+  /**
+   * Displays the boon sleection GUI to the player
+   * @param player     The player that is viewing the GUI
+   * @param altarMeta  The altar whose boon selection GUI is to be shown
+   * @param index      The index of the boon slot that is being manipulated
+   */
   public static void displayBoonGUI(Player player, AltarMeta altarMeta, int index) {
     PaginatedGui gui = Gui.paginated().title(Component.text("Select Boon")).rows(6).pageSize(45).create();
   	gui.setDefaultClickAction(event -> {

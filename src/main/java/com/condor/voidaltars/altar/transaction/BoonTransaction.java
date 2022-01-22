@@ -16,10 +16,25 @@ import com.condor.voidaltars.altar.BoonManager;
 import com.condor.voidaltars.altar.BoonType;
 import com.condor.voidaltars.sql.SQLLinker;
 
+/**
+ * Represents an altar transaction in which the altar's boon was changed
+ */
 public class BoonTransaction extends AltarTransaction {
   String oldBoon;
   String newBoon;
 
+  /**
+   * Constructor for a BoonTransaction.
+   * Intended for creating a new transaction rather
+   * than loading one from the database.
+   * @param altarUUID    The UUID of the altar
+   * @param link         The town-altar link
+   * @param playerUUID   The UUID of the player
+   * @param transacUUID  The transaction UUID
+   * @param transacTime  The time at which the transaction took place
+   * @param oldBoon      The old boon (source boon)
+   * @param newBoon      The new boon (destination boon)
+   */
   public BoonTransaction(UUID altarUUID, TownAltarLink link, UUID playerUUID, UUID transacUUID,
                           long transacTime, String oldBoon, String newBoon) {
     super(TransactionType.BOON, altarUUID, link, playerUUID, transacUUID, transacTime);
@@ -27,6 +42,12 @@ public class BoonTransaction extends AltarTransaction {
     this.newBoon = newBoon;
   }
 
+  /**
+   * Constructor for a BoonTransaction.
+   * Intended for loading a boon from the
+   * database and re-constructing it.
+   * @param transacUUID  The transaction UUID, already in the database
+   */
   public BoonTransaction(UUID transacUUID) {
     super(transacUUID);
     try {

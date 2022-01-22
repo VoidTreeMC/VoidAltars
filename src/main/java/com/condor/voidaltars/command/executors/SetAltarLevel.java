@@ -16,6 +16,11 @@ import com.condor.voidaltars.altar.TownAltarLink;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.Town;
 
+/**
+ * Administrator command used to set the level
+ * of the altars in a specific town
+ * Usage: /setaltarlevel <town name>
+ */
 public class SetAltarLevel extends CommandControl {
 
   public SetAltarLevel(String name) {

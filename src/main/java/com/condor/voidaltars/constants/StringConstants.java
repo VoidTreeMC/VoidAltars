@@ -2,6 +2,11 @@ package com.condor.voidaltars.constants;
 
 import org.bukkit.ChatColor;
 
+/**
+ * Contains a list of single-line string constants
+ * used internally by much of the GUI code and
+ * user-interaction code
+ */
 public enum StringConstants {
   // Boons
   END_BLESSING_NAME("Blessing of the End"),
@@ -47,6 +52,10 @@ public enum StringConstants {
 
   String str;
 
+  /**
+   * Constructor for a StringConstants enum
+   * @param str  The string
+   */
   StringConstants(String str) {
     this.str = str;
   }

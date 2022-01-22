@@ -16,6 +16,11 @@ import com.condor.voidaltars.main.AltarMain;
 import com.condor.voidaltars.altar.AltarMeta;
 import com.condor.voidaltars.altar.multiblock.AltarStructure;
 
+/**
+ * BukkitRunnable for lighting candles and striking them
+ * with lightning. Also converts lightning rods to
+ * candles
+ */
 public class LightCandles extends BukkitRunnable {
 
 	//The plugin
@@ -30,6 +35,12 @@ public class LightCandles extends BukkitRunnable {
   // The altar's structure
   AltarStructure structure;
 
+  /**
+   * Constructor for the LightCandles BukkitRunnable
+   * @param block      The candle/lightning rod block to light
+   * @param level      The new level of the altar
+   * @param structure  The AltarStructure containing the candle type
+   */
 	public LightCandles(Block block, int level, AltarStructure structure) {
 		this.plugin = AltarMain.getPlugin();
 		this.block = block;

@@ -16,6 +16,9 @@ import com.condor.voidaltars.altar.exception.WrongTownException;
 import com.condor.voidaltars.altar.multiblock.structures.MiningAltarStructure;
 import com.condor.voidaltars.altar.TownAltarLink;
 
+/**
+ * Altar for mining sacrifices
+ */
 public class MiningAltar extends AltarMeta {
 
   private static HashMap<Material, Double> weightMap = new HashMap<>();

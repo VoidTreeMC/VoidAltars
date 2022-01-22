@@ -25,6 +25,11 @@ import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.constants.StringListConstants;
 import com.condor.voidaltars.util.TownyFunctions;
 
+/**
+ * A boon that makes predator mobs such as
+ * foxes and wolves be passive to prey mobs
+ * such as sheep and chickens.
+ */
 public class SentinelBoon extends Boon {
 
   private static ArrayList<Class> triggerList = new ArrayList<>();

@@ -1,5 +1,8 @@
 package com.condor.voidaltars.altar;
 
+/**
+ * Represents the different types of boons
+ */
 public enum BoonType {
   HARVEST_BOON,
   RANCHER_BOON,
@@ -12,6 +15,11 @@ public enum BoonType {
   THAW_BOON,
   PEACE_BOON;
 
+  /**
+   * Gets the type of boon associated with its name
+   * @param  name               The name of the boon
+   * @return                    The BoonType associated with the name
+   */
   public static BoonType getTypeFromString(String name) {
     for (BoonType type : BoonType.values()) {
       if (type.toString().equals(name)) {
