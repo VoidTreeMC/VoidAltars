@@ -1,15 +1,6 @@
 Duck wants people to only be able to change the boon type after every couple sacrifices
   - We decided to delay this. Players should be able to switch their altar boon as much as they want early on, so they can try out all of the boons and test them
 
-A command that people can use to see recent transactions on their altar, such as who has recently sacrificed to the altar, and what boons have been changed, etc.
-- /altar log and /altar history, both aliased to this
- - Transaction types
-   - Built altar
-   - Destroyed altar
-   - Sacrificed to altar
-   - Changed boon
-   - Altar leveled up
-
 Add a command that lets administrators reload sacrifices based on the config file
 Add a config for changing the material requirements for altars
 Make it so if you remove an entry from the text file and reload, it goes back to the default
@@ -19,9 +10,12 @@ Currently, when players unclaim an altar, any subsequent chunks that are unclaim
 RefreshSacrifices has been temporarily disabled
 Spurious "you are not a mayor/high priest" messages when people are right-clicking altars that are not actually altars
 Maybe build/destroy transactions should contain the type of altar
+Localized timestamps
 
 DID
 ===
-Established working backend for transaction processing
-Reduced scaling factor for number of people in town
-Fixed a bug with loading sacrifice configs
+Finished transaction processing
+Added command, /altar, as well as subcommands
+  - /altar log
+  - /altar help
+Updated and re-enabled /refreshsacrifices

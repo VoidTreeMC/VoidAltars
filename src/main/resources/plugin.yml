@@ -21,7 +21,7 @@ commands:
        permission-message: You do not have permission to use this command.
    refreshsacrifices:
        description: Refreshes an altar's sacrifices
-       usage: /refreshsacrifices <town name>
+       usage: /refreshsacrifices <town name> <altar type>
        permission: condor.altar.refreshsacrifices
        permission-message: You do not have permission to use this command.
    addsacrifices:
@@ -29,3 +29,6 @@ commands:
        usage: /addsacrifices <town name> <n>
        permission: condor.altar.addsacrifices
        permission-message: You do not have permission to use this command.
+   altar:
+      description: Supercommand that handles a variety of altar commands
+      aliases: altars

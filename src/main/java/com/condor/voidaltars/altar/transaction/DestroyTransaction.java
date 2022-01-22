@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.sql.ResultSet;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 import com.condor.voidaltars.altar.TownAltarLink;
 import com.condor.voidaltars.sql.SQLLinker;
@@ -50,9 +51,14 @@ public class DestroyTransaction extends AltarTransaction {
     String ret = "";
     String playerName = Bukkit.getServer().getOfflinePlayer(playerUUID).getName();
     Date theTime = new Date(this.transacTime);
-    String locString = "XYZ: " + x + ", " + y + ", " + z;
-    String timestamp = new SimpleDateFormat("M/d H:m").format(theTime);
-    ret += "DESTROY: " + playerName + " " + timestamp + " " + locString;
+    String locString = "XYZ: " + ChatColor.GOLD + x + ", " + y + ", " + z;
+    String timestamp = new SimpleDateFormat("M/d H:").format(theTime);
+    String minute = new SimpleDateFormat("m").format(theTime);
+    if (minute.length() == 1) {
+      minute = "0" + minute;
+    }
+    timestamp += minute;
+    ret += ChatColor.AQUA + "DESTROY: " + ChatColor.GOLD + playerName + " " + ChatColor.YELLOW + timestamp + " " + ChatColor.AQUA + locString;
     return ret;
   }
 

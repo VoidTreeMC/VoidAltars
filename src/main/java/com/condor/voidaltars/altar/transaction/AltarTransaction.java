@@ -30,7 +30,7 @@ public abstract class AltarTransaction {
   public AltarTransaction(UUID transacUUID) {
     this.transacUUID = transacUUID;
     try {
-      PreparedStatement stmt = SQLLinker.getConn().prepareStatement("SELECT * FROM AltarTransactionType WHERE transaction_uuid=?");
+      PreparedStatement stmt = SQLLinker.getConn().prepareStatement("SELECT * FROM AltarTransactionTable WHERE transaction_uuid=?");
       stmt.setString(1, transacUUID.toString());
       ResultSet rs = stmt.executeQuery();
       if (rs.next()) {

@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.sql.ResultSet;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 import com.condor.voidaltars.altar.TownAltarLink;
 import com.condor.voidaltars.altar.AltarType;
@@ -54,14 +55,19 @@ public class SacrificeTransaction extends AltarTransaction {
     String ret = "";
     String playerName = Bukkit.getServer().getOfflinePlayer(playerUUID).getName();
     Date theTime = new Date(this.transacTime);
-    String timestamp = new SimpleDateFormat("M/d H:m").format(theTime);
-    ret += "SACRIFICE: " + playerName + " " + timestamp + " " + amt + " " + itemType + ", " + amtRemaining + " remaining.";
+    String timestamp = new SimpleDateFormat("M/d H:").format(theTime);
+    String minute = new SimpleDateFormat("m").format(theTime);
+    if (minute.length() == 1) {
+      minute = "0" + minute;
+    }
+    timestamp += minute;
+    ret += ChatColor.AQUA + "SACRIFICE: " + ChatColor.GOLD + playerName + " " + ChatColor.YELLOW + timestamp + " " + ChatColor.GOLD + amt + " " + ChatColor.AQUA + itemType + ", " + ChatColor.GOLD + amtRemaining + ChatColor.AQUA + " remaining.";
     return ret;
   }
 
   public void pushToDB() {
     try {
-      PreparedStatement toGenericTable = SQLLinker.getConn().prepareStatement("INSERT INTO AltarTransactionTable(altar_uuid, town_uuid, player_uuid, transaction_type, transaction_uuid, transaction_time) VALUES (?, ?, ?, 'Sacrifice', ?, ?);");
+      PreparedStatement toGenericTable = SQLLinker.getConn().prepareStatement("INSERT INTO AltarTransactionTable(altar_uuid, town_uuid, player_uuid, transaction_type, transaction_uuid, transaction_time) VALUES (?, ?, ?, 'SACRIFICE', ?, ?);");
       toGenericTable.setString(1, this.altarUUID.toString());
       toGenericTable.setString(2, this.link.getUniqueId().toString());
       toGenericTable.setString(3, this.playerUUID.toString());

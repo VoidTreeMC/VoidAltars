@@ -9,8 +9,11 @@ import java.text.SimpleDateFormat;
 import java.sql.ResultSet;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 import com.condor.voidaltars.altar.TownAltarLink;
+import com.condor.voidaltars.altar.BoonManager;
+import com.condor.voidaltars.altar.BoonType;
 import com.condor.voidaltars.sql.SQLLinker;
 
 public class BoonTransaction extends AltarTransaction {
@@ -39,13 +42,22 @@ public class BoonTransaction extends AltarTransaction {
     }
   }
 
-  // TODO: Add text colors
   public String toString() {
     String ret = "";
     String playerName = Bukkit.getServer().getOfflinePlayer(playerUUID).getName();
     Date theTime = new Date(this.transacTime);
-    String timestamp = new SimpleDateFormat("M/d H:m").format(theTime);
-    ret += "BOON: " + playerName + " " + timestamp + " " + oldBoon + "->" + newBoon;
+    String timestamp = new SimpleDateFormat("M/d H:").format(theTime);
+    String minute = new SimpleDateFormat("m").format(theTime);
+    if (minute.length() == 1) {
+      minute = "0" + minute;
+    }
+    timestamp += minute;
+    String oldBoonStr = "No boon";
+    if (!oldBoon.equals("")) {
+      oldBoonStr = BoonManager.getBoonByType(BoonType.getTypeFromString(oldBoon)).getName();
+    }
+    String newBoonStr = BoonManager.getBoonByType(BoonType.getTypeFromString(newBoon)).getName();
+    ret += ChatColor.AQUA + "BOON: " + ChatColor.GOLD + playerName + " " + ChatColor.YELLOW + timestamp + " " + ChatColor.GOLD + oldBoonStr + ChatColor.YELLOW + "->" + ChatColor.GOLD + newBoonStr;
     return ret;
   }
 

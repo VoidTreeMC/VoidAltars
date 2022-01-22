@@ -55,7 +55,7 @@ public class TransactionCache {
   public ArrayList<AltarTransaction> getPage(int pageNum) {
     ArrayList<AltarTransaction> ret = new ArrayList<>();
     try {
-      PreparedStatement stmt = SQLLinker.getConn().prepareStatement("SELECT transaction_uuid, transaction_type FROM AltarTransactionTable WHERE town_uuid=? ORDER BY transaction_time DESC LIMIT " + PAGE_SIZE);
+      PreparedStatement stmt = SQLLinker.getConn().prepareStatement("SELECT transaction_uuid, transaction_type FROM AltarTransactionTable WHERE town_uuid=? ORDER BY transaction_time DESC LIMIT " + PAGE_SIZE + " OFFSET " + ((pageNum - 1) * PAGE_SIZE));
       stmt.setString(1, this.link.getUniqueId().toString());
       ResultSet rs = stmt.executeQuery();
       // For every row we just fetched from the table

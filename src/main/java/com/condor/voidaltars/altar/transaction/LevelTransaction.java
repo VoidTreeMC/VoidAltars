@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.sql.ResultSet;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 import com.condor.voidaltars.altar.TownAltarLink;
 import com.condor.voidaltars.sql.SQLLinker;
@@ -39,8 +40,13 @@ public class LevelTransaction extends AltarTransaction {
   public String toString() {
     String ret = "";
     Date theTime = new Date(this.transacTime);
-    String timestamp = new SimpleDateFormat("M/d H:m").format(theTime);
-    ret += "LEVEL: " + timestamp + " Level changed to " + newLevel;
+    String timestamp = new SimpleDateFormat("M/d H:").format(theTime);
+    String minute = new SimpleDateFormat("m").format(theTime);
+    if (minute.length() == 1) {
+      minute = "0" + minute;
+    }
+    timestamp += minute;
+    ret += ChatColor.AQUA + "LEVEL: " + ChatColor.YELLOW + timestamp + ChatColor.AQUA + " Level changed to " + ChatColor.GOLD + newLevel;
     return ret;
   }
 
