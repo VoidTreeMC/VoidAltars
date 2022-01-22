@@ -1,2 +1,4 @@
 # VoidAltars plugin
 A plugin that adds a new multi-block structure called an altar. Altars work with towny to provide town-wide bonuses to players in exchange for item sacrifices. Build an altar, feed it to keep it happy, and claim your boons.
+
+Up-to-date javadocs can be found [here](https://dev.voidtreemc.com/altar_docs/)

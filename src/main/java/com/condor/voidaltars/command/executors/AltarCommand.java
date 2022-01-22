@@ -16,7 +16,7 @@ import com.condor.voidaltars.command.subexecutors.AltarLogCommand;
 /**
  * Supercommand used to trigger various sub-commands,
  * described in the subexecutors package.
- * Usage: /altar <subcommand>
+ * Usage: /altar {subcommand}
  */
 public class AltarCommand extends CommandControl {
 

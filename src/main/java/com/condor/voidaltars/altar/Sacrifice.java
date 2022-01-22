@@ -136,7 +136,7 @@ public class Sacrifice {
 
   /**
    * Serializes the sacrifice to bytes for easy storage
-   * Protocol: The object is serialized to an ArrayList<Object>
+   * Protocol: The object is serialized to an ArrayList of class Object
    * with the following protocol
    * [0]: Material (the type of the item)
    * [1]: int (the amount sacrificed so far)

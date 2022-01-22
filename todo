@@ -14,8 +14,5 @@ Localized timestamps
 
 DID
 ===
-Finished transaction processing
-Added command, /altar, as well as subcommands
-  - /altar log
-  - /altar help
-Updated and re-enabled /refreshsacrifices
+Added documentation
+Fixed some issues with docs

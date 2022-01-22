@@ -15,7 +15,7 @@ import com.condor.voidaltars.command.SubCommand;
 /**
  * Help command that returns a list of subcommands
  * accessible by the /altar command
- * Usage: /altar help <page>
+ * Usage: /altar help {page}
  */
 public class AltarHelpCommand extends SubCommand {
 

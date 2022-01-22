@@ -19,7 +19,7 @@ import com.palmergames.bukkit.towny.object.Town;
 /**
  * Administrator command used to set the level
  * of the altars in a specific town
- * Usage: /setaltarlevel <town name>
+ * Usage: /setaltarlevel {town name}
  */
 public class SetAltarLevel extends CommandControl {
 

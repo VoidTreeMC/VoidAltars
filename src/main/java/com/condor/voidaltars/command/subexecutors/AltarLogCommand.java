@@ -23,8 +23,8 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 /**
  * Command that shows a list of altar transactions
  * in a paginated display
- * Usage: /altar log <page number>
- *        /altar history <page number>
+ * Usage: /altar log {page number}
+ *        /altar history {page number}
  */
 public class AltarLogCommand extends SubCommand {
 

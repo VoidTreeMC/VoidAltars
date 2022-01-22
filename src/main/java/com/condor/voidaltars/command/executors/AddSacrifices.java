@@ -19,7 +19,7 @@ import com.palmergames.bukkit.towny.object.Town;
 /**
  * Administrator command used to add N sacrifices
  * to the altars in the specified town
- * Usage: /addsacrifices <town name> <n>
+ * Usage: /addsacrifices {town name} {n}
  */
 public class AddSacrifices extends CommandControl {
 

@@ -24,7 +24,7 @@ import com.palmergames.bukkit.towny.object.Town;
 /**
  * Administrator command used to re-generate
  * the sacrifices at a specific altar in a specific town
- * Usage: /refreshsacrifices <town name> <altar type>
+ * Usage: /refreshsacrifices {town name} {altar type}
  */
 public class RefreshSacrifices extends CommandControl {
 
