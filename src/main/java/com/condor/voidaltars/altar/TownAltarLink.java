@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.ChatColor;
 
 import com.condor.voidaltars.main.AltarMain;
 import com.condor.voidaltars.altar.exception.NotInATownException;
@@ -244,6 +245,7 @@ public class TownAltarLink {
      });
      meta.doEffect();
    }
+   announceLevelUp();
 
    TownAltarLink tempLink = this;
    Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
@@ -293,6 +295,25 @@ public class TownAltarLink {
        SQLLinker.pushToDB(tempLink);
      }
    });
+  }
+
+  /**
+   * Announces to the entire server that this town
+   * has levelled up its altars
+   * TODO: Move this string to a string constant config
+   */
+  private void announceLevelUp() {
+    String townName = this.town.getName();
+    boolean pluralAltars = this.getAltars().size() > 1;
+    String pluralAltarsS = pluralAltars ? "s" : "";
+    String pluralBoonS = (this.getNumBoonSlots() > 1) ? "s" : "";
+    String hasOrHave = pluralAltars ? "have" : "has";
+    Bukkit.broadcastMessage(ChatColor.YELLOW + "The Gods of " + ChatColor.RED + "Void" + ChatColor.GRAY +
+                            "Tree" + ChatColor.YELLOW + " smile upon " + ChatColor.GOLD + townName + "'s" +
+                            ChatColor.YELLOW + " altar" + pluralAltarsS + ", which " + hasOrHave + " achieved level " +
+                            ChatColor.GOLD + "" + this.level + ChatColor.YELLOW + "! " + ChatColor.GOLD +
+                            townName + ChatColor.YELLOW + " has earned " + ChatColor.GOLD + "" + this.level +
+                            ChatColor.YELLOW + " boon" + pluralBoonS + "!");
   }
 
   /**

@@ -151,6 +151,11 @@ public class AltarManager {
                 player.sendMessage(StringConstants.NO_DUPLICATE_ALTARS.get());
               // If the original location's campfire is gone and they're the same type of altar, update its location
               } else if (!meta.getStructure().isPossibleInterfaceBlock(meta.getLocation().getBlock().getType()) && typeAtLoc.equals(metaType)) {
+                Resident resident = TownyUniverse.getInstance().getResident(player.getUniqueId());
+                if (resident == null || (!resident.isMayor() && !resident.hasTownRank("high-priest"))) {
+                  player.sendMessage(StringConstants.NO_PERMISSIONS_TO_CREATE_ALTAR.get());
+                  return null;
+                }
                 player.sendMessage(StringConstants.ALTAR_HAS_BEEN_MOVED.get());
                 meta.setLocation(loc);
                 BuildTransaction transac = new BuildTransaction(meta.getUniqueId(), meta.getLink(), player.getUniqueId(),
@@ -188,8 +193,10 @@ public class AltarManager {
     }
 
     if (resident == null || (!resident.isMayor() && !resident.hasTownRank("high-priest"))) {
-      player.sendMessage(StringConstants.NO_PERMISSIONS_TO_CREATE_ALTAR.get());
-      return null;
+      if (getStructureFromLoc(loc, true) != null || getStructureFromLoc(loc, false) != null) {
+        player.sendMessage(StringConstants.NO_PERMISSIONS_TO_CREATE_ALTAR.get());
+        return null;
+      }
     }
 
     // If there's no known altar at this location

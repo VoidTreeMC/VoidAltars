@@ -7,12 +7,12 @@ Make it so if you remove an entry from the text file and reload, it goes back to
 Make it so newtown's altar doesnt scale with the number of people
 Add some type of sychronization to make sure that SQL changes are made synchronously but not on the same thread as the server runtime
 Currently, when players unclaim an altar, any subsequent chunks that are unclaimed will tell them their altar has been unclaimed. Until they re-claim it.
-RefreshSacrifices has been temporarily disabled
-Spurious "you are not a mayor/high priest" messages when people are right-clicking altars that are not actually altars
 Maybe build/destroy transactions should contain the type of altar
 Localized timestamps
 
 DID
 ===
-Added documentation
-Fixed some issues with docs
+Added altar command to get list of all current sacrifices
+Fixed spurious error messages regarding permission checking
+Fixed an oversight in permission checking that would allow anyone in a town to move the town's altars
+Added an announcement to the entire server when an altar is levelled up
