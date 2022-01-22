@@ -1,7 +1,7 @@
 #The �main:� line needs to list the package and class name of the class which is loaded by Spigot when it loads the plugin�s jar file.
 main: com.condor.voidaltars.main.AltarMain
 name: VoidAltars
-version: 0.0.2
+version: 0.0.3
 api-version: 1.18
 authors: [Iron-Condor]
 description: Void Altar plugin

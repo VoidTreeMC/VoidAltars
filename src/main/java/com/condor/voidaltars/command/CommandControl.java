@@ -15,16 +15,6 @@ import com.condor.voidaltars.command.executors.RefreshSacrifices;
 import com.condor.voidaltars.command.executors.AddSacrifices;
 import com.condor.voidaltars.command.executors.AltarCommand;
 
-/**
- * Extends CommandExecutor to create new commands for RaceWars <br>
- * Commands must be given a name which is automatically toUPPER <br>
- * The same name MUST be in the plugin.yml file <br>
- * Commands must be initiated in "initExecutors" <br>
- * New Commands are added to the map of executors <br>
- * Call "loadExecutors" to load all in the plugin
- * @author Mexon
- *
- */
 public abstract class CommandControl implements CommandExecutor {
 
 	public enum FailureCode {
