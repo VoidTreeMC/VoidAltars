@@ -13,7 +13,8 @@ public enum BoonType {
   BEEKEEPER_BOON,
   FREEZE_BOON,
   THAW_BOON,
-  PEACE_BOON;
+  PEACE_BOON,
+  ANTIPEST_BOON;
 
   /**
    * Gets the type of boon associated with its name

@@ -57,6 +57,10 @@ public enum StringListConstants {
     "The wolf shall live with the lamb,",
     "the leopard shall lie down with the kid,",
     "the calf and the lion and the fatling together"
+  }),
+  PEST_CONTROL_BLESSING_LORE(new String[]{
+    "We hate cats.",
+    "We hate golems."
   });
 
   List<String> list;

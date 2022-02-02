@@ -5,6 +5,7 @@ import java.util.TreeMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.server.TabCompleteEvent;
 
 import com.condor.voidaltars.command.CommandControl.FailureCode;
 import com.condor.voidaltars.constants.ConstantsLoader;
@@ -100,4 +101,8 @@ public class SetAltarLevel extends CommandControl {
 	protected FailureCode isNecessary(CommandSender sender, String label, String[] args) {
 		return FailureCode.SUCCESS;
 	}
+
+  protected void parseTabComplete(TabCompleteEvent event, String restOfString) {
+    return;
+  }
 }

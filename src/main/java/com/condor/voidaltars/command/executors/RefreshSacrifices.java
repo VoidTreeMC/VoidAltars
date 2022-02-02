@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.server.TabCompleteEvent;
 
 import com.condor.voidaltars.command.CommandControl.FailureCode;
 import com.condor.voidaltars.constants.ConstantsLoader;
@@ -68,11 +69,10 @@ public class RefreshSacrifices extends CommandControl {
     }
 
     // Do stuff here
-    ArrayList<Sacrifice> sacrifices = altar.getSacrifices();
-    int numSacrifices = link.getSacrificesWanted();
-    sacrifices.clear();
+    altar.clearSacrifices();
+    int numSacrifices = altar.getNumSacrificeSlots();
     for (int i = 0; i < numSacrifices; i++) {
-      sacrifices.add(SacrificeManager.getNewSacrifice(altar));
+      altar.addNewSacrifice();
     }
 
     SQLLinker.pushToDB(altar);
@@ -86,4 +86,8 @@ public class RefreshSacrifices extends CommandControl {
 	protected FailureCode isNecessary(CommandSender sender, String label, String[] args) {
 		return FailureCode.SUCCESS;
 	}
+
+  protected void parseTabComplete(TabCompleteEvent event, String restOfString) {
+    return;
+  }
 }

@@ -58,6 +58,8 @@ import org.bukkit.event.entity.EntityBreedEvent;
 import io.papermc.paper.event.block.PlayerShearBlockEvent;
 import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.block.BlockFormEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.server.TabCompleteEvent;
 
 import com.condor.voidaltars.listener.AltarListener;
 import com.condor.voidaltars.main.AltarMain;
@@ -70,6 +72,7 @@ import com.condor.voidaltars.altar.BoonManager;
 import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.altar.TownAltarLink;
 import com.condor.voidaltars.altar.transaction.DestroyTransaction;
+import com.condor.voidaltars.command.CommandControl;
 
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.event.town.TownUnclaimEvent;
@@ -84,6 +87,16 @@ import com.palmergames.bukkit.towny.TownyUniverse;
  */
 public class EventListener extends AltarListener {
   private static final Random rng = new Random();
+
+  @EventHandler
+  public void onTabCompleteEvent(TabCompleteEvent event) {
+    CommandControl.parseOrigTabComplete(event);
+  }
+
+  @EventHandler
+  public void onCreatureSpawnEvent(CreatureSpawnEvent event) {
+    BoonManager.parseEvent(event);
+  }
 
   @EventHandler
   public void onTownUnclaimEvent(TownUnclaimEvent event) {

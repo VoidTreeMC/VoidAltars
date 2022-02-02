@@ -27,6 +27,8 @@ public enum StringConstants {
   THAW_BLESSING_DESCRIPTION("The gods bless your town with spring on the coldest days. Snow will not collect on the ground and ice will not freeze while this boon is active."),
   PEACE_BLESSING_NAME("Blessing of the Peace"),
   PEACE_BLESSING_DESCRIPTION("The gods bless your town with an aura of peace. Inside your town normally hostile mobs will not attack players. If you attack a mob, however, it will retaliate."),
+  PEST_CONTROL_BLESSING_NAME("Blessing of Pest Control"),
+  PEST_CONTROL_BLESSING_DESCRIPTION("No more iron golems or cats in your town."),
   // User-visible error messages
   ALTAR_NO_LONGER_VALID("This is no longer a valid altar. The gods are not pleased."),
   MUST_BE_IN_TOWN_TO_CREATE_ALTAR_THERE("You can only create altars in a town that you own."),
@@ -48,7 +50,8 @@ public enum StringConstants {
   // GUI strings
   SACRIFICES_REMAINING_TO_PLEASE("Sacrifices remaining to please the gods: "),
   SACRIFICES_REMAINING_TO_LEVEL("Sacrifices remaining to level up altar: "),
-  GODS_ARE_PLEASED("The gods are pleased.");
+  GODS_ARE_PLEASED("The gods are pleased."),
+  ALTAR_MAX_LEVEL("Your altar is at max level.");
 
   String str;
 

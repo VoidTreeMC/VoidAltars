@@ -5,14 +5,18 @@ Add a command that lets administrators reload sacrifices based on the config fil
 Add a config for changing the material requirements for altars
 Make it so if you remove an entry from the text file and reload, it goes back to the default
 Make it so newtown's altar doesnt scale with the number of people
-Add some type of sychronization to make sure that SQL changes are made synchronously but not on the same thread as the server runtime
+Add some type of synchronization to make sure that SQL changes are made synchronously but not on the same thread as the server runtime
 Currently, when players unclaim an altar, any subsequent chunks that are unclaimed will tell them their altar has been unclaimed. Until they re-claim it.
 Maybe build/destroy transactions should contain the type of altar
 Localized timestamps
+Players are getting a lot of messages every time they right click an altar
+Add tab completion for some of the other altar commands besides /altar
 
 DID
 ===
-Added altar command to get list of all current sacrifices
-Fixed spurious error messages regarding permission checking
-Fixed an oversight in permission checking that would allow anyone in a town to move the town's altars
-Added an announcement to the entire server when an altar is levelled up
+Fixed a bug with /refreshsacrifices
+Added pest control boon
+Added new alias for /altar sacrifices
+Fixed a bug with altar transaction processing for null player uuids or altar uuids
+Fixed a UI bug that said altars can level up beyond level 4
+Added tab completion for /altar

@@ -466,6 +466,13 @@ public abstract class AltarMeta {
   }
 
   /**
+   * Clears the altar's sacrifices list
+   */
+  public void clearSacrifices() {
+    this.sacrifices.clear();
+  }
+
+  /**
    * Returns a list of item types that the
    * altar may demand as a sacrifice
    * @return A list of item types that the altar may demand

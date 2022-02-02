@@ -207,7 +207,7 @@ public class TownAltarLink {
    * @return True if the altar should level up, false otherwise
    */
   public boolean shouldLevelUp() {
-   return this.totalRecentSacrifices >= (this.sacrificesWanted * 1.5);
+   return (this.totalRecentSacrifices >= (this.sacrificesWanted * 1.5)) && (this.getLevel() < this.getMaxLevel());
   }
 
   /**

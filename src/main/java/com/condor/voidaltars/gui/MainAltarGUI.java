@@ -188,7 +188,11 @@ public class MainAltarGUI {
       hopperLore.add(StringConstants.SACRIFICES_REMAINING_TO_PLEASE.get() + (sacRemaining + 1));
     } else {
       hopperLore.add(StringConstants.GODS_ARE_PLEASED.get());
-      hopperLore.add(StringConstants.SACRIFICES_REMAINING_TO_LEVEL.get() + (altarMeta.getLink().getSacrificesNeededForLevelUp() + 1));
+      if (altarMeta.getLink().getLevel() < altarMeta.getLink().getMaxLevel()) {
+        hopperLore.add(StringConstants.SACRIFICES_REMAINING_TO_LEVEL.get() + (altarMeta.getLink().getSacrificesNeededForLevelUp() + 1));
+      } else {
+        hopperLore.add(StringConstants.ALTAR_MAX_LEVEL.get());
+      }
     }
     hopperMeta.setLore(hopperLore);
     sacrificeProgressItem.setItemMeta(hopperMeta);

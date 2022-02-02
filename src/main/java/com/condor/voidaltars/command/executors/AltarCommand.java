@@ -1,10 +1,12 @@
 package com.condor.voidaltars.command.executors;
 
 import java.util.TreeMap;
+import java.util.ArrayList;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.server.TabCompleteEvent;
 
 import com.condor.voidaltars.command.CommandControl.FailureCode;
 import com.condor.voidaltars.constants.ConstantsLoader;
@@ -13,6 +15,7 @@ import com.condor.voidaltars.command.SubCommand;
 import com.condor.voidaltars.command.subexecutors.AltarHelpCommand;
 import com.condor.voidaltars.command.subexecutors.AltarLogCommand;
 import com.condor.voidaltars.command.subexecutors.AltarSacrificesCommand;
+import com.condor.voidaltars.command.subexecutors.AltarStatusCommand;
 
 /**
  * Supercommand used to trigger various sub-commands,
@@ -31,6 +34,9 @@ public class AltarCommand extends CommandControl {
     AltarSacrificesCommand altarSacrificesCommand = new AltarSacrificesCommand();
     subcommandTree.put(AltarSacrificesCommand.NAME, altarSacrificesCommand);
     subcommandTree.put(AltarSacrificesCommand.ALT_NAME, altarSacrificesCommand);
+    subcommandTree.put(AltarSacrificesCommand.ALT_NAME_2, altarSacrificesCommand);
+    AltarStatusCommand altarStatusCommand = new AltarStatusCommand();
+    subcommandTree.put(AltarStatusCommand.NAME, altarStatusCommand);
   }
 
   public AltarCommand(String name) {
@@ -62,4 +68,15 @@ public class AltarCommand extends CommandControl {
 		return FailureCode.SUCCESS;
 	}
 
+  @Override
+  protected void parseTabComplete(TabCompleteEvent event, String str) {
+    String firstWord = str.split(" ")[0].toLowerCase();
+    ArrayList<String> completions = new ArrayList<>();
+    for (String subcommand : subcommandTree.keySet()) {
+      if (subcommand.startsWith(firstWord)) {
+        completions.add(subcommand);
+      }
+    }
+    event.setCompletions(completions);
+  }
 }

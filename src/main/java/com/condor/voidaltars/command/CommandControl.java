@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.event.server.TabCompleteEvent;
 import org.bukkit.Bukkit;
 
 import com.condor.voidaltars.command.executors.CommandAltarReloadText;
@@ -78,6 +79,27 @@ public abstract class CommandControl implements CommandExecutor {
 	private String name;
 
 	private final int ARGS_LENGTH;
+
+  public static void parseOrigTabComplete(TabCompleteEvent event) {
+    String commandStr = event.getBuffer();
+    String[] words = commandStr.split(" ");
+    boolean isExecutor = (words.length <= 0) ? false : executors.containsKey(words[0].substring(1));
+    if (!isExecutor) {
+      return;
+    }
+    CommandControl sub = executors.get(words[0].substring(1));
+    if (sub != null) {
+      String restOfCommand = "";
+      for (int i = 0; i < words.length; i++) {
+        if (i > 0) {
+          restOfCommand += words[i];
+        }
+      }
+      sub.parseTabComplete(event, restOfCommand);
+    }
+  }
+
+  protected abstract void parseTabComplete(TabCompleteEvent event, String restOfString);
 
 	/**
 	 * Constructor for All new commands.  <br>

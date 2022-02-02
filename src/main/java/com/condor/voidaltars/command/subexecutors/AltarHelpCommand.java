@@ -30,6 +30,7 @@ public class AltarHelpCommand extends SubCommand {
 		helpEntries.add(ChatColor.GREEN + "/altar help " + ChatColor.LIGHT_PURPLE + "<page number>");
     helpEntries.add(ChatColor.GREEN + "/altar log" + ChatColor.LIGHT_PURPLE + " <page number>");
     helpEntries.add(ChatColor.GREEN + "/altar listsacrifices" + ChatColor.LIGHT_PURPLE + " <altar type>");
+    helpEntries.add(ChatColor.GREEN + "/altar status");
     numPages++;
 	}
 

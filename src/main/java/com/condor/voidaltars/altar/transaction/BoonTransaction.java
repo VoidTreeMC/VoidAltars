@@ -74,10 +74,13 @@ public class BoonTransaction extends AltarTransaction {
     }
     timestamp += minute;
     String oldBoonStr = "No boon";
-    if (!oldBoon.equals("")) {
+    String newBoonStr = "No boon";
+    if (oldBoon != null && !oldBoon.equals("")) {
       oldBoonStr = BoonManager.getBoonByType(BoonType.getTypeFromString(oldBoon)).getName();
     }
-    String newBoonStr = BoonManager.getBoonByType(BoonType.getTypeFromString(newBoon)).getName();
+    if (newBoon != null && !newBoon.equals("")) {
+      newBoonStr = BoonManager.getBoonByType(BoonType.getTypeFromString(newBoon)).getName();
+    }
     ret += ChatColor.AQUA + "BOON: " + ChatColor.GOLD + playerName + " " + ChatColor.YELLOW + timestamp + " " + ChatColor.GOLD + oldBoonStr + ChatColor.YELLOW + "->" + ChatColor.GOLD + newBoonStr;
     return ret;
   }

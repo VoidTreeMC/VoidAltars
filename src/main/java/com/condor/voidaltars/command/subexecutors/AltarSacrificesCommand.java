@@ -32,6 +32,7 @@ public class AltarSacrificesCommand extends SubCommand {
 
 	public final static String NAME = "listsacrifices";
   public final static String ALT_NAME = "sacrifices";
+  public final static String ALT_NAME_2 = "ls";
 
 	@Override
 	public FailureCode execute(CommandSender sender, String label, String[] args) {
@@ -100,7 +101,7 @@ public class AltarSacrificesCommand extends SubCommand {
       String sacString = ChatColor.YELLOW + "" + sac.getType() + ChatColor.GOLD + " ";
       sacString += sac.getNumSacrificed();
       sacString += ChatColor.YELLOW + " / " + ChatColor.GOLD;
-      sacString += sac.getNumRemaining();
+      sacString += sac.getTotal();
       player.sendMessage(sacString);
     }
     player.sendMessage("");

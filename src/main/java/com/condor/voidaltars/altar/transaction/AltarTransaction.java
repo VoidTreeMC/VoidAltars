@@ -55,11 +55,11 @@ public abstract class AltarTransaction {
       ResultSet rs = stmt.executeQuery();
       if (rs.next()) {
         String altar_uuid = rs.getString("altar_uuid");
-        if (altar_uuid != null) {
+        if (altar_uuid != null && !altar_uuid.equals("")) {
           this.altarUUID = UUID.fromString(altar_uuid);
         }
         String player_uuid = rs.getString("player_uuid");
-        if (player_uuid != null) {
+        if (player_uuid != null && !player_uuid.equals("")) {
           this.playerUUID = UUID.fromString(player_uuid);
         }
         this.link = AltarManager.getAltarLink(UUID.fromString(rs.getString("town_uuid")));
