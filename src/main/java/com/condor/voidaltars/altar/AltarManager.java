@@ -23,6 +23,7 @@ import com.condor.voidaltars.runnable.PlaySparkleEffect;
 import com.condor.voidaltars.main.AltarMain;
 import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.altar.transaction.BuildTransaction;
+import com.condor.voidaltars.util.TownyFunctions;
 
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.TownyAPI;
@@ -126,6 +127,9 @@ public class AltarManager {
 
     for (TownAltarLink link : altarLinkMap.values()) {
       // if (locsAreEqual(meta.getLocation(), loc)) {
+      if (!link.getTown().equals(TownyFunctions.getTownFromLocation(loc))) {
+        continue;
+      }
       // Check if the altar is still in the town it's supposed to be in
       for (AltarMeta meta : link.getAltars()) {
         try {

@@ -96,7 +96,7 @@ public abstract class AltarMeta {
     this.interfaceLoc = interfaceLoc;
 
     for (int i = 0; i < this.getNumSacrificeSlots(); i++) {
-      sacrifices.add(SacrificeManager.getNewSacrifice(this));
+      sacrifices.add(SacrificeManager.getNewSacrifice(this, getCurrentSacrificeMaterials()));
     }
     AltarMeta tempMeta = this;
     Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
@@ -176,7 +176,7 @@ public abstract class AltarMeta {
   public Sacrifice finishSacrifice(Sacrifice finished) {
     sacrifices.remove(finished);
     this.link.incrementSacrifices();
-    Sacrifice newSacrifice = SacrificeManager.getNewSacrifice(this);
+    Sacrifice newSacrifice = SacrificeManager.getNewSacrifice(this, getCurrentSacrificeMaterials());
     sacrifices.add(newSacrifice);
     AltarMeta tempMeta = this;
     Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
@@ -192,8 +192,21 @@ public abstract class AltarMeta {
    * Adds a new sacrifice to the list
    */
   public void addNewSacrifice() {
-    Sacrifice newSacrifice = SacrificeManager.getNewSacrifice(this);
+    Sacrifice newSacrifice = SacrificeManager.getNewSacrifice(this, getCurrentSacrificeMaterials());
     sacrifices.add(newSacrifice);
+  }
+
+  /**
+   * Gets a list of the material types for the
+   * altar's current sacrifices
+   * @return A list of materials for the altar's current sacrifices
+   */
+  public ArrayList<Material> getCurrentSacrificeMaterials() {
+    ArrayList<Material> ret = new ArrayList<>();
+    for (Sacrifice s : sacrifices) {
+      ret.add(s.getType());
+    }
+    return ret;
   }
 
   /**
@@ -371,12 +384,17 @@ public abstract class AltarMeta {
    * altar wants
    * @return The next sacrifice type
    */
-  public Material getSacrificeType() {
+  public Material getSacrificeType(ArrayList<Material> toAvoid) {
     List<Material> sacrificeTypes = this.getSacrificeTypes();
-    // Bukkit.getLogger().info("Sacrifice types");
-    // for (int i = 0; i < sacrificeTypes.size(); i++) {
-    //   Bukkit.getLogger().info("- " + sacrificeTypes.get(i));
-    // }
+    ArrayList<Material> finalList = new ArrayList<>();
+    if (toAvoid != null) {
+      for (Material mat : sacrificeTypes) {
+        if (!toAvoid.contains(mat)) {
+          finalList.add(mat);
+        }
+      }
+      return finalList.get(rng.nextInt(finalList.size()));
+    }
     return sacrificeTypes.get(rng.nextInt(sacrificeTypes.size()));
   }
 
@@ -389,7 +407,7 @@ public abstract class AltarMeta {
     if (index < sacrifices.size()) {
       return sacrifices.get(index);
     } else if (index >= sacrifices.size() && index < getNumSacrificeSlots()) {
-      Sacrifice sacrifice = SacrificeManager.getNewSacrifice(this);
+      Sacrifice sacrifice = SacrificeManager.getNewSacrifice(this, null);
       this.sacrifices.add(sacrifice);
       return sacrifice;
     } else {

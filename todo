@@ -8,15 +8,12 @@ Make it so newtown's altar doesnt scale with the number of people
 Add some type of synchronization to make sure that SQL changes are made synchronously but not on the same thread as the server runtime
 Currently, when players unclaim an altar, any subsequent chunks that are unclaimed will tell them their altar has been unclaimed. Until they re-claim it.
 Maybe build/destroy transactions should contain the type of altar
-Localized timestamps
-Players are getting a lot of messages every time they right click an altar
 Add tab completion for some of the other altar commands besides /altar
 
 DID
 ===
-Fixed a bug with /refreshsacrifices
-Added pest control boon
-Added new alias for /altar sacrifices
-Fixed a bug with altar transaction processing for null player uuids or altar uuids
-Fixed a UI bug that said altars can level up beyond level 4
-Added tab completion for /altar
+Fixed a bug with altars that have pleased the gods, not successfully resetting their quota period
+Fixed a bug with /altar status command's output
+Added current boon selections to /altar status
+Fixed spurious error messages
+Added partial tab-completion for /refreshsacrifices

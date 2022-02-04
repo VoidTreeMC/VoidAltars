@@ -31,4 +31,3 @@ commands:
        permission-message: You do not have permission to use this command.
    altar:
       description: Supercommand that handles a variety of altar commands
-      aliases: altars

@@ -59,8 +59,8 @@ public enum StringListConstants {
     "the calf and the lion and the fatling together"
   }),
   PEST_CONTROL_BLESSING_LORE(new String[]{
-    "We hate cats.",
-    "We hate golems."
+    "You were created by the sages;",
+    "return to your dust"
   });
 
   List<String> list;

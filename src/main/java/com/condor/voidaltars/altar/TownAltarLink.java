@@ -110,6 +110,19 @@ public class TownAltarLink {
     this.totalSacrificesMade = totalSacrificesMade;
     AltarManager.addAltarLink(this);
     this.transacCache = new TransactionCache(this);
+    long now = System.currentTimeMillis();
+    if (now >= this.getNextEvalTime()) {
+      this.totalRecentSacrifices = 0;
+      this.nextEvalTime = this.calcNextEvalTime();
+      TownAltarLink temp = this;
+      Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
+        @Override
+        public void run() {
+          Bukkit.getLogger().info("Pushing TownAltarLink.");
+          SQLLinker.pushToDB(temp);
+        }
+      });
+    }
   }
 
    // TODO: Make this throw an error if someone tries to add a duplicate altar

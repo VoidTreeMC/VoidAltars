@@ -20,6 +20,7 @@ import com.condor.voidaltars.altar.TownAltarLink;
 import com.condor.voidaltars.sql.SQLLinker;
 
 import com.palmergames.bukkit.towny.TownyAPI;
+import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.object.Town;
 
 /**
@@ -88,6 +89,19 @@ public class RefreshSacrifices extends CommandControl {
 	}
 
   protected void parseTabComplete(TabCompleteEvent event, String restOfString) {
-    return;
+    String firstWord = restOfString.split(" ")[0].toLowerCase();
+    ArrayList<String> completions = new ArrayList<>();
+    ArrayList<String> townNames = new ArrayList<>();
+    for (Town town : TownyUniverse.getInstance().getTowns()) {
+      if (AltarManager.getAltarLink(town.getUUID()) != null) {
+        townNames.add(town.getName().toLowerCase());
+      }
+    }
+    for (String name : townNames) {
+      if (name.startsWith(firstWord)) {
+        completions.add(name);
+      }
+    }
+    event.setCompletions(completions);
   }
 }

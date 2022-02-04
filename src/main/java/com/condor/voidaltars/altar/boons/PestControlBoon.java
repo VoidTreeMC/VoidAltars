@@ -61,6 +61,11 @@ public class PestControlBoon extends Boon {
       CreatureSpawnEvent cse = (CreatureSpawnEvent) event;
       ret = cse.getSpawnReason() == SpawnReason.DEFAULT || cse.getSpawnReason() == SpawnReason.VILLAGE_DEFENSE;
       ret = ret && isPest(cse.getEntityType());
+      if (ret) {
+        Location loc = cse.getEntity().getLocation();
+        Town town = TownyFunctions.getTownFromLocation(loc);
+        ret = this.registeredTowns.contains(town);
+      }
     }
 
     return ret;

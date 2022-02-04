@@ -29,10 +29,11 @@ public class SacrificeManager {
   /**
    * Gets a new sacrifice for the specified altar
    * @param  owner               The altar that wants a new sacrifice
+   * @param  avoidList           A list of sacrifice materials to avoid re-creating
    * @return                     The new sacrifice
    */
-  public static Sacrifice getNewSacrifice(AltarMeta owner) {
-    Material type = owner.getSacrificeType();
+  public static Sacrifice getNewSacrifice(AltarMeta owner, ArrayList<Material> avoidList) {
+    Material type = owner.getSacrificeType(avoidList);
     double weight = owner.getSacrificeWeight(type);
     Town town = owner.getTown();
     ItemStack is = new ItemStack(type);

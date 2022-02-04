@@ -57,10 +57,15 @@ public class AltarStatusCommand extends SubCommand {
 
     int altarLevel = link.getLevel();
     int neededForLevelUp = link.getSacrificesNeededForLevelUp();
-    int neededToPleaseGods = link.getSacrificesWanted();
+    int neededToPleaseGods = link.getSacrificesRemaining();
     long nextEvalTime = link.getNextEvalTime();
     long timeUntil = nextEvalTime - System.currentTimeMillis();
-    String timeStr = ChatColor.YELLOW + "The gods will review your altar in " + ChatColor.GOLD + getTimeString(timeUntil);
+    String timeStr = "";
+    if (timeUntil > 0) {
+      timeStr = ChatColor.YELLOW + "The gods will review your altar in " + ChatColor.GOLD + getTimeString(timeUntil);
+    } else {
+      timeStr = ChatColor.YELLOW + "The gods will review your altar upon the next reboot.";
+    }
 
     player.sendMessage(ChatColor.GREEN + "===== Altar Status =====");
     player.sendMessage(ChatColor.AQUA + "Level: " + ChatColor.GOLD + "" + altarLevel);
@@ -71,6 +76,10 @@ public class AltarStatusCommand extends SubCommand {
     }
     if (altarLevel < link.getMaxLevel()) {
       player.sendMessage(ChatColor.AQUA + "Sacrifices needed for next level: " + ChatColor.GOLD + "" + neededForLevelUp);
+    }
+    for (int i = 0; i < link.getNumBoonSlots(); i++) {
+      String boonName = (link.getBoon(i) == null) ? "" : link.getBoon(i).getName();
+      player.sendMessage(ChatColor.AQUA + "Boon " + (i+1) + ": " + ChatColor.GOLD + boonName);
     }
     player.sendMessage(timeStr);
 
