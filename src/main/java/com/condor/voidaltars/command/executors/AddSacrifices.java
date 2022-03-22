@@ -47,12 +47,12 @@ public class AddSacrifices extends CommandControl {
     try {
       newSacrifices = Integer.parseInt(newSacrificesStr);
     } catch (NumberFormatException e) {
-      sender.sendMessage("ERROR: New level must be an integer number.");
+      sender.sendMessage("ERROR: Sacrifices to add must be an integer number.");
       return FailureCode.FAILURE;
     }
 
     if (newSacrifices < 0) {
-      sender.sendMessage("ERROR: New level must be greater than 0");
+      sender.sendMessage("ERROR: Sacrifices to add must be greater than 0");
       return FailureCode.FAILURE;
     }
 

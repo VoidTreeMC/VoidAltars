@@ -160,6 +160,10 @@ public class MainAltarGUI {
     return amtCharged;
   }
 
+  private static boolean shouldRestrictSacrifices(AltarMeta meta) {
+    return ((meta.getLevel() == meta.getMaxLevel()) && meta.getLink().getSacrificesRemaining() <= 0);
+  }
+
   /**
    * Displays the main altar GUI to the player
    * @param player     The player that is viewing the GUI
@@ -211,6 +215,11 @@ public class MainAltarGUI {
       GuiItem sacrificeGuiItem = new GuiItem(SACRIFICE_SLOT_LOCKED);
       if (sacrificeItem != null) {
         sacrificeGuiItem = new GuiItem(sacrificeItem, event -> {
+          if (shouldRestrictSacrifices(altarMeta)) {
+            player.sendMessage(StringConstants.NO_MORE_SACRIFICES.get());
+            gui.close(player);
+            return;
+          }
           Material type = sacrificeItem.getType();
           int amtWanted = sacrifice.getNumRemaining();
           int amtSacrificed = handleSacrificeClick(player, type, amtWanted);
@@ -229,7 +238,7 @@ public class MainAltarGUI {
           }
           sacrifice.addToSacrificed(amtSacrificed);
           if (sacrifice.isFinished()) {
-            altarMeta.finishSacrifice(sacrifice);
+            altarMeta.finishSacrifice(sacrifice, player);
           }
           if (amtSacrificed > 0) {
             Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {

@@ -24,7 +24,9 @@ import com.condor.voidaltars.altar.AltarManager;
 import com.condor.voidaltars.sql.SQLConfig;
 import com.condor.voidaltars.altar.TownAltarLink;
 
+import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 
 /**
  * Utility class that performs most of the SQL interactions
@@ -99,7 +101,14 @@ public class SQLLinker {
         int totalRecentSacrifices = tatResults.getInt("total_recent_sacrifices");
         int totalSacrificesMade = tatResults.getInt("total_sacrifices_made");
         long nextEvalTime = tatResults.getLong("next_eval_time");
-
+        try {
+         Town town = TownyAPI.getInstance().getDataSource().getTown(townUUID);
+        } catch (NotRegisteredException e) {
+         Bukkit.getLogger().info("The town " + townUUID + " is no longer registered. Purging from database.");
+         SQLLinker.removeAltarByTownUUID(townUUID);
+         rsnext = tatResults.next();
+         continue;
+        }
 
         TownAltarLink altarLink = new TownAltarLink(townUUID, level, boonList, totalRecentSacrifices, totalSacrificesMade, nextEvalTime);
         if (!altarLink.hasMetQuota()) {
@@ -217,7 +226,7 @@ public class SQLLinker {
       Bukkit.getLogger().warning("Couldn't push altar to DB because it's town no longer exists: " + worldStr + ": " + x + ", " + y + ", " + z);
       return;
     }
-    UUID townUUID = town.getUuid();
+    UUID townUUID = town.getUUID();
     byte[] sacrificeOne = (altar.getSacrifice(0) != null) ? altar.getSacrifice(0).serialize() : null;
     byte[] sacrificeTwo = (altar.getSacrifice(1) != null) ? altar.getSacrifice(1).serialize() : null;
     byte[] sacrificeThree = (altar.getSacrifice(2) != null) ? altar.getSacrifice(2).serialize() : null;
@@ -274,10 +283,12 @@ public class SQLLinker {
   public static void removeAltarByTownUUID(UUID townUUID) {
     probeConnection();
     try {
-
-      PreparedStatement stmt = conn.prepareStatement("DELETE FROM AltarTable WHERE uuid=?");
+      PreparedStatement stmt = conn.prepareStatement("DELETE FROM AltarTable WHERE town_uuid=?");
+      PreparedStatement stmtTwo = conn.prepareStatement("DELETE FROM TownAltarTable WHERE town_uuid=?");
       stmt.setString(1, townUUID.toString());
+      stmtTwo.setString(1, townUUID.toString());
       stmt.executeUpdate();
+      stmtTwo.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
     }

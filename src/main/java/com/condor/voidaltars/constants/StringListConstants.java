@@ -61,6 +61,9 @@ public enum StringListConstants {
   PEST_CONTROL_BLESSING_LORE(new String[]{
     "You were created by the sages;",
     "return to your dust"
+  }),
+  SLIME_BLESSING_LORE(new String[]{
+    "Boing! Boing! Boing!"
   });
 
   List<String> list;

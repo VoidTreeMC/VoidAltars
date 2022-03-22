@@ -1,6 +1,3 @@
-Duck wants people to only be able to change the boon type after every couple sacrifices
-  - We decided to delay this. Players should be able to switch their altar boon as much as they want early on, so they can try out all of the boons and test them
-
 Add a command that lets administrators reload sacrifices based on the config file
 Add a config for changing the material requirements for altars
 Make it so if you remove an entry from the text file and reload, it goes back to the default
@@ -9,11 +6,12 @@ Add some type of synchronization to make sure that SQL changes are made synchron
 Currently, when players unclaim an altar, any subsequent chunks that are unclaimed will tell them their altar has been unclaimed. Until they re-claim it.
 Maybe build/destroy transactions should contain the type of altar
 Add tab completion for some of the other altar commands besides /altar
+Altar leaderboard
 
 DID
 ===
-Fixed a bug with altars that have pleased the gods, not successfully resetting their quota period
-Fixed a bug with /altar status command's output
-Added current boon selections to /altar status
-Fixed spurious error messages
-Added partial tab-completion for /refreshsacrifices
+Fixed a UI error related to time strings
+Made it so a boon cannot be selected twice at an altar
+Fixed a bug with auto-pruning old towns from the database
+Added possibility of random rewards for finishing a sacrifice
+Added Blessing of the Slime

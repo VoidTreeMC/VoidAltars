@@ -29,6 +29,8 @@ public enum StringConstants {
   PEACE_BLESSING_DESCRIPTION("The gods bless your town with an aura of peace. Inside your town normally hostile mobs will not attack players. If you attack a mob, however, it will retaliate."),
   PEST_CONTROL_BLESSING_NAME("Blessing of Pest Control"),
   PEST_CONTROL_BLESSING_DESCRIPTION("Iron golems no longer spawn in your town. Neither do cats."),
+  SLIME_BLESSING_NAME("Blessing of the Slime"),
+  SLIME_BLESSING_DESCRIPTION("The gods bless your feet with a bouncy substance. Inside your town you will bounce when you would otherwise take fall damage."),
   // User-visible error messages
   ALTAR_NO_LONGER_VALID("This is no longer a valid altar. The gods are not pleased."),
   MUST_BE_IN_TOWN_TO_CREATE_ALTAR_THERE("You can only create altars in a town that you own."),
@@ -51,7 +53,10 @@ public enum StringConstants {
   SACRIFICES_REMAINING_TO_PLEASE("Sacrifices remaining to please the gods: "),
   SACRIFICES_REMAINING_TO_LEVEL("Sacrifices remaining to level up altar: "),
   GODS_ARE_PLEASED("The gods are pleased."),
-  ALTAR_MAX_LEVEL("Your altar is at max level.");
+  ALTAR_MAX_LEVEL("Your altar is at max level."),
+  NO_DUPLICATE_BOONS("The gods already bless the town with this boon. It may not be selected twice."),
+  NO_MORE_SACRIFICES("The gods are more than pleased with your town. They will not accept any more sacrifices until the next time period."),
+  RANDOM_REWARD("" + ChatColor.YELLOW + "Congratulations! The gods have blessed you with");
 
   String str;
 

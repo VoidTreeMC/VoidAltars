@@ -29,6 +29,7 @@ public class BoonManager {
     boonMap.put(BoonType.THAW_BOON, new ThawBoon());
     boonMap.put(BoonType.PEACE_BOON, new PeaceBoon());
     boonMap.put(BoonType.ANTIPEST_BOON, new PestControlBoon());
+    boonMap.put(BoonType.SLIME_BOON, new SlimeBoon());
   }
 
   /**

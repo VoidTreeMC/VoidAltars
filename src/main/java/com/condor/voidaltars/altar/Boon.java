@@ -51,6 +51,15 @@ public abstract class Boon {
   }
 
   /**
+   * Returns true if the town has this boon active
+   * @param  town The town to be evaluated
+   * @return      True if the town has this boon active, false otherwise
+   */
+  public boolean isRegistered(Town town) {
+    return registeredTowns.contains(town);
+  }
+
+  /**
    * Adds a new town to the boon's list of
    * registered towns, making it active.
    * @param town  The town that has taken the boon

@@ -86,7 +86,7 @@ public class TownAltarLink {
    * @param nextEvalTime           The time of the next evaluation period for the altar
    */
   public TownAltarLink(UUID townUUID, int level, ArrayList<String> boonList,
-                   int totalRecentSacrifices, int totalSacrificesMade, long nextEvalTime) {
+                       int totalRecentSacrifices, int totalSacrificesMade, long nextEvalTime) {
     this.nextEvalTime = nextEvalTime;
     try {
      this.town = TownyAPI.getInstance().getDataSource().getTown(townUUID);
@@ -98,6 +98,7 @@ public class TownAltarLink {
          SQLLinker.removeAltarByTownUUID(townUUID);
        }
      });
+     return;
     }
     this.level = level;
     this.sacrificesWanted = AltarManager.getSacrificesNeededByLevel(this.level);

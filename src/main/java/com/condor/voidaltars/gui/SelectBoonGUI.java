@@ -26,6 +26,7 @@ import com.condor.voidaltars.altar.BoonManager;
 import com.condor.voidaltars.sql.SQLLinker;
 import com.condor.voidaltars.main.AltarMain;
 import com.condor.voidaltars.altar.transaction.BoonTransaction;
+import com.condor.voidaltars.constants.StringConstants;
 
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -76,6 +77,11 @@ public class SelectBoonGUI {
           String oldBoonStr = "";
           if (oldBoon != null) {
             oldBoonStr = oldBoon.getType().toString();
+          }
+          if (boon.isRegistered(altarMeta.getLink().getTown())) {
+            player.sendMessage(StringConstants.NO_DUPLICATE_BOONS.get());
+            gui.close(player);
+            return;
           }
           altarMeta.getLink().setBoon(boon, index);
           String newBoonStr = boon.getType().toString();

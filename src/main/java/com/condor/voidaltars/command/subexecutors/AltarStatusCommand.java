@@ -113,8 +113,12 @@ public class AltarStatusCommand extends SubCommand {
 
     asSeconds -= (minutes * SECONDS_IN_A_MINUTE);
 
+    if ((time / 1000) > SECONDS_IN_A_MINUTE) {
+      ret += "and ";
+    }
+
     if (asSeconds > 0) {
-      ret += "and " + asSeconds + " second" + ((asSeconds > 1) ? "s" : "");
+      ret += asSeconds + " second" + ((asSeconds > 1) ? "s" : "");
     }
 
     return ret;

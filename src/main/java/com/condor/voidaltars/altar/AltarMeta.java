@@ -15,6 +15,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.World;
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
 import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.altar.exception.NotInATownException;
@@ -171,9 +172,10 @@ public abstract class AltarMeta {
  /**
   * Handles behavior for when a sacrifice is finished
   * @param  finished               The sacrifice that was finished
+  * @param  Player                 The player that finished the sacrifice
   * @return                        The new sacrifice that the altar wants instead
   */
-  public Sacrifice finishSacrifice(Sacrifice finished) {
+  public Sacrifice finishSacrifice(Sacrifice finished, Player player) {
     sacrifices.remove(finished);
     this.link.incrementSacrifices();
     Sacrifice newSacrifice = SacrificeManager.getNewSacrifice(this, getCurrentSacrificeMaterials());
@@ -185,6 +187,7 @@ public abstract class AltarMeta {
         SQLLinker.pushToDB(tempMeta);
       }
     });
+    RewardGenerator.rollAndReward(player);
     return newSacrifice;
   }
 
