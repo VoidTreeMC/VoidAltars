@@ -26,6 +26,7 @@ import com.condor.voidaltars.sql.SQLLinker;
 import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.main.AltarMain;
 import com.condor.voidaltars.altar.transaction.SacrificeTransaction;
+import com.condor.voidaltars.leaderboard.LeaderboardParser;
 
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -189,11 +190,11 @@ public class MainAltarGUI {
     hopperLore.add("Altar level: " + altarMeta.getLevel());
     int sacRemaining = altarMeta.getLink().getSacrificesRemaining();
     if (sacRemaining > 0) {
-      hopperLore.add(StringConstants.SACRIFICES_REMAINING_TO_PLEASE.get() + (sacRemaining + 1));
+      hopperLore.add(StringConstants.SACRIFICES_REMAINING_TO_PLEASE.get() + sacRemaining);
     } else {
       hopperLore.add(StringConstants.GODS_ARE_PLEASED.get());
       if (altarMeta.getLink().getLevel() < altarMeta.getLink().getMaxLevel()) {
-        hopperLore.add(StringConstants.SACRIFICES_REMAINING_TO_LEVEL.get() + (altarMeta.getLink().getSacrificesNeededForLevelUp() + 1));
+        hopperLore.add(StringConstants.SACRIFICES_REMAINING_TO_LEVEL.get() + altarMeta.getLink().getSacrificesNeededForLevelUp());
       } else {
         hopperLore.add(StringConstants.ALTAR_MAX_LEVEL.get());
       }
@@ -201,6 +202,45 @@ public class MainAltarGUI {
     hopperMeta.setLore(hopperLore);
     sacrificeProgressItem.setItemMeta(hopperMeta);
 
+    ItemStack altarRankItem = new ItemStack(Material.SWEET_BERRIES);
+    ItemMeta altarRankMeta = altarRankItem.getItemMeta();
+    int altarRank = LeaderboardParser.getCurrentPosition(altarMeta.getLink().getTown().getUUID());
+    switch (altarRank) {
+      case 1:
+        altarRankItem.setType(Material.NETHERITE_INGOT);
+        break;
+      case 2:
+        altarRankItem.setType(Material.DIAMOND);
+        break;
+      case 3:
+        altarRankItem.setType(Material.GOLD_INGOT);
+        break;
+      case 4:
+        altarRankItem.setType(Material.IRON_INGOT);
+        break;
+      case 5:
+        altarRankItem.setType(Material.COPPER_INGOT);
+        break;
+      default:
+        altarRankItem.setType(Material.GRASS_BLOCK);
+        break;
+    }
+    ArrayList<String> rankLore = new ArrayList<>();
+    if (altarRank != -1) {
+      altarRankMeta.setDisplayName(ChatColor.BOLD + "Altar rank " + altarRank + " on " + StringConstants.SERVER_NAME.get());
+      rankLore.add("Complete more sacrifices to");
+      if (altarRank != 1) {
+        rankLore.add("increase your altar rank.");
+      } else {
+        rankLore.add("keep your first-place position.");
+      }
+    } else {
+      altarRankMeta.setDisplayName("Altar rank: Unranked");
+      rankLore.add("Complete sacrifices to ");
+      rankLore.add("get an altar rank");
+    }
+    altarRankMeta.setLore(rankLore);
+    altarRankItem.setItemMeta(altarRankMeta);
 
     for (int i = 0; i < altarMeta.getNumSacrificeSlots(); i++) {
       Sacrifice sacrifice = altarMeta.getSacrifice(i);
@@ -239,6 +279,7 @@ public class MainAltarGUI {
           sacrifice.addToSacrificed(amtSacrificed);
           if (sacrifice.isFinished()) {
             altarMeta.finishSacrifice(sacrifice, player);
+            LeaderboardParser.parseSacrifice(sacrifice);
           }
           if (amtSacrificed > 0) {
             Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
@@ -305,9 +346,11 @@ public class MainAltarGUI {
       player.sendMessage(StringConstants.ALTAR_HELP_WEBPAGE.get());
     });
     GuiItem hopperItem = new GuiItem(sacrificeProgressItem);
+    GuiItem altarRankGUIItem = new GuiItem(altarRankItem);
 
     gui.setItem(1, 5, hopperItem);
     gui.setItem(6, 5, bookItem);
+    gui.setItem(1, 9, altarRankGUIItem);
 
     gui.open(player);
   }

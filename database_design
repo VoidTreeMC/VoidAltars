@@ -1,3 +1,14 @@
+AltarLeaderboardByMonth
+=====================
+  month                     TINYINT
+  town_uuid:                VARCHAR(36)
+  points:                   INT
+
+TotalAltarLeaderboard
+=====================
+  town_uuid:                VARCHAR(36)
+  points:                   INT
+
 TownAltarTable
 ==============
   town_uuid:                VARCHAR(36)

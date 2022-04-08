@@ -284,6 +284,7 @@ public class TownAltarLink {
      boons.get(boons.size() - 1).removeTown(this.getTown());
      boons.remove(boons.size() - 1);
    }
+   this.sacrificesWanted = AltarManager.getSacrificesNeededByLevel(this.level);
    this.totalRecentSacrifices = 0;
    this.nextEvalTime = this.calcNextEvalTime();
 

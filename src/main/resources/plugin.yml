@@ -29,5 +29,7 @@ commands:
        usage: /addsacrifices <town name> <n>
        permission: condor.altar.addsacrifices
        permission-message: You do not have permission to use this command.
+   altartop:
+       description: Command that displays a list of altars by rank
    altar:
       description: Supercommand that handles a variety of altar commands

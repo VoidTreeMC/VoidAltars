@@ -24,7 +24,7 @@ public class SacrificeManager {
   // The global scaling factor for all sacrifices
   private final static int SCALE = 100;
   // The scaling factor that penalizes sacrifice amounts for items with smaller stack caps
-  private final static int STACK_SIZE_FACTOR = 16;
+  public final static int STACK_SIZE_FACTOR = 16;
 
   /**
    * Gets a new sacrifice for the specified altar

@@ -16,6 +16,10 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.World;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ClickEvent.Action;
 
 import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.altar.exception.NotInATownException;
@@ -33,6 +37,7 @@ import com.condor.voidaltars.runnable.PlaySparkleEffect;
 import com.condor.voidaltars.runnable.LightCandles;
 import com.condor.voidaltars.sql.SQLLinker;
 import com.condor.voidaltars.altar.TownAltarLink;
+import com.condor.voidaltars.constants.StringConstants;
 
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.TownyAPI;
@@ -177,6 +182,18 @@ public abstract class AltarMeta {
   */
   public Sacrifice finishSacrifice(Sacrifice finished, Player player) {
     sacrifices.remove(finished);
+    if (getLink().getSacrificesRemaining() == 1) {
+      String townName = getLink().getTown().getName();
+      TextComponent helpURLComponent = new TextComponent(ChatColor.DARK_PURPLE + "" + ChatColor.UNDERLINE + StringConstants.ALTAR_HELP_URL.get());
+      helpURLComponent.setClickEvent(new ClickEvent(Action.OPEN_URL, StringConstants.ALTAR_HELP_URL.get()));
+      for (Player p : Bukkit.getOnlinePlayers()) {
+        p.sendMessage(ChatColor.YELLOW + "The gods are pleased with " + ChatColor.GOLD + townName +
+                      ChatColor.YELLOW + " for completing all of their sacrifices this week. " +
+                      ChatColor.GOLD + townName + "'s'" + ChatColor.YELLOW + " altar is level " +
+                      ChatColor.GOLD + getLink().getLevel() + ChatColor.YELLOW + ".");
+        p.sendMessage(helpURLComponent);
+      }
+    }
     this.link.incrementSacrifices();
     Sacrifice newSacrifice = SacrificeManager.getNewSacrifice(this, getCurrentSacrificeMaterials());
     sacrifices.add(newSacrifice);

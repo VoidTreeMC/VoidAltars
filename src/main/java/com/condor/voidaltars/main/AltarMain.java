@@ -16,6 +16,7 @@ import com.condor.voidaltars.sql.SQLLinker;
 import com.condor.voidaltars.sql.SQLConfig;
 import com.condor.voidaltars.constants.ConstantsLoader;
 import com.condor.voidaltars.constants.SacrificesConfigLoader;
+import com.condor.voidaltars.leaderboard.LeaderboardParser;
 
 /**
  * The main class for the VoidAltars plugin
@@ -24,7 +25,7 @@ public class AltarMain extends JavaPlugin {
 
 	public static final String HEIRO = "<F#SDF";
 
-	public static final String VERSION = "v0.0.3";
+	public static final String VERSION = "v0.0.4";
 
 	public static final String TIMEID = HEIRO + " " + VERSION;
 
@@ -94,6 +95,9 @@ public class AltarMain extends JavaPlugin {
 
     Bukkit.getLogger().info("Initializing SQL connection...");
     SQLLinker.init();
+
+    Bukkit.getLogger().info("Loading altar leaderboards...");
+    LeaderboardParser.init();
 
 		Bukkit.getLogger().info("Calling onStart...");
 		this.onStart();

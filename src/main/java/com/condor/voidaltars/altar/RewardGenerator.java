@@ -12,7 +12,7 @@ import com.condor.voidaltars.constants.StringConstants;
 
 public class RewardGenerator {
 
-  private static final double RANDOM_REWARD_CHANCE = 0.10;
+  private static final double RANDOM_REWARD_CHANCE = 0.06;
   // TODO: Abstract this to config, maybe make configurable chances for rewards
   private static final HashMap<String, String> rewardCommands = new HashMap<>();
   private static final String PLAYER_NAME_PLACEHOLDER = "$PLAYERNAME";

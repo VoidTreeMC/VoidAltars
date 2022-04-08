@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.UUID;
 import java.net.SocketException;
+import java.time.LocalDate;
+import java.util.Collections;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -23,6 +25,7 @@ import com.condor.voidaltars.main.AltarMain;
 import com.condor.voidaltars.altar.AltarManager;
 import com.condor.voidaltars.sql.SQLConfig;
 import com.condor.voidaltars.altar.TownAltarLink;
+import com.condor.voidaltars.leaderboard.AltarRank;
 
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.Town;
@@ -38,6 +41,8 @@ public class SQLLinker {
 
   // The number of sacrifices and boons
   private static final int NUM_SACRIFICES_AND_BOONS = 4;
+
+  private static final int month = LocalDate.now().getMonthValue();
 
   /**
    * Initializes a connection with the host
@@ -145,6 +150,77 @@ public class SQLLinker {
     // De-level all of the altars that need to be de-leveled
     for (TownAltarLink link : toDelevel) {
       link.levelDown();
+    }
+  }
+
+  /**
+   * Returns a list of AltarRank objects that indicate the current month's
+   * altars' points
+   * @return          A list of AltarRank objects
+   */
+  public static ArrayList<AltarRank> getLeaderboardPoints() {
+    probeConnection();
+    ArrayList<AltarRank> rankList = new ArrayList<>();
+    try {
+      PreparedStatement isInTableStmt = conn.prepareStatement("SELECT town_uuid, points FROM AltarLeaderboardByMonth WHERE month=? ORDER BY points DESC;");
+      isInTableStmt.setInt(1, month);
+      ResultSet results = isInTableStmt.executeQuery();
+
+      while (results.next()) {
+        rankList.add(new AltarRank(UUID.fromString(results.getString("town_uuid")), results.getInt("points")));
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    Collections.sort(rankList);
+    return rankList;
+  }
+
+  /**
+   * Pushes data to the leaderboard, and updates
+   * the score for the town
+   * @param town_uuid  The town whose data is being updated
+   * @param points     The number of points to be added
+   */
+  public static void pushToLeaderboard(UUID townUUID, int points) {
+    probeConnection();
+    try {
+      PreparedStatement isInTableStmt = conn.prepareStatement("SELECT points FROM AltarLeaderboardByMonth WHERE town_uuid=? AND month=?");
+      isInTableStmt.setString(1, townUUID.toString());
+      isInTableStmt.setInt(2, month);
+      ResultSet results = isInTableStmt.executeQuery();
+
+      PreparedStatement currentTableStatement;
+      PreparedStatement totalTableStatement;
+      if (results.next()) {
+        int currPoints = results.getInt("points");
+        currentTableStatement = conn.prepareStatement("UPDATE AltarLeaderboardByMonth SET points=? WHERE town_uuid=? AND month=?;");
+        currentTableStatement.setInt(1, currPoints + points);
+        currentTableStatement.setString(2, townUUID.toString());
+        currentTableStatement.setInt(3, month);
+
+        PreparedStatement totalQuery = conn.prepareStatement("SELECT points FROM TotalAltarLeaderboard WHERE town_uuid=?");
+        totalQuery.setString(1, townUUID.toString());
+        ResultSet totalPointsRS = totalQuery.executeQuery();
+        totalPointsRS.next();
+        int currTotalPoints = totalPointsRS.getInt("points");
+        totalTableStatement = conn.prepareStatement("UPDATE TotalAltarLeaderboard SET points=? WHERE town_uuid=?;");
+        totalTableStatement.setInt(1, points + currTotalPoints);
+        totalTableStatement.setString(2, townUUID.toString());
+      } else {
+        currentTableStatement = conn.prepareStatement("INSERT INTO AltarLeaderboardByMonth(month, town_uuid, points) VALUES (?, ?, ?);");
+        currentTableStatement.setInt(1, month);
+        currentTableStatement.setString(2, townUUID.toString());
+        currentTableStatement.setInt(3, points);
+        totalTableStatement = conn.prepareStatement("INSERT INTO TotalAltarLeaderboard(town_uuid, points) VALUES (?, ?);");
+        totalTableStatement.setString(1, townUUID.toString());
+        totalTableStatement.setInt(2, points);
+      }
+
+      currentTableStatement.executeUpdate();
+      totalTableStatement.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
     }
   }
 

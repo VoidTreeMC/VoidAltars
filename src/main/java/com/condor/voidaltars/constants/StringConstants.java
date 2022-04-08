@@ -55,8 +55,10 @@ public enum StringConstants {
   GODS_ARE_PLEASED("The gods are pleased."),
   ALTAR_MAX_LEVEL("Your altar is at max level."),
   NO_DUPLICATE_BOONS("The gods already bless the town with this boon. It may not be selected twice."),
-  NO_MORE_SACRIFICES("The gods are more than pleased with your town. They will not accept any more sacrifices until the next time period."),
-  RANDOM_REWARD("" + ChatColor.YELLOW + "Congratulations! The gods have blessed you with");
+  NO_MORE_SACRIFICES(ChatColor.YELLOW + "The gods are more than pleased with your town. They will not accept any more sacrifices until the next time period."),
+  RANDOM_REWARD("" + ChatColor.YELLOW + "Congratulations! The gods have blessed you with"),
+  ALTAR_HELP_URL("https://www.voidtreemc.com/voidtree-altar-help/"),
+  SERVER_NAME("" + ChatColor.GRAY + "Void" + ChatColor.RED + "Tree" + ChatColor.RESET);
 
   String str;
 
