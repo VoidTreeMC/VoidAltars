@@ -8,17 +8,8 @@ Maybe build/destroy transactions should contain the type of altar
 Add tab completion for some of the other altar commands besides /altar
 Optimize leaderboard code so that it only re-sorts the list if the new score is greater than the score of the one above it
 Make /altartop also call /altar top
-Altar settings that can be configured by mayor or high priest
-- Can outsiders sacrifice
-- /altar settings
 
 DID
 ===
-Added server-wide message when a player pleases the gods at an altar
-Fixed a bug that caused altars to say they wanted one more sacrifice than they really did
-Fixed a bug with /setaltarlevel that caused it to set altars to a lower level but not change their number of sacrifices wanted
-Altar leaderboard
-- Single leaderboard/category
-- Element in top right of GUI that says what rank your altar currently is
-- Monthly reset, with season stats
-- Calculated from similar formula that determines sacrifice quantities (takes into account quantity, weight, and stack size)
+Added a new command, /altar settings, which allows players to change the settings for their altar
+Added the necessary backend for the above

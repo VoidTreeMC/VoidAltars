@@ -64,6 +64,11 @@ public enum StringListConstants {
   }),
   SLIME_BLESSING_LORE(new String[]{
     "Boing! Boing! Boing!"
+  }),
+  OUTSIDER_SACRIFICES_SETTING_DESC(new String[] {
+    "Toggles whether players outside",
+    "your town can sacrifice at",
+    "your altars."
   });
 
   List<String> list;

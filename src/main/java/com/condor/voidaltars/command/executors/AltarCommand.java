@@ -17,6 +17,7 @@ import com.condor.voidaltars.command.subexecutors.AltarLogCommand;
 import com.condor.voidaltars.command.subexecutors.AltarSacrificesCommand;
 import com.condor.voidaltars.command.subexecutors.AltarStatusCommand;
 import com.condor.voidaltars.command.subexecutors.AltarTopCommand;
+import com.condor.voidaltars.command.subexecutors.AltarSettingsCommand;
 
 /**
  * Supercommand used to trigger various sub-commands,
@@ -40,6 +41,8 @@ public class AltarCommand extends CommandControl {
     subcommandTree.put(AltarStatusCommand.NAME, altarStatusCommand);
     AltarTopCommand altarTopCommand = new AltarTopCommand();
     subcommandTree.put(AltarTopCommand.NAME, altarTopCommand);
+    AltarSettingsCommand altarSettingsCommand = new AltarSettingsCommand();
+    subcommandTree.put(AltarSettingsCommand.NAME, altarSettingsCommand);
   }
 
   public AltarCommand(String name) {

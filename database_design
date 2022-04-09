@@ -1,3 +1,8 @@
+AltarSettingsTable
+==================
+  town_uuid:                VARCHAR(36)
+  outsiders_sacrifice:      BOOLEAN
+
 AltarLeaderboardByMonth
 =====================
   month                     TINYINT

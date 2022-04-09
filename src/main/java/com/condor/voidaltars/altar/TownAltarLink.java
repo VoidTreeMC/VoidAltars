@@ -16,6 +16,7 @@ import com.condor.voidaltars.sql.SQLLinker;
 import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.altar.transaction.TransactionCache;
 import com.condor.voidaltars.altar.transaction.LevelTransaction;
+import com.condor.voidaltars.altar.AltarSettings;
 
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Town;
@@ -49,6 +50,8 @@ public class TownAltarLink {
   Town town;
   // The cache that stores the town's altar transactions
   TransactionCache transacCache;
+  // The map that stores the altar's settings
+  HashMap<SettingsType, AltarSettings> settingsMap = new HashMap<>();
 
   /**
    * Constructor for a TownAltarLink.
@@ -72,6 +75,7 @@ public class TownAltarLink {
       }
     });
     this.transacCache = new TransactionCache(this);
+    this.settingsMap = AltarSettings.getDefaultSettings();
   }
 
   /**
@@ -124,6 +128,31 @@ public class TownAltarLink {
         }
       });
     }
+  }
+
+  /**
+   * Sets the settings map to the one provided
+   * @param settings  The new settings map
+   */
+  public void setSettings(HashMap<SettingsType, AltarSettings> settings) {
+    this.settingsMap = settings;
+  }
+
+  /**
+   * Returns the Town's altar settings map
+   * @return The town's altar settings map
+   */
+  public HashMap<SettingsType, AltarSettings> getSettings() {
+    return this.settingsMap;
+  }
+
+  /**
+   * Returns the setting associated with the specified type
+   * @param  type The type of setting to find a setting for
+   * @return      The setting associated with that type
+   */
+  public AltarSettings getSetting(SettingsType type) {
+    return this.settingsMap.get(type);
   }
 
    // TODO: Make this throw an error if someone tries to add a duplicate altar

@@ -177,7 +177,7 @@ public abstract class AltarMeta {
  /**
   * Handles behavior for when a sacrifice is finished
   * @param  finished               The sacrifice that was finished
-  * @param  Player                 The player that finished the sacrifice
+  * @param  player                 The player that finished the sacrifice
   * @return                        The new sacrifice that the altar wants instead
   */
   public Sacrifice finishSacrifice(Sacrifice finished, Player player) {
@@ -402,7 +402,8 @@ public abstract class AltarMeta {
   /**
    * Gets the type of the next sacrifice that the
    * altar wants
-   * @return The next sacrifice type
+   * @param  toAvoid  A list of materials to avoid
+   * @return          The next sacrifice type
    */
   public Material getSacrificeType(ArrayList<Material> toAvoid) {
     List<Material> sacrificeTypes = this.getSacrificeTypes();

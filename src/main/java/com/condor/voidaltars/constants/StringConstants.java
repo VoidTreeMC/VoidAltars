@@ -37,6 +37,7 @@ public enum StringConstants {
   NO_PERMISSIONS_TO_CREATE_ALTAR("You must be a mayor or a high-priest of this town to create an altar here."),
   NO_PERMISSIONS_TO_BREAK_ALTAR("You must be a mayor or a high-priest of this town to move/destroy an altar in this town."),
   NO_PERMISSIONS_TO_CHANGE_BOONS("You must be a mayor or a high-priest to change your town's altar boons."),
+  NO_PERMISSIONS_TO_CHANGE_SETTINGS("You must be a mayor or a high-priest to change your town's altar settings."),
   NO_DUPLICATE_ALTARS("Your town already has an altar of that type. You cannot create another one of the same type."),
   NO_ALTARS_IN_THE_WILD("You must be in a town for this altar to function."),
   NOT_MEMBER_OF_ALTARS_TOWN("You cannot change the boons of another town's altar."),
@@ -58,7 +59,9 @@ public enum StringConstants {
   NO_MORE_SACRIFICES(ChatColor.YELLOW + "The gods are more than pleased with your town. They will not accept any more sacrifices until the next time period."),
   RANDOM_REWARD("" + ChatColor.YELLOW + "Congratulations! The gods have blessed you with"),
   ALTAR_HELP_URL("https://www.voidtreemc.com/voidtree-altar-help/"),
-  SERVER_NAME("" + ChatColor.GRAY + "Void" + ChatColor.RED + "Tree" + ChatColor.RESET);
+  SERVER_NAME("" + ChatColor.GRAY + "Void" + ChatColor.RED + "Tree" + ChatColor.RESET),
+  OUTSIDER_SACRIFICES_SETTING("Outsider Sacrifices"),
+  SACRIFICE_PERMS_DENIED("This town does not allow outsiders to sacrifice at its altars.");
 
   String str;
 

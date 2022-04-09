@@ -27,6 +27,7 @@ import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.main.AltarMain;
 import com.condor.voidaltars.altar.transaction.SacrificeTransaction;
 import com.condor.voidaltars.leaderboard.LeaderboardParser;
+import com.condor.voidaltars.altar.SettingsType;
 
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -194,7 +195,7 @@ public class MainAltarGUI {
     } else {
       hopperLore.add(StringConstants.GODS_ARE_PLEASED.get());
       if (altarMeta.getLink().getLevel() < altarMeta.getLink().getMaxLevel()) {
-        hopperLore.add(StringConstants.SACRIFICES_REMAINING_TO_LEVEL.get() + altarMeta.getLink().getSacrificesNeededForLevelUp());
+        hopperLore.add(StringConstants.SACRIFICES_REMAINING_TO_LEVEL.get() + (altarMeta.getLink().getSacrificesNeededForLevelUp() + 1));
       } else {
         hopperLore.add(StringConstants.ALTAR_MAX_LEVEL.get());
       }
@@ -255,6 +256,17 @@ public class MainAltarGUI {
       GuiItem sacrificeGuiItem = new GuiItem(SACRIFICE_SLOT_LOCKED);
       if (sacrificeItem != null) {
         sacrificeGuiItem = new GuiItem(sacrificeItem, event -> {
+          if (!((Boolean) (altarMeta.getLink().getSetting(SettingsType.OUTSIDER_SACRIFICES).getState()))) {
+            try {
+              Resident resident = TownyUniverse.getInstance().getResident(player.getUniqueId());
+              if (resident.getTown() == null || !(resident.getTown().equals(altarMeta.getLink().getTown()))) {
+                player.sendMessage(StringConstants.SACRIFICE_PERMS_DENIED.get());
+              }
+            } catch (NotRegisteredException e) {
+              e.printStackTrace();
+            }
+            gui.close(player);
+          }
           if (shouldRestrictSacrifices(altarMeta)) {
             player.sendMessage(StringConstants.NO_MORE_SACRIFICES.get());
             gui.close(player);
