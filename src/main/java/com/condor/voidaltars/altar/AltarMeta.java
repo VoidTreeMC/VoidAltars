@@ -217,6 +217,16 @@ public abstract class AltarMeta {
   }
 
   /**
+   * Sets the sacrifice in the specified position
+   * to the new sacrifice provided
+   * @param pos     The position of the sacrifice
+   * @param newSac  The new sacrifice
+   */
+  public void setSacrifice(int pos, Sacrifice newSac) {
+    sacrifices.set(pos, newSac);
+  }
+
+  /**
    * Gets a list of the material types for the
    * altar's current sacrifices
    * @return A list of materials for the altar's current sacrifices

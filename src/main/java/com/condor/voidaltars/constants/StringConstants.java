@@ -61,7 +61,8 @@ public enum StringConstants {
   ALTAR_HELP_URL("https://www.voidtreemc.com/voidtree-altar-help/"),
   SERVER_NAME("" + ChatColor.GRAY + "Void" + ChatColor.RED + "Tree" + ChatColor.RESET),
   OUTSIDER_SACRIFICES_SETTING("Outsider Sacrifices"),
-  SACRIFICE_PERMS_DENIED("This town does not allow outsiders to sacrifice at its altars.");
+  SACRIFICE_PERMS_DENIED("This town does not allow outsiders to sacrifice at its altars."),
+  CANT_AFFORD_TO_REROLL("You can't afford to reroll that sacrifice.");
 
   String str;
 

@@ -11,5 +11,5 @@ Make /altartop also call /altar top
 
 DID
 ===
-Added a new command, /altar settings, which allows players to change the settings for their altar
-Added the necessary backend for the above
+Fixed a mistake in the SQL code that lead to only one altar's information being loaded
+Added option for people to reroll their sacrifices for 2 void coins

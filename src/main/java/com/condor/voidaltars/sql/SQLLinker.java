@@ -146,22 +146,23 @@ public class SQLLinker {
         }
 
         AltarMeta altar = AltarMeta.create(uuid, type, townUUID, worldStr, x, y, z, sacrificeList);
+        rsnext = altarResults.next();
+      }
 
-        Bukkit.getLogger().log(Level.INFO, "Fetching altar settings from DB...");
-        PreparedStatement settingsStmt = conn.prepareStatement("SELECT * FROM AltarSettingsTable;");
-        ResultSet settingsResults = settingsStmt.executeQuery();
-        rsnext = settingsResults.next();
-        while (rsnext) {
-          UUID townSettingsUUID = UUID.fromString(settingsResults.getString("town_uuid"));
-          boolean outsidersSacrifice = settingsResults.getBoolean("outsiders_sacrifice");
-          HashMap<SettingsType, AltarSettings> settingsMap = new HashMap<>();
-          settingsMap.put(SettingsType.OUTSIDER_SACRIFICES, new OutsiderSacrificeSetting(outsidersSacrifice));
-          TownAltarLink settingsLink = AltarManager.getAltarLink(townSettingsUUID);
-          if (settingsLink != null) {
-            settingsLink.setSettings(settingsMap);
-          }
-          rsnext = settingsResults.next();
+      Bukkit.getLogger().log(Level.INFO, "Fetching altar settings from DB...");
+      PreparedStatement settingsStmt = conn.prepareStatement("SELECT * FROM AltarSettingsTable;");
+      ResultSet settingsResults = settingsStmt.executeQuery();
+      rsnext = settingsResults.next();
+      while (rsnext) {
+        UUID townSettingsUUID = UUID.fromString(settingsResults.getString("town_uuid"));
+        boolean outsidersSacrifice = settingsResults.getBoolean("outsiders_sacrifice");
+        HashMap<SettingsType, AltarSettings> settingsMap = new HashMap<>();
+        settingsMap.put(SettingsType.OUTSIDER_SACRIFICES, new OutsiderSacrificeSetting(outsidersSacrifice));
+        TownAltarLink settingsLink = AltarManager.getAltarLink(townSettingsUUID);
+        if (settingsLink != null) {
+          settingsLink.setSettings(settingsMap);
         }
+        rsnext = settingsResults.next();
       }
     } catch (SQLException e) {
       e.printStackTrace();

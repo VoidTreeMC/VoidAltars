@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.UUID;
+import java.util.List;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.entity.Player;
@@ -14,6 +15,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.ChatColor;
 
 import com.condor.voidaltars.altar.Boon;
@@ -308,6 +310,33 @@ public class MainAltarGUI {
           }
           gui.close(player);
         });
+
+        ItemStack rerollItem = new ItemStack(Material.SUNFLOWER);
+        ItemMeta rerollItemMeta = rerollItem.getItemMeta();
+        rerollItemMeta.addEnchant(Enchantment.DURABILITY, 1, false);
+        rerollItemMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Reroll: 2 VoidCoins");
+        ArrayList<String> rerollItemLore = new ArrayList<>();
+        rerollItemLore.add("Click to consume");
+        rerollItemLore.add("2 VoidCoins to reroll");
+        rerollItemLore.add("this sacrifice");
+        rerollItemMeta.setLore(rerollItemLore);
+        rerollItem.setItemMeta(rerollItemMeta);
+        final int index = i;
+        GuiItem rerollGuiItem = new GuiItem(rerollItem, event -> {
+          boolean rerolled = handleVoidcoinTransaction(player, 2);
+          if (rerolled) {
+            Sacrifice newSac = SacrificeManager.getNewSacrifice(altarMeta, altarMeta.getCurrentSacrificeMaterials());
+            altarMeta.setSacrifice(index, newSac);
+            displayAltarGUI(player, altarMeta);
+          }
+          Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
+            @Override
+            public void run() {
+              SQLLinker.pushToDB(altarMeta);
+            }
+          });
+        });
+        gui.setItem(3, 2 + (2 * i), rerollGuiItem);
       }
       gui.setItem(2, 2 + (2 * i), sacrificeGuiItem);
     }
@@ -365,5 +394,52 @@ public class MainAltarGUI {
     gui.setItem(1, 9, altarRankGUIItem);
 
     gui.open(player);
+  }
+
+  private static boolean handleVoidcoinTransaction(Player player, int price) {
+    if (canAffordCoins(player, price)) {
+      chargeAmount(player, price);
+      return true;
+    }
+    player.sendMessage(StringConstants.CANT_AFFORD_TO_REROLL.get());
+    return false;
+  }
+
+  private static void chargeAmount(Player player, int price) {
+    int amtCharged = 0;
+    for (ItemStack item : player.getInventory().getContents()) {
+      if (isVoidCoin(item)) {
+        if ((price - amtCharged) <= item.getAmount()) {
+          item.setAmount(item.getAmount() - (price - amtCharged));
+          break;
+        } else {
+          amtCharged += item.getAmount();
+          item.setAmount(0);
+        }
+      }
+    }
+  }
+
+  private static boolean canAffordCoins(Player player, int price) {
+    int amt = 0;
+    for (ItemStack item : player.getInventory().getContents()) {
+      if (isVoidCoin(item)) {
+        amt += item.getAmount();
+      }
+    }
+    return amt >= price;
+  }
+
+  public static boolean isVoidCoin(ItemStack item) {
+    if (item == null || item.getType() != Material.SUNFLOWER || !item.hasItemMeta()) {
+      return false;
+    }
+    ItemMeta meta = item.getItemMeta();
+    if (!meta.hasLore()) {
+      return false;
+    }
+    List<String> lore = meta.getLore();
+    String firstLineOfLore = lore.get(0);
+    return firstLineOfLore.equals("VoidCoin");
   }
 }
