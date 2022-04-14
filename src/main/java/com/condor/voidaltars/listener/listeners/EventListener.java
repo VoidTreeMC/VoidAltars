@@ -60,6 +60,7 @@ import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.block.BlockFormEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.server.TabCompleteEvent;
+import org.bukkit.event.block.BlockGrowEvent;
 
 import com.condor.voidaltars.listener.AltarListener;
 import com.condor.voidaltars.main.AltarMain;
@@ -87,6 +88,11 @@ import com.palmergames.bukkit.towny.TownyUniverse;
  */
 public class EventListener extends AltarListener {
   private static final Random rng = new Random();
+
+  @EventHandler
+  public void onBlockGrowEvent(BlockGrowEvent event) {
+    BoonManager.parseEvent(event);
+  }
 
   @EventHandler
   public void onTabCompleteEvent(TabCompleteEvent event) {

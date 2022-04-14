@@ -11,5 +11,4 @@ Make /altartop also call /altar top
 
 DID
 ===
-Fixed a mistake in the SQL code that lead to only one altar's information being loaded
-Added option for people to reroll their sacrifices for 2 void coins
+Added Harvest Boon

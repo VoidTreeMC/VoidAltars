@@ -18,7 +18,7 @@ public class BoonManager {
   private static HashMap<BoonType, Boon> boonMap = new HashMap<>();
 
   static {
-    // boonMap.put(BoonType.HARVEST_BOON, new HarvestBoon());
+    boonMap.put(BoonType.HARVEST_BOON, new HarvestBoon());
     boonMap.put(BoonType.RANCHER_BOON, new RancherBoon());
     boonMap.put(BoonType.SENTINEL_BOON, new SentinelBoon());
     boonMap.put(BoonType.NETHER_BOON, new NetherBoon());

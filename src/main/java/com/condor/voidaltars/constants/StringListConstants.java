@@ -65,6 +65,11 @@ public enum StringListConstants {
   SLIME_BLESSING_LORE(new String[]{
     "Boing! Boing! Boing!"
   }),
+  HARVEST_BLESSING_LORE(new String[] {
+    "\"To plant a garden is to ",
+    "believe in tomorrow.\"",
+    "— Audrey Hepburn"
+  }),
   OUTSIDER_SACRIFICES_SETTING_DESC(new String[] {
     "Toggles whether players outside",
     "your town can sacrifice at",

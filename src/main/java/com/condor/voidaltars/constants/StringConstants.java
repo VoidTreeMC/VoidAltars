@@ -31,6 +31,8 @@ public enum StringConstants {
   PEST_CONTROL_BLESSING_DESCRIPTION("Iron golems no longer spawn in your town. Neither do cats."),
   SLIME_BLESSING_NAME("Blessing of the Slime"),
   SLIME_BLESSING_DESCRIPTION("The gods bless your feet with a bouncy substance. Inside your town you will bounce when you would otherwise take fall damage."),
+  HARVEST_BLESSING_NAME("Blessing of the Harvest"),
+  HARVEST_BLESSING_DESCRIPTION("The gods bless your crops. They will grow faster and can be harvested sooner."),
   // User-visible error messages
   ALTAR_NO_LONGER_VALID("This is no longer a valid altar. The gods are not pleased."),
   MUST_BE_IN_TOWN_TO_CREATE_ALTAR_THERE("You can only create altars in a town that you own."),
