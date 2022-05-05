@@ -7,8 +7,12 @@ Currently, when players unclaim an altar, any subsequent chunks that are unclaim
 Maybe build/destroy transactions should contain the type of altar
 Add tab completion for some of the other altar commands besides /altar
 Optimize leaderboard code so that it only re-sorts the list if the new score is greater than the score of the one above it
-Make /altartop also call /altar top
+When encountering 2 duplicate boons, switch their places
 
 DID
 ===
-Added Harvest Boon
+Made /altartop also call /altar top
+Fixed an issue with primary key duplication in the total altar leaderboards table
+Added a new config file, altar_structures.yml, which allows users to define information about altars
+Removed all code that points to specific altar types, except for AltarType
+WIP code for allowing users to define new altars entirely from config files

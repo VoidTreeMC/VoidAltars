@@ -25,14 +25,6 @@ import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.altar.exception.NotInATownException;
 import com.condor.voidaltars.altar.exception.WrongTownException;
 import com.condor.voidaltars.main.AltarMain;
-import com.condor.voidaltars.altar.altars.FarmAltar;
-import com.condor.voidaltars.altar.altars.MiningAltar;
-import com.condor.voidaltars.altar.altars.OceanAltar;
-import com.condor.voidaltars.altar.altars.NetherAltar;
-import com.condor.voidaltars.altar.multiblock.structures.FarmAltarStructure;
-import com.condor.voidaltars.altar.multiblock.structures.MiningAltarStructure;
-import com.condor.voidaltars.altar.multiblock.structures.OceanAltarStructure;
-import com.condor.voidaltars.altar.multiblock.structures.NetherAltarStructure;
 import com.condor.voidaltars.runnable.PlaySparkleEffect;
 import com.condor.voidaltars.runnable.LightCandles;
 import com.condor.voidaltars.sql.SQLLinker;
@@ -48,7 +40,7 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
  * Represents an altar's data. Most altar
  * interactions are handled here.
  */
-public abstract class AltarMeta {
+public class AltarMeta {
   // The type of altar
   AltarType type;
   // The altar's town-altar link
@@ -128,10 +120,10 @@ public abstract class AltarMeta {
    * @param weightMap      The altar's map of sacrifice types to their weights
    * @param structure      The altar's structure
    */
-  public AltarMeta(UUID uuid, String type, UUID townUUID, String worldStr, double x, double y, double z,
+  public AltarMeta(UUID uuid, AltarType type, UUID townUUID, String worldStr, double x, double y, double z,
                    ArrayList<byte[]> sacrificeList, HashMap<Material, Double> weightMap, AltarStructure structure) {
    this.uuid = uuid;
-   this.type = AltarType.getTypeFromString(type);
+   this.type = type;
    this.weightMap = weightMap;
    this.link = AltarManager.getAltarLink(townUUID);
    Bukkit.getLogger().info("Town UUID: " + townUUID);
@@ -145,33 +137,6 @@ public abstract class AltarMeta {
    }
    this.structure = structure;
    this.link.addAltar(this.type, this);
- }
-
- /**
-  * Reconstructs an altar of the specified type
-  * @param  uuid                        The altar's UUID
-  * @param  typeStr                     The type of altar to create
-  * @param  townUUID                    The UUID of the town with which the altar is associated
-  * @param  worldStr                    The name of the world in which the altar is located
-  * @param  x                           The X coordinate of the altar's interface block
-  * @param  y                           The Y coordinate of the altar's interface block
-  * @param  z                           The Z coordinate of the altar's interface block
-  * @param  sacrificeList               An arraylist of bytes containing the altar's current sacrifices
-  * @return                             A new AltarMeta
-  */
- public static AltarMeta create(UUID uuid, String typeStr, UUID townUUID, String worldStr, double x, double y, double z, ArrayList<byte[]> sacrificeList) {
-   AltarType type = AltarType.getTypeFromString(typeStr);
-   switch (type) {
-     case MINING_ALTAR:
-       return new MiningAltar(uuid, typeStr, townUUID, worldStr, x, y, z, sacrificeList);
-     case OCEAN_ALTAR:
-       return new OceanAltar(uuid, typeStr, townUUID, worldStr, x, y, z, sacrificeList);
-     case NETHER_ALTAR:
-       return new NetherAltar(uuid, typeStr, townUUID, worldStr, x, y, z, sacrificeList);
-     case FARM_ALTAR:
-     default:
-      return new FarmAltar(uuid, typeStr, townUUID, worldStr, x, y, z, sacrificeList);
-   }
  }
 
  /**
@@ -416,7 +381,7 @@ public abstract class AltarMeta {
    * @return          The next sacrifice type
    */
   public Material getSacrificeType(ArrayList<Material> toAvoid) {
-    List<Material> sacrificeTypes = this.getSacrificeTypes();
+    List<Material> sacrificeTypes = AltarManager.getSacrificeTypes(this.type);
     ArrayList<Material> finalList = new ArrayList<>();
     if (toAvoid != null) {
       for (Material mat : sacrificeTypes) {
@@ -520,11 +485,4 @@ public abstract class AltarMeta {
   public void clearSacrifices() {
     this.sacrifices.clear();
   }
-
-  /**
-   * Returns a list of item types that the
-   * altar may demand as a sacrifice
-   * @return A list of item types that the altar may demand
-   */
-  public abstract List<Material> getSacrificeTypes();
 }

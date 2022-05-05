@@ -15,6 +15,7 @@ import org.bukkit.Material;
 
 import com.condor.voidaltars.altar.AltarType;
 import com.condor.voidaltars.altar.AltarMeta;
+import com.condor.voidaltars.altar.AltarManager;
 
 /**
  * Loads the sacrifices.yml config file and
@@ -66,24 +67,12 @@ public class SacrificesConfigLoader {
   }
 
   /**
-   * Updates values inside the StringConstants file to represent those
-   * stored in the value map
+   * Updates the values in the sacrifices weight map
    */
   public static void updateValues() {
+    AltarManager.clearWeightMapMap();
     for (Entry<AltarType, HashMap<Material, Double>> entry : altarWeightMap.entrySet()) {
-      try {
-        Class metaClass = AltarType.getMetaFromType(entry.getKey());
-        Bukkit.getLogger().info("- " + entry.getKey());
-        metaClass.getMethod("clearWeightMap").invoke(null);
-        for (Entry<Material, Double> weightEntry : entry.getValue().entrySet()) {
-          Material mat = weightEntry.getKey();
-          Double weight = weightEntry.getValue();
-          Class[] parameterTypes = {Material.class, Double.class};
-          metaClass.getMethod("addToWeightMap", parameterTypes).invoke(null, mat, weight);
-        }
-      } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-        e.printStackTrace();
-      }
+      AltarManager.setWeightMap(entry.getKey(), entry.getValue());
     }
   }
 }

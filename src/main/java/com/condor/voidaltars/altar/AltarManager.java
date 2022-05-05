@@ -3,6 +3,8 @@ package com.condor.voidaltars.altar;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.Map.Entry;
+import java.util.List;
+import java.util.ArrayList;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -11,11 +13,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.World;
 import org.bukkit.Sound;
+import org.bukkit.Material;
 
 import com.condor.voidaltars.altar.AltarType;
 import com.condor.voidaltars.altar.multiblock.AltarStructure;
-import com.condor.voidaltars.altar.altars.*;
-import com.condor.voidaltars.altar.multiblock.structures.*;
 import com.condor.voidaltars.altar.exception.NotInATownException;
 import com.condor.voidaltars.altar.exception.WrongTownException;
 import com.condor.voidaltars.sql.SQLLinker;
@@ -41,23 +42,17 @@ import com.palmergames.bukkit.towny.TownyUniverse;
 public class AltarManager {
   private static HashMap<AltarType, AltarStructure> altarTypeMap = new HashMap<>();
   private static HashMap<UUID, TownAltarLink> altarLinkMap = new HashMap<>();
+  private static HashMap<AltarType, HashMap<Material, Double>> weightMapMap = new HashMap<>();
 
-  /**
-   * Constructs and initializes the altar manager
-   */
-  public AltarManager() {
-    init();
+  public static String getAltarName(AltarType type) {
+    if (altarTypeMap.get(type) == null) {
+      return "ERROR";
+    }
+    return altarTypeMap.get(type).getName();
   }
 
-  /**
-   * Initializes the altar by registering the
-   * altar types with their relevant structures
-   */
-  private void init() {
-    altarTypeMap.put(AltarType.FARM_ALTAR, new FarmAltarStructure());
-    altarTypeMap.put(AltarType.NETHER_ALTAR, new NetherAltarStructure());
-    altarTypeMap.put(AltarType.MINING_ALTAR, new MiningAltarStructure());
-    altarTypeMap.put(AltarType.OCEAN_ALTAR, new OceanAltarStructure());
+  public static void addAltarType(AltarType type, AltarStructure struc) {
+    altarTypeMap.put(type, struc);
   }
 
   /**
@@ -82,6 +77,51 @@ public class AltarManager {
    */
   public static void clearAltarLinks() {
     altarLinkMap.clear();
+  }
+
+  /**
+   * Clears the map of altar types/structures
+   */
+  public static void clearTypeMap() {
+    altarTypeMap.clear();
+  }
+
+  /**
+   * Clears the map of altar sacrifice weights
+   */
+  public static void clearWeightMapMap() {
+    weightMapMap.clear();
+  }
+
+  /**
+   * Gets the weight map for this altar type
+   * @param  type The type of altar whose weight map is being requested
+   * @return      The weight map for this altar
+   */
+  public static HashMap<Material, Double> getWeightMap(AltarType type) {
+    return weightMapMap.get(type);
+  }
+
+  /**
+   * Sets the weight map for the altar type
+   * provided, to the weight map provided
+   * @param type  The altar type
+   * @param map   The new weight map
+   */
+  public static void setWeightMap(AltarType type, HashMap<Material, Double> map) {
+    weightMapMap.put(type, map);
+  }
+
+  public static List<Material> getSacrificeTypes(AltarType type) {
+    if (weightMapMap.get(type) == null) {
+      Bukkit.getLogger().warning("Tried to get sacrifice types for " + type + ", found none.");
+      return null;
+    }
+    ArrayList<Material> matList = new ArrayList<>();
+    for (Material m : weightMapMap.get(type).keySet()) {
+      matList.add(m);
+    }
+    return matList;
   }
 
   /**
@@ -228,21 +268,8 @@ public class AltarManager {
           if (link == null) {
             link = new TownAltarLink(town);
           }
-          switch (struc.getType()) {
-            case MINING_ALTAR:
-              altarMeta = new MiningAltar(link, loc, UUID.randomUUID());
-              break;
-            case OCEAN_ALTAR:
-              altarMeta = new OceanAltar(link, loc, UUID.randomUUID());
-              break;
-            case NETHER_ALTAR:
-              altarMeta = new NetherAltar(link, loc, UUID.randomUUID());
-              break;
-            case FARM_ALTAR:
-            default:
-              altarMeta = new FarmAltar(link, loc, UUID.randomUUID());
-              break;
-          }
+          // altarMeta = new AltarMeta(struc.getType(), link, loc, UUID.randomUUID());
+          altarMeta = new AltarMeta(link, struc.getType(), UUID.randomUUID(), loc, struc, getWeightMap(struc.getType()));
           altarMeta.doEffect();
           link.addAltar(altarMeta.getType(), altarMeta);
           BuildTransaction transac = new BuildTransaction(altarMeta.getUniqueId(), altarMeta.getLink(), player.getUniqueId(),

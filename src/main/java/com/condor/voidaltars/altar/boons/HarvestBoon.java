@@ -36,7 +36,7 @@ public class HarvestBoon extends Boon {
   private static ArrayList<Class> triggerList = new ArrayList<>();
 
   private static Random rng = new Random();
-  private static final double CHANCE = 1.0;
+  private static final double CHANCE = 0.3;
 
   static {
     triggerList.add(BlockGrowEvent.class);

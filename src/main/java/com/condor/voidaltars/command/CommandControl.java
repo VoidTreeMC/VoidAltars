@@ -15,6 +15,7 @@ import com.condor.voidaltars.command.executors.SetAltarLevel;
 import com.condor.voidaltars.command.executors.RefreshSacrifices;
 import com.condor.voidaltars.command.executors.AddSacrifices;
 import com.condor.voidaltars.command.executors.AltarCommand;
+import com.condor.voidaltars.command.executors.AltarTopCommandTwo;
 
 /**
  * Utility class used for registering commands with
@@ -55,6 +56,7 @@ public abstract class CommandControl implements CommandExecutor {
     new RefreshSacrifices("refreshsacrifices");
     new AddSacrifices("addsacrifices");
     new AltarCommand("altar");
+    new AltarTopCommandTwo("altartop");
 	}
 
 	/**

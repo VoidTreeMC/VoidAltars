@@ -52,6 +52,8 @@ public class TownAltarLink {
   TransactionCache transacCache;
   // The map that stores the altar's settings
   HashMap<SettingsType, AltarSettings> settingsMap = new HashMap<>();
+  // A boolean which indicates whether or not a towns' altars should be de-leveled
+  private boolean shouldDelevel = false;
 
   /**
    * Constructor for a TownAltarLink.
@@ -67,15 +69,16 @@ public class TownAltarLink {
     this.nextEvalTime = this.calcNextEvalTime();
     TownAltarLink temp = this;
     AltarManager.addAltarLink(this);
+    this.settingsMap = AltarSettings.getDefaultSettings();
     Bukkit.getScheduler().runTaskAsynchronously(AltarMain.getPlugin(), new Runnable() {
       @Override
       public void run() {
         Bukkit.getLogger().info("Pushing TownAltarLink.");
         SQLLinker.pushToDB(temp);
+        SQLLinker.pushToDB(temp, temp.getSettings());
       }
     });
     this.transacCache = new TransactionCache(this);
-    this.settingsMap = AltarSettings.getDefaultSettings();
   }
 
   /**
@@ -117,6 +120,7 @@ public class TownAltarLink {
     this.transacCache = new TransactionCache(this);
     long now = System.currentTimeMillis();
     if (now >= this.getNextEvalTime()) {
+      this.shouldDelevel = !this.hasMetQuota();
       this.totalRecentSacrifices = 0;
       this.nextEvalTime = this.calcNextEvalTime();
       TownAltarLink temp = this;
@@ -472,5 +476,9 @@ public class TownAltarLink {
 
   public TransactionCache getTransacCache() {
     return this.transacCache;
+  }
+
+  public boolean shouldDelevel() {
+    return this.shouldDelevel;
   }
 }

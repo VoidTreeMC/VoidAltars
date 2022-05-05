@@ -45,11 +45,6 @@ public enum StringConstants {
   NOT_MEMBER_OF_ALTARS_TOWN("You cannot change the boons of another town's altar."),
   TOWN_HAS_UNCLAIMED_ALTAR("Your town has just unclaimed its altar! Claim it back to get the boons again."),
   ALTAR_HAS_BEEN_MOVED("Your town's altar has been successfully moved!"),
-  // Altar names
-  FARM_ALTAR_NAME("Agriculture Altar"),
-  MINING_ALTAR_NAME("Mining Altar"),
-  OCEAN_ALTAR_NAME("Ocean Altar"),
-  NETHER_ALTAR_NAME("Nether Altar"),
   // URLs
   ALTAR_HELP_WEBPAGE("" + ChatColor.GOLD + ChatColor.UNDERLINE + "https://www.voidtreemc.com/voidtree-altar-help"),
   // GUI strings

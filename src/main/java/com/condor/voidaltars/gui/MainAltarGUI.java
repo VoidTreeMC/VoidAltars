@@ -30,6 +30,7 @@ import com.condor.voidaltars.main.AltarMain;
 import com.condor.voidaltars.altar.transaction.SacrificeTransaction;
 import com.condor.voidaltars.leaderboard.LeaderboardParser;
 import com.condor.voidaltars.altar.SettingsType;
+import com.condor.voidaltars.altar.AltarManager;
 
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -174,7 +175,7 @@ public class MainAltarGUI {
    * @param altarMeta  The altar whose GUI is to be shown
    */
   public static void displayAltarGUI(Player player, AltarMeta altarMeta) {
-    Gui gui = new Gui(6, altarMeta.getType().getName());
+    Gui gui = new Gui(6, AltarManager.getAltarName(altarMeta.getType()));
   	gui.setDefaultClickAction(event -> {
       event.setCancelled(true);
   	});

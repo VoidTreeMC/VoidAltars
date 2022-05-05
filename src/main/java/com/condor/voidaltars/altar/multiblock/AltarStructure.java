@@ -14,15 +14,19 @@ import com.condor.voidaltars.altar.AltarType;
 /**
  * Represents an altar's physical structure
  */
-public abstract class AltarStructure {
+public class AltarStructure {
   // The map of materials that make up the altar
   private HashMap<Material, Integer> materialMap;
   // The maximum radius in which the altar's blocks are searched for, from the interface block
-  private int size;
+  private static final int size = 5;
   // The altar's interface block (typically a campfire)
   private Material interfaceBlockType;
+  // The altar's candle type
+  private Material candleType;
   // The type of the altar
   private AltarType type;
+  // The altar structure's name
+  private String name;
   // A list of known interface blocks
   private static ArrayList<Material> knownInterfaceBlocks = new ArrayList<>();
 
@@ -30,18 +34,20 @@ public abstract class AltarStructure {
    * Constructor for an altar's structure
    * @param type                The type of the altar
    * @param matMap              A map of materials to quantities of said materials
-   * @param size                The maximum radius from the interface block in which the altar's blocks are searched for
    * @param interfaceBlockType  The type of interface block that the altar has
+   * @param candleType          The type of candle that the altar uses
+   * @param Name                The name of the altar type (e.g. Farm Altar)
    */
-  public AltarStructure(AltarType type, HashMap<Material, Integer> matMap, int size, Material interfaceBlockType) {
+  public AltarStructure(AltarType type, HashMap<Material, Integer> matMap, Material interfaceBlockType, Material candleType, String name) {
     // If we haven't seen this interface block type before, register it
     if (!isPossibleInterfaceBlock(interfaceBlockType)) {
       knownInterfaceBlocks.add(interfaceBlockType);
     }
     this.type = type;
     this.materialMap = matMap;
-    this.size = size;
+    this.candleType = candleType;
     this.interfaceBlockType = interfaceBlockType;
+    this.name = name;
   }
 
   /**
@@ -133,9 +139,15 @@ public abstract class AltarStructure {
     return this.size;
   }
 
+  public String getName() {
+    return this.name;
+  }
+
   public AltarType getType() {
     return this.type;
   }
 
-  public abstract Material getCandleType();
+  public Material getCandleType() {
+    return this.candleType;
+  }
 }

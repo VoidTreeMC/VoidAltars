@@ -29,6 +29,8 @@ import com.condor.voidaltars.altar.TownAltarLink;
 import com.condor.voidaltars.leaderboard.AltarRank;
 import com.condor.voidaltars.altar.SettingsType;
 import com.condor.voidaltars.altar.AltarSettings;
+import com.condor.voidaltars.altar.AltarType;
+import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.altar.settings.OutsiderSacrificeSetting;
 
 import com.palmergames.bukkit.towny.TownyAPI;
@@ -121,7 +123,8 @@ public class SQLLinker {
         }
 
         TownAltarLink altarLink = new TownAltarLink(townUUID, level, boonList, totalRecentSacrifices, totalSacrificesMade, nextEvalTime);
-        if (!altarLink.hasMetQuota()) {
+        if (altarLink.shouldDelevel()) {
+          Bukkit.getLogger().info("Flagging " + townUUID + " for altar de-leveling.");
           toDelevel.add(altarLink);
         }
         rsnext = tatResults.next();
@@ -135,7 +138,7 @@ public class SQLLinker {
       while (rsnext) {
         UUID uuid = UUID.fromString(altarResults.getString("uuid"));
         UUID townUUID = UUID.fromString(altarResults.getString("town_uuid"));
-        String type = altarResults.getString("type");
+        String typeStr = altarResults.getString("type");
         String worldStr = altarResults.getString("world");
         double x = (double) altarResults.getInt("x");
         double y = (double) altarResults.getInt("y");
@@ -145,7 +148,10 @@ public class SQLLinker {
           sacrificeList.add(altarResults.getBytes("sacrifice_" + i));
         }
 
-        AltarMeta altar = AltarMeta.create(uuid, type, townUUID, worldStr, x, y, z, sacrificeList);
+        AltarType type = AltarType.getTypeFromString(typeStr);
+        HashMap<Material, Double> weightMap = AltarManager.getWeightMap(type);
+        AltarStructure struc = AltarManager.getAltarByType(type);
+        AltarMeta altar = new AltarMeta(uuid, type, townUUID, worldStr, x, y, z, sacrificeList, weightMap, struc);
         rsnext = altarResults.next();
       }
 
@@ -169,6 +175,7 @@ public class SQLLinker {
     }
     // De-level all of the altars that need to be de-leveled
     for (TownAltarLink link : toDelevel) {
+      Bukkit.getLogger().info("De-leveling " + link.getUniqueId());
       link.levelDown();
     }
   }
@@ -211,7 +218,10 @@ public class SQLLinker {
       ResultSet results = isInTableStmt.executeQuery();
 
       PreparedStatement currentTableStatement;
-      PreparedStatement totalTableStatement;
+      PreparedStatement totalTableStatement = null;
+      PreparedStatement totalQuery = conn.prepareStatement("SELECT points FROM TotalAltarLeaderboard WHERE town_uuid=?");
+      totalQuery.setString(1, townUUID.toString());
+      ResultSet totalPointsRS = totalQuery.executeQuery();
       if (results.next()) {
         int currPoints = results.getInt("points");
         currentTableStatement = conn.prepareStatement("UPDATE AltarLeaderboardByMonth SET points=? WHERE town_uuid=? AND month=?;");
@@ -219,26 +229,26 @@ public class SQLLinker {
         currentTableStatement.setString(2, townUUID.toString());
         currentTableStatement.setInt(3, month);
 
-        PreparedStatement totalQuery = conn.prepareStatement("SELECT points FROM TotalAltarLeaderboard WHERE town_uuid=?");
-        totalQuery.setString(1, townUUID.toString());
-        ResultSet totalPointsRS = totalQuery.executeQuery();
         totalPointsRS.next();
         int currTotalPoints = totalPointsRS.getInt("points");
         totalTableStatement = conn.prepareStatement("UPDATE TotalAltarLeaderboard SET points=? WHERE town_uuid=?;");
         totalTableStatement.setInt(1, points + currTotalPoints);
         totalTableStatement.setString(2, townUUID.toString());
+        totalTableStatement.executeUpdate();
       } else {
         currentTableStatement = conn.prepareStatement("INSERT INTO AltarLeaderboardByMonth(month, town_uuid, points) VALUES (?, ?, ?);");
         currentTableStatement.setInt(1, month);
         currentTableStatement.setString(2, townUUID.toString());
         currentTableStatement.setInt(3, points);
-        totalTableStatement = conn.prepareStatement("INSERT INTO TotalAltarLeaderboard(town_uuid, points) VALUES (?, ?);");
-        totalTableStatement.setString(1, townUUID.toString());
-        totalTableStatement.setInt(2, points);
+        if (!totalPointsRS.next()) {
+          totalTableStatement = conn.prepareStatement("INSERT INTO TotalAltarLeaderboard(town_uuid, points) VALUES (?, ?);");
+          totalTableStatement.setString(1, townUUID.toString());
+          totalTableStatement.setInt(2, points);
+          totalTableStatement.executeUpdate();
+        }
       }
 
       currentTableStatement.executeUpdate();
-      totalTableStatement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
     }

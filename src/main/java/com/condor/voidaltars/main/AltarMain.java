@@ -17,6 +17,7 @@ import com.condor.voidaltars.sql.SQLConfig;
 import com.condor.voidaltars.constants.ConstantsLoader;
 import com.condor.voidaltars.constants.SacrificesConfigLoader;
 import com.condor.voidaltars.leaderboard.LeaderboardParser;
+import com.condor.voidaltars.constants.AltarStructuresLoader;
 
 /**
  * The main class for the VoidAltars plugin
@@ -34,8 +35,6 @@ public class AltarMain extends JavaPlugin {
 	}
 
   // public Economy econ = null;
-
-  private AltarManager altarManager;
 
 	private static AltarMain plugin;
 	public static AltarMain getPlugin() {
@@ -84,8 +83,8 @@ public class AltarMain extends JavaPlugin {
       e.printStackTrace();
 		}
 
-    Bukkit.getLogger().info("Loading Altar Manager...");
-    this.altarManager = new AltarManager();
+    Bukkit.getLogger().info("Loading altar_structures.yml...");
+    AltarStructuresLoader.init();
 
     Bukkit.getLogger().info("Loading Sacrifice config...");
     SacrificesConfigLoader.init();

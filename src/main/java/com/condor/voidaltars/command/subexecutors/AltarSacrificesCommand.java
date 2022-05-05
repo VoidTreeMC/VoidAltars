@@ -89,7 +89,7 @@ public class AltarSacrificesCommand extends SubCommand {
    * @param player  The player to whom the information is to be shown
    */
   private static void printSacrificeInfo(AltarMeta altar, Player player) {
-    String altarName = altar.getType().getName();
+    String altarName = AltarManager.getAltarName(altar.getType());
     player.sendMessage(ChatColor.AQUA + altarName);
     String underlineString = ChatColor.AQUA + "";
     for (int i = 0; i < altarName.length(); i++) {

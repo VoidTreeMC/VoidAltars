@@ -64,7 +64,6 @@ import org.bukkit.event.block.BlockGrowEvent;
 
 import com.condor.voidaltars.listener.AltarListener;
 import com.condor.voidaltars.main.AltarMain;
-import com.condor.voidaltars.altar.multiblock.structures.FarmAltarStructure;
 import com.condor.voidaltars.altar.AltarManager;
 import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.altar.AltarMeta;

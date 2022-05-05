@@ -26,7 +26,7 @@ import com.condor.voidaltars.command.subexecutors.AltarSettingsCommand;
  */
 public class AltarCommand extends CommandControl {
 
-  private static TreeMap<String, SubCommand> subcommandTree = new TreeMap<>();
+  public static TreeMap<String, SubCommand> subcommandTree = new TreeMap<>();
 
   static {
     AltarLogCommand altarLog = new AltarLogCommand();
