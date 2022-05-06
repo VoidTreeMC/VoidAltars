@@ -1,16 +1,42 @@
 package com.condor.voidaltars.altar;
 
+import java.util.HashMap;
+import java.lang.Comparable;
+
 import com.condor.voidaltars.constants.StringConstants;
 
 /**
  * Represents a type of altar
+ * TODO: Change the internal representation of this
+ * to use something besides string comparison, in order
+ * to speed it up
  */
-public enum AltarType {
-  FARM_ALTAR,
-  MINING_ALTAR,
-  NETHER_ALTAR,
-  OCEAN_ALTAR,
-  HUNTING_ALTAR;
+public class AltarType implements Comparable {
+  private static HashMap<String, AltarType> typeMap = new HashMap<>();
+
+  private String type;
+
+  public AltarType(String type) {
+    this.type = type;
+    typeMap.put(type, this);
+  }
+
+  public boolean equals(AltarType otherType) {
+    return this.type.equals(otherType.toString());
+  }
+
+  @Override
+  public int compareTo(Object otherType) {
+    if (otherType instanceof AltarType) {
+      return this.type.compareTo(((AltarType) otherType).toString());
+    } else {
+      return -1;
+    }
+  }
+
+  public String toString() {
+    return this.type;
+  }
 
   /**
    * Returns the type of altar associated with
@@ -19,11 +45,6 @@ public enum AltarType {
    * @return                    The altar type
    */
   public static AltarType getTypeFromString(String name) {
-    for (AltarType type : AltarType.values()) {
-      if (type.toString().equals(name)) {
-        return type;
-      }
-    }
-    return null;
+    return typeMap.get(name);
   }
 }

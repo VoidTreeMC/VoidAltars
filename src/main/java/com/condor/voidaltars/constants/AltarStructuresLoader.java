@@ -79,7 +79,11 @@ public class AltarStructuresLoader {
           altarInterfaceBlockMap.put(context, interfaceType);
         }
         else if (!line.startsWith(MATERIAL_LINE_PREFIX) && line.endsWith(":")) {
-          AltarType type = AltarType.getTypeFromString(line.substring(0, line.length() - 1));
+          String typeName = line.substring(0, line.length() - 1);
+          AltarType type = AltarType.getTypeFromString(typeName);
+          if (type == null) {
+            type = new AltarType(typeName);
+          }
           altarMatMap.put(type, new HashMap<Material, Integer>());
           context = type;
         }

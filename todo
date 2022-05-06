@@ -11,8 +11,4 @@ When encountering 2 duplicate boons, switch their places
 
 DID
 ===
-Made /altartop also call /altar top
-Fixed an issue with primary key duplication in the total altar leaderboards table
-Added a new config file, altar_structures.yml, which allows users to define information about altars
-Removed all code that points to specific altar types, except for AltarType
-WIP code for allowing users to define new altars entirely from config files
+Finished code that permits users to define new altar types via config file
