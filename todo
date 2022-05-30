@@ -1,5 +1,4 @@
 Add a command that lets administrators reload sacrifices based on the config file
-Add a config for changing the material requirements for altars
 Make it so if you remove an entry from the text file and reload, it goes back to the default
 Make it so newtown's altar doesnt scale with the number of people
 Add some type of synchronization to make sure that SQL changes are made synchronously but not on the same thread as the server runtime
@@ -8,7 +7,10 @@ Maybe build/destroy transactions should contain the type of altar
 Add tab completion for some of the other altar commands besides /altar
 Optimize leaderboard code so that it only re-sorts the list if the new score is greater than the score of the one above it
 When encountering 2 duplicate boons, switch their places
+Duplicates of dark prismarine
+Altar considered duplicated if chunk unclaimed before altar broken (maybe)
 
 DID
 ===
-Finished code that permits users to define new altar types via config file
+Reworked altar reward chance to be lower, but scale with altar level
+Increased cost of altar rerolls to 5 void coins instead of 2

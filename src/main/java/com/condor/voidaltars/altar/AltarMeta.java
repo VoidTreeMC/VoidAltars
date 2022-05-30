@@ -169,7 +169,7 @@ public class AltarMeta {
         SQLLinker.pushToDB(tempMeta);
       }
     });
-    RewardGenerator.rollAndReward(player);
+    RewardGenerator.rollAndReward(player, this.link.getLevel());
     return newSacrifice;
   }
 

@@ -315,16 +315,16 @@ public class MainAltarGUI {
         ItemStack rerollItem = new ItemStack(Material.SUNFLOWER);
         ItemMeta rerollItemMeta = rerollItem.getItemMeta();
         rerollItemMeta.addEnchant(Enchantment.DURABILITY, 1, false);
-        rerollItemMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Reroll: 2 VoidCoins");
+        rerollItemMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Reroll: 5 VoidCoins");
         ArrayList<String> rerollItemLore = new ArrayList<>();
         rerollItemLore.add("Click to consume");
-        rerollItemLore.add("2 VoidCoins to reroll");
+        rerollItemLore.add("5 VoidCoins to reroll");
         rerollItemLore.add("this sacrifice");
         rerollItemMeta.setLore(rerollItemLore);
         rerollItem.setItemMeta(rerollItemMeta);
         final int index = i;
         GuiItem rerollGuiItem = new GuiItem(rerollItem, event -> {
-          boolean rerolled = handleVoidcoinTransaction(player, 2);
+          boolean rerolled = handleVoidcoinTransaction(player, 5);
           if (rerolled) {
             Sacrifice newSac = SacrificeManager.getNewSacrifice(altarMeta, altarMeta.getCurrentSacrificeMaterials());
             altarMeta.setSacrifice(index, newSac);
