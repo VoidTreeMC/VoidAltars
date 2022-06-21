@@ -1,14 +1,12 @@
 package com.condor.voidaltars.altar.transaction;
 
-import java.util.UUID;
-import java.util.Date;
-import java.text.DateFormat;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.sql.ResultSet;
+import java.util.Date;
+import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import com.condor.voidaltars.altar.TownAltarLink;

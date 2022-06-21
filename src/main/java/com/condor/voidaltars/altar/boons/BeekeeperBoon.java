@@ -1,39 +1,32 @@
 package com.condor.voidaltars.altar.boons;
 
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.logging.Level;
 import java.util.List;
+import java.util.Random;
 
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.type.Beehive;
+import org.bukkit.entity.Bee;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.bukkit.event.entity.EntityBreedEvent;
+import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.Material;
-import org.bukkit.event.Event;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.player.PlayerHarvestBlockEvent;
-import org.bukkit.Location;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.EntityType;
-import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
-import org.bukkit.event.entity.EntityBreedEvent;
-import org.bukkit.entity.Bee;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.block.data.type.Beehive;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
-import io.papermc.paper.event.block.PlayerShearBlockEvent;
-
-import com.palmergames.bukkit.towny.object.TownBlock;
-import com.palmergames.bukkit.towny.object.Town;
-import com.palmergames.bukkit.towny.TownyAPI;
-import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 
 import com.condor.voidaltars.altar.Boon;
 import com.condor.voidaltars.altar.BoonType;
 import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.constants.StringListConstants;
 import com.condor.voidaltars.util.TownyFunctions;
+import com.palmergames.bukkit.towny.object.Town;
+
+import io.papermc.paper.event.block.PlayerShearBlockEvent;
 
 /**
  * A boon that makes bees in a town passive, adds a chance

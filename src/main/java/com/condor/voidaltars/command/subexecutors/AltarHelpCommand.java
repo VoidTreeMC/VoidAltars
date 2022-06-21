@@ -2,14 +2,11 @@ package com.condor.voidaltars.command.subexecutors;
 
 import java.util.ArrayList;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.ChatColor;
 
 import com.condor.voidaltars.command.CommandControl.FailureCode;
-import com.condor.voidaltars.constants.ConstantsLoader;
-import com.condor.voidaltars.command.CommandControl;
 import com.condor.voidaltars.command.SubCommand;
 
 /**
@@ -52,7 +49,7 @@ public class AltarHelpCommand extends SubCommand {
 		}
 
 		//If the specified page number is out of range
-		if ((pageNum * 10) > (helpEntries.size() + 9) || pageNum < 0) {
+		if ((pageNum * PAGE_SIZE) > (helpEntries.size() + 9) || pageNum < 0) {
 			player.sendMessage(String.format("The page number must be within the range %d to %d.", 1, numPages));
 			return FailureCode.SUCCESS;
 		}
@@ -70,7 +67,7 @@ public class AltarHelpCommand extends SubCommand {
 	 */
 	private static void dispPageNumber(Player player, int pageNum) {
 		player.sendMessage("");
-		for (int i = (pageNum - 1) * 10; i < (pageNum * 10); i++) {
+		for (int i = (pageNum - 1) * PAGE_SIZE; i < (pageNum * PAGE_SIZE); i++) {
 			if (i >= helpEntries.size()) {
 				break;
 			}

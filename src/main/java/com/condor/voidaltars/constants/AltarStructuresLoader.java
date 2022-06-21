@@ -1,21 +1,15 @@
 package com.condor.voidaltars.constants;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.io.FileNotFoundException;
-import java.io.File;
-import java.util.Map.Entry;
-import java.io.IOException;
-import java.lang.NoSuchMethodException;
-import java.lang.IllegalAccessException;
-import java.lang.reflect.InvocationTargetException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
-import com.condor.voidaltars.altar.AltarType;
-import com.condor.voidaltars.altar.AltarMeta;
 import com.condor.voidaltars.altar.AltarManager;
+import com.condor.voidaltars.altar.AltarType;
 import com.condor.voidaltars.altar.multiblock.AltarStructure;
 
 /**

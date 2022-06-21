@@ -1,23 +1,19 @@
 package com.condor.voidaltars.command.executors;
 
-import java.util.TreeMap;
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.server.TabCompleteEvent;
 
-import com.condor.voidaltars.command.CommandControl.FailureCode;
-import com.condor.voidaltars.constants.ConstantsLoader;
 import com.condor.voidaltars.command.CommandControl;
 import com.condor.voidaltars.command.SubCommand;
 import com.condor.voidaltars.command.subexecutors.AltarHelpCommand;
 import com.condor.voidaltars.command.subexecutors.AltarLogCommand;
 import com.condor.voidaltars.command.subexecutors.AltarSacrificesCommand;
+import com.condor.voidaltars.command.subexecutors.AltarSettingsCommand;
 import com.condor.voidaltars.command.subexecutors.AltarStatusCommand;
 import com.condor.voidaltars.command.subexecutors.AltarTopCommand;
-import com.condor.voidaltars.command.subexecutors.AltarSettingsCommand;
 
 /**
  * Supercommand used to trigger various sub-commands,

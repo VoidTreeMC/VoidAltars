@@ -1,13 +1,9 @@
 package com.condor.voidaltars.runnable;
 
-import java.util.List;
-
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.World;
-import org.bukkit.Location;
 import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.condor.voidaltars.main.AltarMain;
 

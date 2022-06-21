@@ -1,18 +1,17 @@
 package com.condor.voidaltars.leaderboard;
 
-import java.util.UUID;
-import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.Bukkit;
 
-import com.condor.voidaltars.sql.SQLLinker;
-import com.condor.voidaltars.altar.SacrificeManager;
 import com.condor.voidaltars.altar.Sacrifice;
+import com.condor.voidaltars.altar.SacrificeManager;
 import com.condor.voidaltars.main.AltarMain;
+import com.condor.voidaltars.sql.SQLLinker;
 
 public class LeaderboardParser {
 

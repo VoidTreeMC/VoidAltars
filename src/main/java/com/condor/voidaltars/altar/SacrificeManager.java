@@ -1,14 +1,10 @@
 package com.condor.voidaltars.altar;
 
-import java.lang.Long;
-import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Random;
-import java.lang.Math;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.Bukkit;
 
 import com.palmergames.bukkit.towny.object.Town;
 

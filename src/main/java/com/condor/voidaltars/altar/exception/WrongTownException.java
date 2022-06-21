@@ -3,8 +3,6 @@ package com.condor.voidaltars.altar.exception;
 import java.lang.Exception;
 import java.util.UUID;
 
-import org.bukkit.Location;
-
 /**
  * Exception fired when an altar is in one
  * town but registered with another

@@ -1,37 +1,27 @@
 package com.condor.voidaltars.altar;
 
-import java.util.HashMap;
-import java.util.UUID;
-import java.util.Map.Entry;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.Effect;
-import org.bukkit.World;
-import org.bukkit.Sound;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
-import com.condor.voidaltars.altar.AltarType;
-import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.altar.exception.NotInATownException;
 import com.condor.voidaltars.altar.exception.WrongTownException;
-import com.condor.voidaltars.sql.SQLLinker;
-import com.condor.voidaltars.runnable.PlaySparkleEffect;
-import com.condor.voidaltars.main.AltarMain;
-import com.condor.voidaltars.constants.StringConstants;
+import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.altar.transaction.BuildTransaction;
+import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.util.TownyFunctions;
-
-import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.TownyAPI;
-import com.palmergames.bukkit.towny.object.TownBlock;
+import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.TownyUniverse;
+import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownBlock;
 
 /**
  * Provides a variety of altar utilities,
@@ -190,11 +180,12 @@ public class AltarManager {
             } else if (getStructureFromLoc(loc, true) != null) {
               AltarType typeAtLoc = getStructureFromLoc(loc, true).getType();
               AltarType metaType = meta.getType();
+              meta.getStructure();
               // If the original location still contains a campfire and is the same type of altar
-              if (meta.getStructure().isPossibleInterfaceBlock(meta.getLocation().getBlock().getType()) && typeAtLoc.equals(metaType)) {
+              if (AltarStructure.isPossibleInterfaceBlock(meta.getLocation().getBlock().getType()) && typeAtLoc.equals(metaType)) {
                 player.sendMessage(StringConstants.NO_DUPLICATE_ALTARS.get());
               // If the original location's campfire is gone and they're the same type of altar, update its location
-              } else if (!meta.getStructure().isPossibleInterfaceBlock(meta.getLocation().getBlock().getType()) && typeAtLoc.equals(metaType)) {
+              } else if (!AltarStructure.isPossibleInterfaceBlock(meta.getLocation().getBlock().getType()) && typeAtLoc.equals(metaType)) {
                 Resident resident = TownyUniverse.getInstance().getResident(player.getUniqueId());
                 if (resident == null || (!resident.isMayor() && !resident.hasTownRank("high-priest"))) {
                   player.sendMessage(StringConstants.NO_PERMISSIONS_TO_CREATE_ALTAR.get());
@@ -243,50 +234,45 @@ public class AltarManager {
       }
     }
 
-    // If there's no known altar at this location
-    if (altarMeta == null) {
-      // If it's not a valid altar, we return null.
-      if (struc == null) {
-        return null;
-      // If it IS a valid altar but we dont know about it,
-      // we create a new altar meta for it and add it to the map
-      } else {
-        try {
-          // If there's already an altar of that type in that town, return null
-          if (town != null) {
-            TownAltarLink link = AltarManager.getAltarLink(town.getUUID());
-            if (link == null) {
-              link = new TownAltarLink(town);
-            }
-            AltarMeta townAltar = link.getAltar(struc.getType());
-            if (townAltar != null) {
-              player.sendMessage(StringConstants.NO_DUPLICATE_ALTARS.get());
-              return null;
-            }
-          }
+    // If it's not a valid altar, we return null.
+    if (struc == null) {
+      return null;
+    // If it IS a valid altar but we dont know about it,
+    // we create a new altar meta for it and add it to the map
+    } else {
+      try {
+        // If there's already an altar of that type in that town, return null
+        if (town != null) {
           TownAltarLink link = AltarManager.getAltarLink(town.getUUID());
           if (link == null) {
             link = new TownAltarLink(town);
           }
-          // altarMeta = new AltarMeta(struc.getType(), link, loc, UUID.randomUUID());
-          altarMeta = new AltarMeta(link, struc.getType(), UUID.randomUUID(), loc, struc, getWeightMap(struc.getType()));
-          altarMeta.doEffect();
-          link.addAltar(altarMeta.getType(), altarMeta);
-          BuildTransaction transac = new BuildTransaction(altarMeta.getUniqueId(), altarMeta.getLink(), player.getUniqueId(),
-                                                          UUID.randomUUID(), System.currentTimeMillis(), loc.getWorld().toString(),
-                                                          (int) loc.getX(), (int) loc.getY(), (int) loc.getZ());
-          altarMeta.getLink().getTransacCache().store(transac);
-          return altarMeta;
-        } catch (NotInATownException | WrongTownException e) {
-          // They're not in a town. Ignore it.
-          player.sendMessage(StringConstants.NO_ALTARS_IN_THE_WILD.get());
-          return null;
+          AltarMeta townAltar = link.getAltar(struc.getType());
+          if (townAltar != null) {
+            player.sendMessage(StringConstants.NO_DUPLICATE_ALTARS.get());
+            return null;
+          }
         }
+        TownAltarLink link = AltarManager.getAltarLink(town.getUUID());
+        if (link == null) {
+          link = new TownAltarLink(town);
+        }
+        // altarMeta = new AltarMeta(struc.getType(), link, loc, UUID.randomUUID());
+        altarMeta = new AltarMeta(link, struc.getType(), UUID.randomUUID(), loc, struc, getWeightMap(struc.getType()));
+        altarMeta.doEffect();
+        link.addAltar(altarMeta.getType(), altarMeta);
+        BuildTransaction transac = new BuildTransaction(altarMeta.getUniqueId(), altarMeta.getLink(), player.getUniqueId(),
+                                                        UUID.randomUUID(), System.currentTimeMillis(), loc.getWorld().toString(),
+                                                        (int) loc.getX(), (int) loc.getY(), (int) loc.getZ());
+        altarMeta.getLink().getTransacCache().store(transac);
+        return altarMeta;
+      } catch (NotInATownException | WrongTownException e) {
+        // They're not in a town. Ignore it.
+        player.sendMessage(StringConstants.NO_ALTARS_IN_THE_WILD.get());
+        return null;
       }
-    // If we found the altar, return it
-    } else {
-      return altarMeta;
     }
+  // If we found the altar, return it
   }
 
   /**

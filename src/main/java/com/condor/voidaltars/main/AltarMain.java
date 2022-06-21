@@ -1,23 +1,16 @@
 package com.condor.voidaltars.main;
 
-import java.sql.Connection;
-import java.util.Collection;
-
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.plugin.RegisteredServiceProvider;
 
 import com.condor.voidaltars.command.CommandControl;
-import com.condor.voidaltars.listener.AltarListener;
-import com.condor.voidaltars.altar.AltarManager;
-import com.condor.voidaltars.sql.SQLLinker;
-import com.condor.voidaltars.sql.SQLConfig;
+import com.condor.voidaltars.constants.AltarStructuresLoader;
 import com.condor.voidaltars.constants.ConstantsLoader;
 import com.condor.voidaltars.constants.SacrificesConfigLoader;
 import com.condor.voidaltars.leaderboard.LeaderboardParser;
-import com.condor.voidaltars.constants.AltarStructuresLoader;
+import com.condor.voidaltars.listener.AltarListener;
+import com.condor.voidaltars.sql.SQLConfig;
+import com.condor.voidaltars.sql.SQLLinker;
 
 /**
  * The main class for the VoidAltars plugin

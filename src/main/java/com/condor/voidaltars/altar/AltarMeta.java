@@ -1,40 +1,37 @@
 package com.condor.voidaltars.altar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import java.util.HashMap;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Server;
-import org.bukkit.Bukkit;
-import org.bukkit.block.data.type.Candle;
-import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.World;
 import org.bukkit.Sound;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.type.Candle;
 import org.bukkit.entity.Player;
-import org.bukkit.ChatColor;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ClickEvent.Action;
 
-import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.altar.exception.NotInATownException;
 import com.condor.voidaltars.altar.exception.WrongTownException;
-import com.condor.voidaltars.main.AltarMain;
-import com.condor.voidaltars.runnable.PlaySparkleEffect;
-import com.condor.voidaltars.runnable.LightCandles;
-import com.condor.voidaltars.sql.SQLLinker;
-import com.condor.voidaltars.altar.TownAltarLink;
+import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.constants.StringConstants;
-
-import com.palmergames.bukkit.towny.object.Town;
+import com.condor.voidaltars.main.AltarMain;
+import com.condor.voidaltars.runnable.LightCandles;
+import com.condor.voidaltars.runnable.PlaySparkleEffect;
+import com.condor.voidaltars.sql.SQLLinker;
 import com.palmergames.bukkit.towny.TownyAPI;
-import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownBlock;
+
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ClickEvent.Action;
+import net.md_5.bungee.api.chat.TextComponent;
 
 /**
  * Represents an altar's data. Most altar

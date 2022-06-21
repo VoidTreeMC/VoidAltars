@@ -1,27 +1,24 @@
 package com.condor.voidaltars.altar;
 
-import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.ChatColor;
 
-import com.condor.voidaltars.main.AltarMain;
-import com.condor.voidaltars.altar.exception.NotInATownException;
-import com.condor.voidaltars.sql.SQLLinker;
-import com.condor.voidaltars.constants.StringConstants;
-import com.condor.voidaltars.altar.transaction.TransactionCache;
 import com.condor.voidaltars.altar.transaction.LevelTransaction;
-import com.condor.voidaltars.altar.AltarSettings;
-
-import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
-import com.palmergames.bukkit.towny.object.Town;
+import com.condor.voidaltars.altar.transaction.TransactionCache;
+import com.condor.voidaltars.constants.StringConstants;
+import com.condor.voidaltars.main.AltarMain;
+import com.condor.voidaltars.sql.SQLLinker;
 import com.palmergames.bukkit.towny.TownyAPI;
+import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Resident;
+import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 
 /**

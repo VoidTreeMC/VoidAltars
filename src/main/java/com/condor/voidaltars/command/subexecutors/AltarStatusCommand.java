@@ -1,24 +1,17 @@
 package com.condor.voidaltars.command.subexecutors;
 
-import java.util.ArrayList;
-
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.ChatColor;
 
-import com.condor.voidaltars.command.CommandControl.FailureCode;
-import com.condor.voidaltars.constants.ConstantsLoader;
-import com.condor.voidaltars.command.CommandControl;
-import com.condor.voidaltars.command.SubCommand;
-import com.condor.voidaltars.altar.transaction.AltarTransaction;
-import com.condor.voidaltars.altar.TownAltarLink;
 import com.condor.voidaltars.altar.AltarManager;
-
-import com.palmergames.bukkit.towny.object.Resident;
+import com.condor.voidaltars.altar.TownAltarLink;
+import com.condor.voidaltars.command.CommandControl.FailureCode;
+import com.condor.voidaltars.command.SubCommand;
 import com.palmergames.bukkit.towny.TownyUniverse;
-import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+import com.palmergames.bukkit.towny.object.Resident;
+import com.palmergames.bukkit.towny.object.Town;
 
 /**
  * Command that shows information about a town's altars

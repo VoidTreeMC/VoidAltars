@@ -1,16 +1,9 @@
 package com.condor.voidaltars.command.executors;
 
-import java.util.TreeMap;
-
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.server.TabCompleteEvent;
 
-import com.condor.voidaltars.command.CommandControl.FailureCode;
-import com.condor.voidaltars.constants.ConstantsLoader;
 import com.condor.voidaltars.command.CommandControl;
-import com.condor.voidaltars.command.executors.AltarCommand;
 import com.condor.voidaltars.command.subexecutors.AltarTopCommand;
 
 /**

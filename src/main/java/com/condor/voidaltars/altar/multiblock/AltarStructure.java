@@ -1,13 +1,11 @@
 package com.condor.voidaltars.altar.multiblock;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ArrayList;
 
-import org.bukkit.Material;
 import org.bukkit.Location;
-import org.bukkit.Bukkit;
-import org.bukkit.block.data.type.Candle;
+import org.bukkit.Material;
 
 import com.condor.voidaltars.altar.AltarType;
 
@@ -136,7 +134,7 @@ public class AltarStructure {
   }
 
   public int getSize() {
-    return this.size;
+    return size;
   }
 
   public String getName() {

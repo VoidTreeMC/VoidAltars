@@ -1,14 +1,23 @@
 package com.condor.voidaltars.altar;
 
-import java.util.HashMap;
 import java.util.Collection;
-import java.util.logging.Level;
+import java.util.HashMap;
 import java.util.Map.Entry;
 
 import org.bukkit.event.Event;
-import org.bukkit.Bukkit;
 
-import com.condor.voidaltars.altar.boons.*;
+import com.condor.voidaltars.altar.boons.BeekeeperBoon;
+import com.condor.voidaltars.altar.boons.EndBoon;
+import com.condor.voidaltars.altar.boons.ForgeBoon;
+import com.condor.voidaltars.altar.boons.FreezeBoon;
+import com.condor.voidaltars.altar.boons.HarvestBoon;
+import com.condor.voidaltars.altar.boons.NetherBoon;
+import com.condor.voidaltars.altar.boons.PeaceBoon;
+import com.condor.voidaltars.altar.boons.PestControlBoon;
+import com.condor.voidaltars.altar.boons.RancherBoon;
+import com.condor.voidaltars.altar.boons.SentinelBoon;
+import com.condor.voidaltars.altar.boons.SlimeBoon;
+import com.condor.voidaltars.altar.boons.ThawBoon;
 
 /**
  * Class that maps boon types to their

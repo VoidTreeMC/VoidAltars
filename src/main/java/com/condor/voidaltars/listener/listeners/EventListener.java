@@ -1,93 +1,50 @@
 package com.condor.voidaltars.listener.listeners;
 
-import java.util.Random;
 import java.util.UUID;
-import java.util.logging.Level;
 
+import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.event.entity.EntitySpawnEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.Phantom;
-import org.bukkit.Statistic;
-import org.bukkit.entity.SpectralArrow;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.SoundCategory;
-import org.bukkit.Sound;
-import org.bukkit.event.player.PlayerShearEntityEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
-import org.bukkit.event.inventory.PrepareAnvilEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.event.inventory.InventoryEvent;
-import org.bukkit.event.inventory.InventoryType.SlotType;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.entity.FireworkExplodeEvent;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.Location;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.event.player.PlayerHarvestBlockEvent;
-import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
-import org.bukkit.Bukkit;
-import org.bukkit.block.Block;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.FurnaceStartSmeltEvent;
-import org.bukkit.event.entity.EntityBreedEvent;
-import io.papermc.paper.event.block.PlayerShearBlockEvent;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.block.BlockFormEvent;
-import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.server.TabCompleteEvent;
 import org.bukkit.event.block.BlockGrowEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityBreedEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
+import org.bukkit.event.inventory.FurnaceStartSmeltEvent;
+import org.bukkit.event.player.PlayerHarvestBlockEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.server.TabCompleteEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
-import com.condor.voidaltars.listener.AltarListener;
-import com.condor.voidaltars.main.AltarMain;
 import com.condor.voidaltars.altar.AltarManager;
-import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.altar.AltarMeta;
-import com.condor.voidaltars.gui.MainAltarGUI;
 import com.condor.voidaltars.altar.BoonManager;
-import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.altar.TownAltarLink;
+import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.altar.transaction.DestroyTransaction;
 import com.condor.voidaltars.command.CommandControl;
-
-import com.palmergames.bukkit.towny.TownyAPI;
-import com.palmergames.bukkit.towny.event.town.TownUnclaimEvent;
-import com.palmergames.bukkit.towny.object.Town;
-import com.palmergames.bukkit.towny.object.TownBlock;
-import com.palmergames.bukkit.towny.object.Resident;
+import com.condor.voidaltars.constants.StringConstants;
+import com.condor.voidaltars.gui.MainAltarGUI;
+import com.condor.voidaltars.listener.AltarListener;
 import com.palmergames.bukkit.towny.TownyUniverse;
+import com.palmergames.bukkit.towny.event.town.TownUnclaimEvent;
+import com.palmergames.bukkit.towny.object.Resident;
+import com.palmergames.bukkit.towny.object.Town;
+
+import io.papermc.paper.event.block.PlayerShearBlockEvent;
 
 /**
  *
  * Listens for Minecraft Events
  */
 public class EventListener extends AltarListener {
-  private static final Random rng = new Random();
-
+  
   @EventHandler
   public void onBlockGrowEvent(BlockGrowEvent event) {
     BoonManager.parseEvent(event);

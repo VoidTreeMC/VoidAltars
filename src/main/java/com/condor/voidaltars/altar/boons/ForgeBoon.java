@@ -1,31 +1,20 @@
 package com.condor.voidaltars.altar.boons;
 
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.logging.Level;
 
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.Event;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.player.PlayerHarvestBlockEvent;
-import org.bukkit.Location;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.EntityType;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.FurnaceStartSmeltEvent;
-
-import com.palmergames.bukkit.towny.object.TownBlock;
-import com.palmergames.bukkit.towny.object.Town;
-import com.palmergames.bukkit.towny.TownyAPI;
-import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.condor.voidaltars.altar.Boon;
 import com.condor.voidaltars.altar.BoonType;
 import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.constants.StringListConstants;
 import com.condor.voidaltars.util.TownyFunctions;
+import com.palmergames.bukkit.towny.object.Town;
 
 /**
  * A boon that makes items inside of furnaces smelt faster,
@@ -34,8 +23,6 @@ import com.condor.voidaltars.util.TownyFunctions;
 public class ForgeBoon extends Boon {
 
   private static ArrayList<Class> triggerList = new ArrayList<>();
-
-  private static Random rng = new Random();
 
   private static final double MULTIPLIER = 0.90;
 

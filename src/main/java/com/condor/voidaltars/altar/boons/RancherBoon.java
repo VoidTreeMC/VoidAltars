@@ -2,29 +2,21 @@ package com.condor.voidaltars.altar.boons;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.logging.Level;
 
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import org.bukkit.event.Event;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.Material;
-import org.bukkit.event.Event;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.player.PlayerHarvestBlockEvent;
-import org.bukkit.Location;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.EntityType;
-import org.bukkit.event.entity.EntityDeathEvent;
-
-import com.palmergames.bukkit.towny.object.TownBlock;
-import com.palmergames.bukkit.towny.object.Town;
-import com.palmergames.bukkit.towny.TownyAPI;
-import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 
 import com.condor.voidaltars.altar.Boon;
 import com.condor.voidaltars.altar.BoonType;
 import com.condor.voidaltars.constants.StringConstants;
 import com.condor.voidaltars.constants.StringListConstants;
 import com.condor.voidaltars.util.TownyFunctions;
+import com.palmergames.bukkit.towny.object.Town;
 
 /**
  * A boon that makes it so animals yield

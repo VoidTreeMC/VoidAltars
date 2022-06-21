@@ -1,51 +1,41 @@
 package com.condor.voidaltars.gui;
 
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.UUID;
 import java.util.List;
+import java.util.UUID;
 
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.entity.Player;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.Bukkit;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.ChatColor;
 
-import com.condor.voidaltars.altar.Boon;
-import com.condor.voidaltars.altar.BoonType;
-import com.condor.voidaltars.altar.BoonManager;
+import com.condor.voidaltars.altar.AltarManager;
 import com.condor.voidaltars.altar.AltarMeta;
+import com.condor.voidaltars.altar.Boon;
 import com.condor.voidaltars.altar.Sacrifice;
 import com.condor.voidaltars.altar.SacrificeManager;
-import com.condor.voidaltars.sql.SQLLinker;
-import com.condor.voidaltars.constants.StringConstants;
-import com.condor.voidaltars.main.AltarMain;
-import com.condor.voidaltars.altar.transaction.SacrificeTransaction;
-import com.condor.voidaltars.leaderboard.LeaderboardParser;
 import com.condor.voidaltars.altar.SettingsType;
-import com.condor.voidaltars.altar.AltarManager;
+import com.condor.voidaltars.altar.transaction.SacrificeTransaction;
+import com.condor.voidaltars.constants.StringConstants;
+import com.condor.voidaltars.leaderboard.LeaderboardParser;
+import com.condor.voidaltars.main.AltarMain;
+import com.condor.voidaltars.sql.SQLLinker;
+import com.palmergames.bukkit.towny.TownyUniverse;
+import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+import com.palmergames.bukkit.towny.object.Resident;
 
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
-
-import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.TownyUniverse;
-import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 
 /**
  * The main altar GUI in which players can
  * select sacrifices and boon slots
  */
 public class MainAltarGUI {
-
-  private static Random rng = new Random();
 
   private static ItemStack INSTRUCTION_BOOK = new ItemStack(Material.BOOK);
   private static ItemStack SACRIFICE_SLOT_LOCKED = new ItemStack(Material.BARRIER);
@@ -181,7 +171,6 @@ public class MainAltarGUI {
   	});
 
     gui.getFiller().fill(new GuiItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE)));
-    GuiItem air = new GuiItem(new ItemStack(Material.AIR));
 
 
     GuiItem sacrificeSlotLocked = new GuiItem(SACRIFICE_SLOT_LOCKED);

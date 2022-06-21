@@ -2,12 +2,9 @@ package com.condor.voidaltars.constants;
 
 import java.util.HashMap;
 import java.util.Scanner;
-import java.io.FileNotFoundException;
 import java.io.File;
 import java.util.Map.Entry;
 import java.io.IOException;
-
-import org.bukkit.Bukkit;
 
 /**
  * Loads a list of string constants from the text.yml file

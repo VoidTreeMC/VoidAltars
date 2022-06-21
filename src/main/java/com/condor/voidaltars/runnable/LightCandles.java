@@ -1,20 +1,14 @@
 package com.condor.voidaltars.runnable;
 
-import java.util.List;
-
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.World;
-import org.bukkit.Location;
-import org.bukkit.Effect;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Candle;
-import org.bukkit.Material;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import com.condor.voidaltars.main.AltarMain;
 import com.condor.voidaltars.altar.AltarMeta;
 import com.condor.voidaltars.altar.multiblock.AltarStructure;
+import com.condor.voidaltars.main.AltarMain;
 
 /**
  * BukkitRunnable for lighting candles and striking them

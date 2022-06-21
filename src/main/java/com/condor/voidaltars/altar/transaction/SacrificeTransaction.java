@@ -2,7 +2,6 @@ package com.condor.voidaltars.altar.transaction;
 
 import java.util.UUID;
 import java.util.Date;
-import java.text.DateFormat;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;

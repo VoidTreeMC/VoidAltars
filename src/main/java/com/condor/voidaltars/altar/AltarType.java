@@ -3,8 +3,6 @@ package com.condor.voidaltars.altar;
 import java.util.HashMap;
 import java.lang.Comparable;
 
-import com.condor.voidaltars.constants.StringConstants;
-
 /**
  * Represents a type of altar
  * TODO: Change the internal representation of this

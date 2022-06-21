@@ -2,37 +2,27 @@ package com.condor.voidaltars.altar.boons;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.logging.Level;
 
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.Material;
-import org.bukkit.event.Event;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.player.PlayerHarvestBlockEvent;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.Bukkit;
-import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
-
-import com.palmergames.bukkit.towny.object.TownBlock;
-import com.palmergames.bukkit.towny.object.Town;
-import com.palmergames.bukkit.towny.TownyAPI;
-import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+import org.bukkit.event.Event;
+import org.bukkit.event.block.BlockGrowEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.condor.voidaltars.altar.Boon;
 import com.condor.voidaltars.altar.BoonType;
 import com.condor.voidaltars.constants.StringConstants;
-import com.condor.voidaltars.util.TownyFunctions;
 import com.condor.voidaltars.constants.StringListConstants;
+import com.condor.voidaltars.util.TownyFunctions;
+import com.palmergames.bukkit.towny.object.Town;
 
 public class HarvestBoon extends Boon {
 
-  private static final String NAME = "Blessing of the Harvest";
-  private static ArrayList<String> loreList = new ArrayList<>();
   private static ArrayList<Class> triggerList = new ArrayList<>();
 
   private static Random rng = new Random();

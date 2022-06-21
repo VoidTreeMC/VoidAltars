@@ -1,41 +1,33 @@
 package com.condor.voidaltars.sql;
 
-import java.sql.DriverManager;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.io.File;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.UUID;
-import java.net.SocketException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
-
-import com.condor.voidaltars.altar.AltarMeta;
-import com.condor.voidaltars.main.AltarMain;
 import com.condor.voidaltars.altar.AltarManager;
-import com.condor.voidaltars.sql.SQLConfig;
-import com.condor.voidaltars.altar.TownAltarLink;
-import com.condor.voidaltars.leaderboard.AltarRank;
-import com.condor.voidaltars.altar.SettingsType;
+import com.condor.voidaltars.altar.AltarMeta;
 import com.condor.voidaltars.altar.AltarSettings;
 import com.condor.voidaltars.altar.AltarType;
+import com.condor.voidaltars.altar.SettingsType;
+import com.condor.voidaltars.altar.TownAltarLink;
 import com.condor.voidaltars.altar.multiblock.AltarStructure;
 import com.condor.voidaltars.altar.settings.OutsiderSacrificeSetting;
-
+import com.condor.voidaltars.leaderboard.AltarRank;
 import com.palmergames.bukkit.towny.TownyAPI;
-import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+import com.palmergames.bukkit.towny.object.Town;
 
 /**
  * Utility class that performs most of the SQL interactions
@@ -48,6 +40,7 @@ public class SQLLinker {
   // The number of sacrifices and boons
   private static final int NUM_SACRIFICES_AND_BOONS = 4;
 
+  // TODO: Fix this. Server reboots are at 3am, this will be inaccurate for 3 hours
   private static final int month = LocalDate.now().getMonthValue();
 
   /**

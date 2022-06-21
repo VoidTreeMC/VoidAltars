@@ -2,20 +2,14 @@ package com.condor.voidaltars.command.subexecutors;
 
 import java.util.ArrayList;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.ChatColor;
-import org.bukkit.Bukkit;
 
 import com.condor.voidaltars.command.CommandControl.FailureCode;
-import com.condor.voidaltars.constants.ConstantsLoader;
-import com.condor.voidaltars.command.CommandControl;
 import com.condor.voidaltars.command.SubCommand;
-import com.condor.voidaltars.altar.TownAltarLink;
-import com.condor.voidaltars.altar.AltarManager;
-import com.condor.voidaltars.leaderboard.LeaderboardParser;
 import com.condor.voidaltars.leaderboard.AltarRank;
+import com.condor.voidaltars.leaderboard.LeaderboardParser;
 
 /**
  * Command that shows the list of altars
