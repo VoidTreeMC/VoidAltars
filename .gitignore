@@ -42,3 +42,4 @@ tables.sql
 new_tables.sql
 bug.txt
 target/original-*.jar
+target
